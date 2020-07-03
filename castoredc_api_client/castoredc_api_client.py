@@ -11,6 +11,7 @@ import json
 import logging
 import requests
 
+
 from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
 
@@ -26,11 +27,18 @@ class CastorClient:
     def __init__(self, client_id, client_secret):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
         client_id and client_secret. If test is set to True, suppresses logging to the command line."""
+        # Instantiate Requests sessions
+        self.s = requests.Session()
+        self.s.headers.update(self.headers)
+
         # Instantiate logging
         self.logger = logging.getLogger(__name__)
+
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)
         self.headers["authorization"] = "Bearer " + token
+        self.s.headers.update(self.headers)
+
         # Instantiate global study variables
         self.study_url = ""
         self.field_references = {}
@@ -774,10 +782,10 @@ class CastorClient:
 
     # HELPER FUNCTIONS
     # noinspection PyMethodMayBeStatic
-    def castor_get(self, url, headers, params):
+    def castor_get(self, url, params):
         """Query the Castor server with a certain request."""
         try:
-            response = requests.get(url=url, headers=headers, params=params)
+            response = self.s.get(url=url, params=params)
             content = json.loads(response.content)
             # Check if the return object is an error
             if "status" in content.keys() and "detail" in content.keys():
@@ -793,7 +801,7 @@ class CastorClient:
         """Helper function to post body to url."""
         try:
             body = json.dumps(body).encode()
-            response = requests.post(url=url, headers=self.headers, data=body)
+            response = self.s.post(url=url, data=body)
             # Log Auditing Trail for changing data
             content = json.loads(response.content)
             # Check if the return object is an error
@@ -810,7 +818,7 @@ class CastorClient:
         """Helper function to patch body to url."""
         try:
             body = json.dumps(body).encode()
-            response = requests.patch(url=url, headers=self.headers, data=body)
+            response = self.s.patch(url=url, data=body)
             # Log Auditing Trail for changing data
             content = json.loads(response.content)
             if "status" in content.keys():
@@ -836,7 +844,7 @@ class CastorClient:
     @castor_exception_handler
     def retrieve_general_data(self, endpoint, embedded=False, data_id=""):
         url = self.base_url + endpoint
-        response = self.castor_get(url=url, headers=self.headers, params=None)
+        response = self.castor_get(url=url, params=None)
         if embedded:
             data = response["_embedded"][data_id]
         else:
@@ -849,7 +857,7 @@ class CastorClient:
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
         url = self.study_url + endpoint
-        data = self.castor_get(url=url, headers=self.headers, params=None)
+        data = self.castor_get(url=url, params=None)
         return data["_embedded"]["items"]
 
     @castor_exception_handler
@@ -859,12 +867,12 @@ class CastorClient:
         # TODO: Refactor special case that does not have multiple pages
         # but also is not filtered on id (see record-progress)
         if data_id != "":
-            url = self.study_url + endpoint + "/{data_id}".format(data_id)
+            url = self.study_url + endpoint + "/{data_id}".format(data_id=data_id)
         # Ugly hack to make this function also work for special cases
         # See also TODO
         else:
             url = self.study_url + endpoint
-        return self.castor_get(url=url, headers=self.headers, params=params)
+        return self.castor_get(url=url, params=params)
 
     def retrieve_all_data_by_endpoint(self, endpoint, data_name, query_string=None):
         """Retrieves all data on endpoint.
@@ -899,7 +907,7 @@ class CastorClient:
             local_url = url + "&page={0}".format(page)
         else:
             local_url = url + "?page={0}".format(page)
-        response = self.castor_get(url=local_url, headers=self.headers, params=None)
+        response = self.castor_get(url=local_url, params=None)
         return response
 
     @castor_exception_handler
@@ -908,7 +916,7 @@ class CastorClient:
             url = self.study_url + endpoint
         else:
             url = self.base_url + endpoint
-        response = self.castor_get(url=url, headers=self.headers, params=None)
+        response = self.castor_get(url=url, params=None)
         return response["total_items"]
 
     # DATA MAPPING FUNCTIONS
