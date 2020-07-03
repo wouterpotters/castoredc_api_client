@@ -23,19 +23,19 @@ c.all_records()
 ### TODOs
 
 #### Package
-1. Expand docstrings for all functions
-2. Expand documentation for all lines so users understand different steps
-3. Expand data-mapping (efficient sorting algorithms for client.fields)
-4. Make logging to file functionability work on all operating systems
-5. Allow file-uploading functionality
-6. Refactor create_survey_package_instance
-7. Refactor retrieve_data_by_id to only work for the intentioned use case and create a different function for the usecase of record_progress
+* Expand docstrings for all functions
+* Expand documentation for all lines so users understand different steps
+* Expand data-mapping (efficient sorting algorithms for client.fields)
+* Allow file-uploading functionality
+* Refactor create_survey_package_instance
+* Refactor retrieve_data_by_id to only work for the intentioned use case and create a different function for the usecase of record_progress
 
 #### Tests
-1. Create docstring for each test
-2. Add comments to parts of tests to clarify what is happening
-3. Increase test coverage (edge cases)
-4. Test model values (currently only testing model keys)
+* Make failing tests expect CastorException
+* Create docstring for each test
+* Add comments to parts of tests to clarify what is happening
+* Increase test coverage (edge cases)
+* Test model values (currently only testing model keys)
 
 ### Prerequisites
 
@@ -72,5 +72,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * Franciscus Gasthuis & Vlietland for making time available for development  
 * Castor EDC for support and code review
-
-
