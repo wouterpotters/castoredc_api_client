@@ -13,7 +13,7 @@ Logging functionalities are included for keeping an audit trail.
 5. Use the wrapper functions to start working with your database
 
 ```python
-from castorclient.castoredc_api_client import CastorClient
+from castoredc_api_client.castoredc_api_client import CastorClient
 c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET')
 c.link_study('MYSTUDYID')
 

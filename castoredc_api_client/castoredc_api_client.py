@@ -9,12 +9,9 @@ https://orcid.org/0000-0003-3052-596X
 
 import json
 import logging
-import logging.handlers
-import os
-
 import requests
 
-from castorclient.exceptions import CastorException, castor_exception_handler
+from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
 
 class CastorClient:
@@ -30,8 +27,7 @@ class CastorClient:
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
         client_id and client_secret. If test is set to True, suppresses logging to the command line."""
         # Instantiate logging
-        self.toggle_test = test
-        self.logger = self.init_logger()
+        self.logger = logging.getLogger(__name__)
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)
         self.headers["authorization"] = "Bearer " + token
@@ -40,30 +36,6 @@ class CastorClient:
         self.field_references = {}
 
         self.logger.info("CastorClient instantiated.")
-
-    def init_logger(self):
-        """Instantiates the logger for the Castor Client."""
-        # Set logger name and base level
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.DEBUG)
-        # Create file logger
-        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logs', 'CastorClient.log'))
-        f_handler = logging.handlers.RotatingFileHandler(file_path,
-                                                         maxBytes=5000000,
-                                                         backupCount=5)
-        f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        f_handler.setFormatter(f_format)
-        logger.addHandler(f_handler)
-
-        # If not testing, create logging to console
-        if not self.toggle_test:
-            c_handler = logging.StreamHandler()
-            c_handler.setLevel(logging.WARNING)
-            c_format = logging.Formatter('%(message)s')
-            c_handler.setFormatter(c_format)
-            logger.addHandler(c_handler)
-
-        return logger
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id"""
