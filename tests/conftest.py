@@ -30,11 +30,11 @@ data_options = {
 
 @pytest.fixture(scope="session")
 def client():
-    client = CastorClient(auth_data.client_id, auth_data.client_secret, test=True)
+    client = CastorClient(auth_data.client_id, auth_data.client_secret)
 
     """Instantiates the logger for testing purposes."""
     # Set logger name and base level
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger("castoredc_api_client")
     logger.setLevel(logging.DEBUG)
     # Create file logger
     # Create the directory if it does not exist

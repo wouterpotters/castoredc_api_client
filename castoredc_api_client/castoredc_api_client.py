@@ -23,7 +23,7 @@ class CastorClient:
         "Content-Type": "application/json; charset=utf-8",
     }
 
-    def __init__(self, client_id, client_secret, test=False):
+    def __init__(self, client_id, client_secret):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
         client_id and client_secret. If test is set to True, suppresses logging to the command line."""
         # Instantiate logging
@@ -34,8 +34,6 @@ class CastorClient:
         # Instantiate global study variables
         self.study_url = ""
         self.field_references = {}
-
-        self.logger.info("CastorClient instantiated.")
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id"""
@@ -761,7 +759,7 @@ class CastorClient:
             raise CastorException(e)
 
     @castor_exception_handler
-    def castor_post(self, url, body, auth=False):
+    def castor_post(self, url, body):
         """Helper function to post body to url."""
         try:
             body = json.dumps(body).encode()
@@ -773,8 +771,6 @@ class CastorClient:
                 # If Castor server throws an error, raise an error
                 raise CastorException(str(content["status"]) + " " + content["detail"])
             else:
-                if not auth:
-                    self.logger.warning(f"Data was changed in the database: {content}")
                 return content
         except requests.exceptions.RequestException as e:
             raise CastorException(e)
@@ -791,7 +787,6 @@ class CastorClient:
                 # If Castor server throws an error, raise an error
                 raise CastorException(str(content["status"]) + " " + content["detail"])
             else:
-                self.logger.warning(f"Data was changed in the database: {content}")
                 return content
         except requests.exceptions.RequestException as e:
             raise CastorException(e)
@@ -804,7 +799,7 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        response = self.castor_post(url=self.auth_url, body=auth_data, auth=True)
+        response = self.castor_post(url=self.auth_url, body=auth_data)
         token = response["access_token"]
         return token
 
