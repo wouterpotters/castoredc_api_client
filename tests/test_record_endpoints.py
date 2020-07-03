@@ -16,10 +16,12 @@ def create_record(client, fake):
         institute = random.choice(institutes)["institute_id"] + "FAKE"
     else:
         institute = random.choice(institutes)["institute_id"]
-    return {"institute_id": institute,
-            "email": "totallyfake@fakeemail.com",
-            "record_id": str(random.randint(100000, 999999)),
-            "ccr_patient_id": None}
+    return {
+        "institute_id": institute,
+        "email": "totallyfake@fakeemail.com",
+        "record_id": str(random.randint(100000, 999999)),
+        "ccr_patient_id": None,
+    }
 
 
 class TestRecord:

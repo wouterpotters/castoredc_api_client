@@ -16,7 +16,7 @@ class TestMetadataType:
         "name": "string",
         "description": "string",
         "_links": "dict",
-      }
+    }
     model_keys = metadatatype_model.keys()
 
     @pytest.fixture(scope="class")

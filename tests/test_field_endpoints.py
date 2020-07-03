@@ -40,7 +40,7 @@ class TestField:
         "dependency_parents": "list",
         "dependency_children": "list",
         "_links": "dict",
-        }
+    }
 
     model_keys = field_model.keys()
 

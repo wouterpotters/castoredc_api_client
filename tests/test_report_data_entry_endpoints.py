@@ -26,16 +26,17 @@ class TestReportDataEntry:
 
     data_options = data_options
 
-    def test_single_report_instance_all_fields_record_success(self,
-                                                              client,
-                                                              all_report_data_points):
+    def test_single_report_instance_all_fields_record_success(
+        self, client, all_report_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in report data points
             random_report_field = random.choice(all_report_data_points)
             random_id = random_report_field["report_instance_id"]
             random_record = random_report_field["record_id"]
-            report = client.single_report_instance_all_fields_record(random_record,
-                                                                     random_id)
+            report = client.single_report_instance_all_fields_record(
+                random_record, random_id
+            )
             assert len(report) > 0
             for field in report:
                 field_keys = field.keys()
@@ -43,52 +44,53 @@ class TestReportDataEntry:
                 for key in field_keys:
                     assert key in self.model_keys
 
-    def test_single_report_instance_all_fields_record_fail(self,
-                                                           client,
-                                                           all_report_data_points):
+    def test_single_report_instance_all_fields_record_fail(
+        self, client, all_report_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in report data points
             random_report_field = random.choice(all_report_data_points)
             random_id = random_report_field["report_instance_id"] + "FAKE"
             random_record = random_report_field["record_id"]
-            report = client.single_report_instance_all_fields_record(random_record,
-                                                                     random_id)
+            report = client.single_report_instance_all_fields_record(
+                random_record, random_id
+            )
             assert report is None
 
-    def test_single_report_instance_single_field_record_success(self,
-                                                                client,
-                                                                all_report_data_points):
+    def test_single_report_instance_single_field_record_success(
+        self, client, all_report_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in report data points
             random_report_field = random.choice(all_report_data_points)
             random_id = random_report_field["report_instance_id"]
             random_record = random_report_field["record_id"]
             random_field = random_report_field["field_id"]
-            field = client.single_report_instance_single_field_record(random_record,
-                                                                      random_id,
-                                                                      random_field)
+            field = client.single_report_instance_single_field_record(
+                random_record, random_id, random_field
+            )
             field_keys = field.keys()
             assert len(field_keys) == len(self.model_keys)
             for key in field_keys:
                 assert key in self.model_keys
 
-    def test_single_report_instance_single_field_record_fail(self,
-                                                             client,
-                                                             all_report_data_points):
+    def test_single_report_instance_single_field_record_fail(
+        self, client, all_report_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in report data points
             random_report_field = random.choice(all_report_data_points)
             random_id = random_report_field["report_instance_id"]
             random_record = random_report_field["record_id"]
             random_field = random_report_field["field_id"] + "FAKE"
-            field = client.single_report_instance_single_field_record(random_record,
-                                                                      random_id,
-                                                                      random_field)
+            field = client.single_report_instance_single_field_record(
+                random_record, random_id, random_field
+            )
             assert field is None
 
-    def test_update_report_instance_single_field_record_success(self,
-                                                                client,
-                                                                all_report_data_points):
+    def test_update_report_instance_single_field_record_success(
+        self, client, all_report_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in report data points
             random_report_field = random.choice(all_report_data_points)
@@ -114,24 +116,22 @@ class TestReportDataEntry:
 
             # Update the field
             change_reason = "Testing API"
-            feedback = client.update_report_instance_single_field_record(record,
-                                                                         report,
-                                                                         field,
-                                                                         change_reason,
-                                                                         post_value)
+            feedback = client.update_report_instance_single_field_record(
+                record, report, field, change_reason, post_value
+            )
 
             # Check if changing worked
             assert feedback is not None
-            new_value = client.single_report_instance_single_field_record(record,
-                                                                          report,
-                                                                          field)
+            new_value = client.single_report_instance_single_field_record(
+                record, report, field
+            )
             assert new_value["value"] == str(post_value)
             if str(post_value) != str(old_value):
                 assert new_value["value"] != str(old_value)
 
-    def test_update_report_instance_single_field_record_fail(self,
-                                                             client,
-                                                             all_report_data_points):
+    def test_update_report_instance_single_field_record_fail(
+        self, client, all_report_data_points
+    ):
         # Also test if no change happens if post_value == old_value
         for i in range(0, 3):
             # Get all filled in report data points
@@ -158,15 +158,13 @@ class TestReportDataEntry:
 
             # Update the field
             change_reason = "Testing API"
-            feedback = client.update_report_instance_single_field_record(record,
-                                                                         report,
-                                                                         field + "FAKE",
-                                                                         post_value,
-                                                                         change_reason)
+            feedback = client.update_report_instance_single_field_record(
+                record, report, field + "FAKE", post_value, change_reason
+            )
 
             # Check if changing worked
             assert feedback is None
-            new_value = client.single_report_instance_single_field_record(record,
-                                                                          report,
-                                                                          field)
+            new_value = client.single_report_instance_single_field_record(
+                record, report, field
+            )
             assert new_value["value"] == old_value

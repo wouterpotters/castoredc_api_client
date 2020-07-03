@@ -66,20 +66,20 @@ class CastorClient:
     def all_study_data_points(self):
         """Returns a list of dicts of all study data."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/data-point-collection/study",
-            data_name="items")
+            endpoint="/data-point-collection/study", data_name="items"
+        )
 
     def all_report_data_points(self):
         """Returns a list of dicts all report data."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/data-point-collection/report-instance",
-            data_name="items")
+            endpoint="/data-point-collection/report-instance", data_name="items"
+        )
 
     def all_survey_data_points(self):
         """Returns a list of dicts all survey data."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/data-point-collection/survey-instance",
-            data_name="items")
+            endpoint="/data-point-collection/survey-instance", data_name="items"
+        )
 
     # DATA-POINT-COLLECTION GET (INSTANCE)
     def single_report_instance_data_points(self, report_id):
@@ -94,8 +94,7 @@ class CastorClient:
         url = f"/data-point-collection/survey-instance/{survey_instance_id}"
         return self.retrieve_data_points(url)
 
-    def single_survey_package_instance_data_points(self,
-                                                   survey_package_instance_id):
+    def single_survey_package_instance_data_points(self, survey_package_instance_id):
         """Returns a list of data from a single survey package instance. 
         Returns None if package not found."""
         url = f"/data-point-collection/survey-package-instance/{survey_package_instance_id}"
@@ -126,22 +125,24 @@ class CastorClient:
         url = f"/record/{record_id}/data-point-collection/survey-instance"
         return self.retrieve_data_points(url)
 
-    def single_survey_data_points_record(self,
-                                         record_id,
-                                         survey_instance_id):
+    def single_survey_data_points_record(self, record_id, survey_instance_id):
         """Returns a list of data from a single survey instance 
         collected for given record record_id. Returns None if record not found."""
-        url = (f"/record/{record_id}/data-point-collection/"
-               f"survey-instance/{survey_instance_id}")
+        url = (
+            f"/record/{record_id}/data-point-collection/"
+            f"survey-instance/{survey_instance_id}"
+        )
         return self.retrieve_data_points(url)
 
-    def single_survey_package_data_points_record(self,
-                                                 record_id,
-                                                 survey_package_instance_id):
+    def single_survey_package_data_points_record(
+        self, record_id, survey_package_instance_id
+    ):
         """Returns a list of data from a single survey package instance 
         collected for given record record_id. Returns None if record not found"""
-        url = (f"/record/{record_id}/data-point-collection/"
-               f"survey-package-instance/{survey_package_instance_id}")
+        url = (
+            f"/record/{record_id}/data-point-collection/"
+            f"survey-package-instance/{survey_package_instance_id}"
+        )
         return self.retrieve_data_points(url)
 
     # DATA-POINT-COLLECTION POST (RECORD)
@@ -160,8 +161,7 @@ class CastorClient:
             "confirmed_changes": boolean
                 }]
             """
-        url = (self.study_url
-               + f"/record/{record_id}/data-point-collection/study")
+        url = self.study_url + f"/record/{record_id}/data-point-collection/study"
         post_data = {"common": common, "data": body}
         return self.castor_post(url, post_data)
 
@@ -181,14 +181,14 @@ class CastorClient:
             "confirmed_changes": boolean
                 }]
         """
-        url = (self.study_url
-               + f"/record/{record_id}/data-point-collection/report-instance/{report_id}")
+        url = (
+            self.study_url
+            + f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
+        )
         post_data = {"common": common, "data": body}
         return self.castor_post(url, post_data)
 
-    def update_survey_instance_data_record(self, record_id,
-                                           survey_instance_id,
-                                           body):
+    def update_survey_instance_data_record(self, record_id, survey_instance_id, body):
         """Creates/updates a survey instance. 
         Returns None if record not found.
         Post Data Models:
@@ -198,14 +198,16 @@ class CastorClient:
             "field_value": "string",
                 }]
         """
-        url = (self.study_url +
-               f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}")
+        url = (
+            self.study_url
+            + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
+        )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
 
-    def update_survey_package_instance_data_record(self, record_id,
-                                                   survey_package_instance_id,
-                                                   body):
+    def update_survey_package_instance_data_record(
+        self, record_id, survey_package_instance_id, body
+    ):
         """Creates/updates a survey package instance. 
         Returns None if record not found.
         Post Data Models:
@@ -215,8 +217,10 @@ class CastorClient:
             "field_value": "string",
                 }]
         """
-        url = (self.study_url +
-               f"/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}")
+        url = (
+            self.study_url
+            + f"/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}"
+        )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
 
@@ -226,7 +230,8 @@ class CastorClient:
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field",
             data_name="fields",
-            query_string=["include=metadata|validations|optiongroup"])
+            query_string=["include=metadata|validations|optiongroup"],
+        )
 
     def single_field(self, field_id):
         """Returns a dict of a single field.
@@ -234,119 +239,110 @@ class CastorClient:
         return self.retrieve_data_by_id(
             endpoint="/field",
             data_id=field_id,
-            params={"include": "metadata|validations|optiongroup"})
+            params={"include": "metadata|validations|optiongroup"},
+        )
 
     # FIELD DEPENDENCY
     def all_field_dependencies(self):
         """Returns a list of dicts of all field depencencies."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/field-dependency",
-            data_name="fieldDependencies")
+            endpoint="/field-dependency", data_name="fieldDependencies"
+        )
 
     def single_field_dependency(self, field_dependency_id):
         """Returns a single dict of a field dependency.
         Returns None if id not found."""
         return self.retrieve_data_by_id(
-            endpoint="/field-dependency",
-            data_id=field_dependency_id)
+            endpoint="/field-dependency", data_id=field_dependency_id
+        )
 
     # FIELD OPTION GROUP
     def all_field_optiongroups(self):
         """Returns a list of dicts of all field option groups."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/field-optiongroup",
-            data_name="fieldOptionGroups")
+            endpoint="/field-optiongroup", data_name="fieldOptionGroups"
+        )
 
     def single_field_optiongroup(self, field_optiongroup_id):
         """Returns a single dict of a field optiongroup.
         Returns None if id not found."""
         return self.retrieve_data_by_id(
-            endpoint="/field-optiongroup",
-            data_id=field_optiongroup_id)
+            endpoint="/field-optiongroup", data_id=field_optiongroup_id
+        )
 
     # FIELD VALIDATION
     def all_field_validations(self):
         """Returns a list of dicts of all field validations."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/field-validation",
-            data_name="fieldValidations")
+            endpoint="/field-validation", data_name="fieldValidations"
+        )
 
     def single_field_validation(self, field_validation_id):
         """Returns a single dict of a field validation.
         Returns None if id not found."""
         return self.retrieve_data_by_id(
-            endpoint="/field-validation",
-            data_id=field_validation_id)
+            endpoint="/field-validation", data_id=field_validation_id
+        )
 
     # INSTITUTES
     def all_institutes(self):
         """Returns a list of dicts of all institutes."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/institute",
-            data_name="institutes")
+            endpoint="/institute", data_name="institutes"
+        )
 
     def single_institute(self, institute_id):
         """Returns a single dict of an institute.
         Returns None if id not found."""
-        return self.retrieve_data_by_id(
-            endpoint="/institute",
-            data_id=institute_id)
+        return self.retrieve_data_by_id(endpoint="/institute", data_id=institute_id)
 
     # METADATA
     def all_metadata(self):
         """Returns a list of dicts of all metadata."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/metadata",
-            data_name="metadatas")
+            endpoint="/metadata", data_name="metadatas"
+        )
 
     def single_metadata(self, metadata_id):
         """Returns a single dict of an metadata.
         Returns None if id not found."""
-        return self.retrieve_data_by_id(
-            endpoint="/metadata",
-            data_id=metadata_id)
+        return self.retrieve_data_by_id(endpoint="/metadata", data_id=metadata_id)
 
     # METADATATYPE
     def all_metadatatypes(self):
         """Returns a list of dicts of all metadatatypes."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/metadatatype",
-            data_name="metadatatypes")
+            endpoint="/metadatatype", data_name="metadatatypes"
+        )
 
     def single_metadatatype(self, metadatatype_id):
         """Returns a single dict of an metadatatype.
         Returns None if id not found."""
         return self.retrieve_data_by_id(
-            endpoint="/metadatatype",
-            data_id=metadatatype_id)
+            endpoint="/metadatatype", data_id=metadatatype_id
+        )
 
     # PHASES
     def all_phases(self):
         """Returns a list of dicts of all phases."""
-        return self.retrieve_all_data_by_endpoint(
-            endpoint="/phase",
-            data_name="phases")
+        return self.retrieve_all_data_by_endpoint(endpoint="/phase", data_name="phases")
 
     def single_phase(self, phase_id):
         """Returns a single dict of an phase.
         Returns None if id not found."""
-        return self.retrieve_data_by_id(
-            endpoint="/phase",
-            data_id=phase_id)
+        return self.retrieve_data_by_id(endpoint="/phase", data_id=phase_id)
 
     # QUERIES
     def all_queries(self):
         """Returns a list of dicts of all queries."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/query",
-            data_name="queries")
+            endpoint="/query", data_name="queries"
+        )
 
     def single_query(self, query_id):
         """Returns a single dict of an query.
         Returns None if id not found."""
-        return self.retrieve_data_by_id(
-            endpoint="/query",
-            data_id=query_id)
+        return self.retrieve_data_by_id(endpoint="/query", data_id=query_id)
 
     # RECORDS
     def all_records(self, institute_id=None, archived=None):
@@ -358,77 +354,81 @@ class CastorClient:
             query_string.append("institute={0}".format(institute_id))
         if archived is not None:
             query_string.append("archived={0}".format(archived))
-        return self.retrieve_all_data_by_endpoint(endpoint="/record",
-                                                  data_name="records",
-                                                  query_string=query_string)
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/record", data_name="records", query_string=query_string
+        )
 
     def single_record(self, record_id):
         """Returns a dict of a record.
         Returns None when record not found."""
         return self.retrieve_data_by_id(endpoint="/record", data_id=record_id)
 
-    def create_record(self,
-                      institute_id,
-                      email,
-                      record_id=None,
-                      ccr_patient_id=None):
+    def create_record(self, institute_id, email, record_id=None, ccr_patient_id=None):
         """Creates a record. Record_id is only necessary when id generation
         strategy is set to free text. Ccr_patient_id is an optional parameter.
         Returns None when record creation failed."""
-        body = {"record_id": record_id,
-                "ccr_record_id": ccr_patient_id,
-                "institute_id": institute_id,
-                "email_address": email,
-                }
+        body = {
+            "record_id": record_id,
+            "ccr_record_id": ccr_patient_id,
+            "institute_id": institute_id,
+            "email_address": email,
+        }
         url = self.study_url + "/record"
         return self.castor_post(url, body)
 
     # REPORTS
     def all_reports(self):
         """Returns a list of dicts of all reports."""
-        return self.retrieve_all_data_by_endpoint(endpoint="/report",
-                                                  data_name="reports")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/report", data_name="reports"
+        )
 
     def single_report(self, report_id):
         """Returns a single dict of an report. 
         Returns None if id not found."""
-        return self.retrieve_data_by_id(endpoint="/report",
-                                        data_id=report_id)
+        return self.retrieve_data_by_id(endpoint="/report", data_id=report_id)
 
     # REPORT INSTANCES
     def all_report_instances(self):
         """Returns a list of dicts of all report_instances."""
-        return self.retrieve_all_data_by_endpoint(endpoint="/report-instance",
-                                                  data_name="reportInstances")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/report-instance", data_name="reportInstances"
+        )
 
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance. 
         Returns None if id not found."""
-        return self.retrieve_data_by_id(endpoint="/report-instance",
-                                        data_id=report_instance_id)
+        return self.retrieve_data_by_id(
+            endpoint="/report-instance", data_id=report_instance_id
+        )
 
     def all_report_instances_record(self, record_id):
         """Returns a list of dicts of all report_instances for record_id. 
         Returns None if record not found."""
         formatted_endpoint = "/record/{0}/report-instance".format(record_id)
-        return self.retrieve_all_data_by_endpoint(endpoint=formatted_endpoint,
-                                                  data_name="reportInstances")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint=formatted_endpoint, data_name="reportInstances"
+        )
 
     def single_report_instance_record(self, record_id, report_instance_id):
         """Returns a dict containing the given report for record. 
         Returns None if record or report not found."""
         formatted_endpoint = "/record/{0}/report-instance".format(record_id)
-        return self.retrieve_data_by_id(endpoint=formatted_endpoint,
-                                        data_id=report_instance_id)
+        return self.retrieve_data_by_id(
+            endpoint=formatted_endpoint, data_id=report_instance_id
+        )
 
-    def create_report_instance_record(self, record_id, report_id,
-                                      report_name_custom, parent_id=None):
+    def create_report_instance_record(
+        self, record_id, report_id, report_name_custom, parent_id=None
+    ):
         """Creates a report instance for a record.
         Returns None if creation failed."""
         url = self.study_url + "/record/{0}/report-instance".format(record_id)
-        body = {"report_id": report_id,
-                "report_name_custom": report_name_custom,
-                "parent_id": parent_id}
+        body = {
+            "report_id": report_id,
+            "report_name_custom": report_name_custom,
+            "parent_id": parent_id,
+        }
         return self.castor_post(url, body)
 
     def create_multiple_report_instances_record(self, record_id, body):
@@ -440,55 +440,64 @@ class CastorClient:
         """
         data = {"data": body}
         url = self.study_url + "/record/{0}/report-instance-collection".format(
-            record_id)
+            record_id
+        )
         return self.castor_post(url, data)
 
     # REPORT-DATA-ENTRY
-    def single_report_instance_all_fields_record(self,
-                                                 record_id,
-                                                 report_instance_id):
+    def single_report_instance_all_fields_record(self, record_id, report_instance_id):
         """Returns a list of all data for a report for a record.
         Returns None if report not found for given id."""
-        formatted_url = "/record/{0}/data-point/report/{1}".format(record_id,
-                                                                   report_instance_id)
-        return self.retrieve_all_data_by_endpoint(endpoint=formatted_url,
-                                                  data_name="ReportDataPoints")
+        formatted_url = "/record/{0}/data-point/report/{1}".format(
+            record_id, report_instance_id
+        )
+        return self.retrieve_all_data_by_endpoint(
+            endpoint=formatted_url, data_name="ReportDataPoints"
+        )
 
-    def single_report_instance_single_field_record(self, record_id,
-                                                   report_instance_id, field_id):
+    def single_report_instance_single_field_record(
+        self, record_id, report_instance_id, field_id
+    ):
         """Returns a data point for a report for a record.
         Returns None if report not found for given record or field not found
         for given report."""
         data_point = "/".join([report_instance_id, field_id])
         formatted_url = "/record/{0}/data-point/report".format(record_id)
-        return self.retrieve_data_by_id(endpoint=formatted_url,
-                                        data_id=data_point)
+        return self.retrieve_data_by_id(endpoint=formatted_url, data_id=data_point)
 
-    def update_report_instance_single_field_record(self, record_id,
-                                                   report_ins_id, field_id, change_reason,
-                                                   field_value=None, file=None):
+    def update_report_instance_single_field_record(
+        self,
+        record_id,
+        report_ins_id,
+        field_id,
+        change_reason,
+        field_value=None,
+        file=None,
+    ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
         # TODO: Allow file uploading
-        endpoint = "/record/{0}/data-point/report/{1}/{2}".format(record_id,
-                                                                  report_ins_id,
-                                                                  field_id)
+        endpoint = "/record/{0}/data-point/report/{1}/{2}".format(
+            record_id, report_ins_id, field_id
+        )
         url = self.study_url + endpoint
 
         # TODO: Throw error when both file and field_value are None or not None
         body = {}
 
         if field_value is not None:
-            body = {"field_value": str(field_value),
-                    "change_reason": change_reason,
-                    "instance_id": report_ins_id,
-                    }
+            body = {
+                "field_value": str(field_value),
+                "change_reason": change_reason,
+                "instance_id": report_ins_id,
+            }
 
         elif file is not None:
-            body = {"change_reason": change_reason,
-                    "instance_id": report_ins_id,
-                    "upload_file": file,
-                    }
+            body = {
+                "change_reason": change_reason,
+                "instance_id": report_ins_id,
+                "upload_file": file,
+            }
 
         return self.castor_post(url, body)
 
@@ -497,35 +506,33 @@ class CastorClient:
         """Returns a list of dicts of all steps of a single report.
         Returns None if report not found."""
         endpoint = "/report/{0}/report-step".format(report_id)
-        return self.retrieve_all_data_by_endpoint(endpoint=endpoint,
-                                                  data_name="report_steps")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint=endpoint, data_name="report_steps"
+        )
 
     def single_report_single_step(self, report_id, report_step_id):
         """Returns a single dict of a step of a report. 
         Returns None if report or step not found."""
         endpoint = "/report/{0}/report-step".format(report_id)
-        return self.retrieve_data_by_id(endpoint=endpoint,
-                                        data_id=report_step_id)
+        return self.retrieve_data_by_id(endpoint=endpoint, data_id=report_step_id)
 
     # STEP
     def all_steps(self):
         """Returns a list of dicts of all study steps."""
-        return self.retrieve_all_data_by_endpoint(endpoint="/step",
-                                                  data_name="steps")
+        return self.retrieve_all_data_by_endpoint(endpoint="/step", data_name="steps")
 
     def single_step(self, step_id):
         """Returns a single dict of a step in the study. 
         Returns None if id not found.."""
-        return self.retrieve_data_by_id(endpoint="/step",
-                                        data_id=step_id)
+        return self.retrieve_data_by_id(endpoint="/step", data_id=step_id)
 
     # STUDY
     def all_studies(self):
         """Returns a list of dicts of studies you have access to."""
         endpoint = "/study"
-        all_studies = self.retrieve_general_data(endpoint,
-                                                 embedded=True,
-                                                 data_id="study")
+        all_studies = self.retrieve_general_data(
+            endpoint, embedded=True, data_id="study"
+        )
         return all_studies
 
     def single_study(self, study_id):
@@ -538,9 +545,9 @@ class CastorClient:
         """Returns a list of dicts of users that have access to this study.
         Returns None if study not found or not authorized to view study."""
         endpoint = "/study/{0}/user".format(study_id)
-        all_users = self.retrieve_general_data(endpoint,
-                                               embedded=True,
-                                               data_id="studyUsers")
+        all_users = self.retrieve_general_data(
+            endpoint, embedded=True, data_id="studyUsers"
+        )
         return all_users
 
     def single_user_study(self, study_id, user_id):
@@ -555,8 +562,7 @@ class CastorClient:
         """Returns a list of all study fields of a record.
         Returns None if record not found."""
         endpoint = f"/record/{record_id}/data-point/study"
-        return self.retrieve_all_data_by_endpoint(endpoint,
-                                                  data_name="StudyDataPoints")
+        return self.retrieve_all_data_by_endpoint(endpoint, data_name="StudyDataPoints")
 
     def single_study_field_record(self, record_id, field_id):
         """Returns the value for a single field for a record in the study.
@@ -564,20 +570,18 @@ class CastorClient:
         endpoint = f"/record/{record_id}/data-point/study"
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
-    def update_single_study_field_record(self,
-                                         record_id,
-                                         field_id,
-                                         field_value,
-                                         change_reason):
+    def update_single_study_field_record(
+        self, record_id, field_id, field_value, change_reason
+    ):
         """Update a data point for a record.
         Returns None if target not found."""
         # TODO: create file uploading possibility
-        url = (self.study_url
-               + f"/record/{record_id}/data-point/study/{field_id}")
-        body = {"field_value": str(field_value),
-                "change_reason": change_reason,
-                # "upload_file": None,
-                }
+        url = self.study_url + f"/record/{record_id}/data-point/study/{field_id}"
+        body = {
+            "field_value": str(field_value),
+            "change_reason": change_reason,
+            # "upload_file": None,
+        }
         return self.castor_post(url, body)
 
     # STATISTICS
@@ -588,55 +592,61 @@ class CastorClient:
     # SURVEY
     def all_surveys(self):
         """Returns a list of dicts of all available surveys."""
-        return self.retrieve_all_data_by_endpoint(endpoint="/survey",
-                                                  data_name="surveys")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/survey", data_name="surveys"
+        )
 
     def single_survey(self, survey_id):
         """Returns a single dict of a survey in the study. 
         Returns None if id not found."""
-        return self.retrieve_data_by_id(endpoint="/survey",
-                                        data_id=survey_id)
+        return self.retrieve_data_by_id(endpoint="/survey", data_id=survey_id)
 
     def all_survey_packages(self):
         """Returns a list of dicts of all available survey packages."""
-        return self.retrieve_all_data_by_endpoint(endpoint="/surveypackage",
-                                                  data_name="survey_packages")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/surveypackage", data_name="survey_packages"
+        )
 
     def single_survey_package(self, survey_package_id):
         """Returns a single dict of a survey package in the study. 
         Returns None if id not found."""
-        return self.retrieve_data_by_id(endpoint="/surveypackage",
-                                        data_id=survey_package_id)
+        return self.retrieve_data_by_id(
+            endpoint="/surveypackage", data_id=survey_package_id
+        )
 
     def all_survey_package_instances(self, record=None):
         """Returns a list of dicts of all available survey packages."""
         endpoint = "/surveypackageinstance"
         dataname = "surveypackageinstance"
         if record is None:
-            return self.retrieve_all_data_by_endpoint(endpoint=endpoint,
-                                                      data_name=dataname)
+            return self.retrieve_all_data_by_endpoint(
+                endpoint=endpoint, data_name=dataname
+            )
         else:
             query = ["record_id=" + record]
-            return self.retrieve_all_data_by_endpoint(endpoint=endpoint,
-                                                      data_name=dataname,
-                                                      query_string=query)
+            return self.retrieve_all_data_by_endpoint(
+                endpoint=endpoint, data_name=dataname, query_string=query
+            )
 
     def single_survey_package_instance(self, survey_package_instance_id):
         """Returns a single dict of a survey package in the study. 
         Returns None if id not found."""
-        return self.retrieve_data_by_id(endpoint="/surveypackageinstance",
-                                        data_id=survey_package_instance_id)
+        return self.retrieve_data_by_id(
+            endpoint="/surveypackageinstance", data_id=survey_package_instance_id
+        )
 
     # TODO: refactor this, should be able to be more concise
-    def create_survey_package_instance(self,
-                                       survey_package_id,
-                                       record_id,
-                                       email_address,
-                                       ccr_patient_id=None,
-                                       package_invitation_subject=None,
-                                       package_invitation=None,
-                                       auto_send=None,
-                                       auto_lock_on_finish=None):
+    def create_survey_package_instance(
+        self,
+        survey_package_id,
+        record_id,
+        email_address,
+        ccr_patient_id=None,
+        package_invitation_subject=None,
+        package_invitation=None,
+        auto_send=None,
+        auto_lock_on_finish=None,
+    ):
         """Create a survey package. 
         Arguments marked with None are non-obligatory."""
         url = self.study_url + "/surveypackageinstance"
@@ -648,7 +658,7 @@ class CastorClient:
             "package_invitation_subject": package_invitation_subject,
             "package_invitation": package_invitation,
             "auto_send": auto_send,
-            "auto_lock_on_finish": auto_lock_on_finish
+            "auto_lock_on_finish": auto_lock_on_finish,
         }
 
         body = {}
@@ -667,42 +677,39 @@ class CastorClient:
         return self.castor_patch(url, body)
 
     # SURVEY-DATA-ENTRY
-    def single_survey_instance_all_fields_record(self,
-                                                 record_id,
-                                                 survey_instance_id):
+    def single_survey_instance_all_fields_record(self, record_id, survey_instance_id):
         """Retrieves a list of fields with data for a single survey.
         Returns None if record or survey not found."""
         endpoint = f"/record/{record_id}/data-point/survey/{survey_instance_id}"
-        return self.retrieve_all_data_by_endpoint(endpoint,
-                                                  data_name="SurveyDataPoints")
+        return self.retrieve_all_data_by_endpoint(
+            endpoint, data_name="SurveyDataPoints"
+        )
 
-    def single_survey_instance_single_field_record(self,
-                                                   record_id,
-                                                   survey_instance_id,
-                                                   field_id):
+    def single_survey_instance_single_field_record(
+        self, record_id, survey_instance_id, field_id
+    ):
         """Retrieves a single field with data for the given survey.
         Returns None if record, survey or field not found."""
         endpoint = f"/record/{record_id}/data-point/survey/{survey_instance_id}"
-        return self.retrieve_data_by_id(endpoint,
-                                        data_id=field_id)
+        return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
-    def update_survey_instance_single_field_record(self,
-                                                   record_id,
-                                                   survey_instance_id,
-                                                   field_id,
-                                                   field_value,
-                                                   change_reason):
+    def update_survey_instance_single_field_record(
+        self, record_id, survey_instance_id, field_id, field_value, change_reason
+    ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
-        url = (self.study_url
-               + f"/record/{record_id}/data-point/survey/"
-               + f"{survey_instance_id}/{field_id}")
+        url = (
+            self.study_url
+            + f"/record/{record_id}/data-point/survey/"
+            + f"{survey_instance_id}/{field_id}"
+        )
 
-        body = {"field_value": str(field_value),
-                "change_reason": change_reason,
-                "instance_id": survey_instance_id,
-                # "upload_file": None,
-                }
+        body = {
+            "field_value": str(field_value),
+            "change_reason": change_reason,
+            "instance_id": survey_instance_id,
+            # "upload_file": None,
+        }
         return self.castor_post(url, body)
 
     # SURVEY-STEP
@@ -710,23 +717,19 @@ class CastorClient:
         """Retrieves a list of dicts of steps for a single survey.
         Returns None if survey not found."""
         endpoint = f"/survey/{survey_id}/survey-step"
-        return self.retrieve_all_data_by_endpoint(endpoint,
-                                                  data_name="survey_steps")
+        return self.retrieve_all_data_by_endpoint(endpoint, data_name="survey_steps")
 
     def single_survey_single_step(self, survey_id, survey_step_id):
         """Retrieves a dict of a single survey step.
         Returns None if survey or step not found."""
         endpoint = f"/survey/{survey_id}/survey-step"
-        return self.retrieve_data_by_id(endpoint,
-                                        data_id=survey_step_id)
+        return self.retrieve_data_by_id(endpoint, data_id=survey_step_id)
 
     # USER
     def all_users(self):
         """Retrieves list of users that current user is authorized to see."""
         endpoint = "/user"
-        return self.retrieve_general_data(endpoint,
-                                          embedded=True,
-                                          data_id="user")
+        return self.retrieve_general_data(endpoint, embedded=True, data_id="user")
 
     def single_user(self, user_id):
         """Retrieves a single user by ID."""
@@ -738,8 +741,7 @@ class CastorClient:
         # TODO: Only retrieves 1 page (25 records) and does not give page count through the API, so can't use
         # TODO: retrieve multiple pages. Need to work with amount of records in study.
         endpoint = "/record-progress/steps"
-        raw_data = self.retrieve_data_by_id(endpoint,
-                                            data_id="")
+        raw_data = self.retrieve_data_by_id(endpoint, data_id="")
         return raw_data["_embedded"]["records"]
 
     # HELPER FUNCTIONS
@@ -802,9 +804,7 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        response = self.castor_post(url=self.auth_url,
-                                    body=auth_data,
-                                    auth=True)
+        response = self.castor_post(url=self.auth_url, body=auth_data, auth=True)
         token = response["access_token"]
         return token
 
@@ -900,9 +900,9 @@ class CastorClient:
             # If the field is not yet in the collection, add it
             if field["field_id"] not in seen:
                 seen.append(field["field_id"])
-                _castor_field = CastorField(field["field_id"],
-                                            field["report_instance_id"],
-                                            "report_instance")
+                _castor_field = CastorField(
+                    field["field_id"], field["report_instance_id"], "report_instance"
+                )
                 report_instance_fields.append(_castor_field)
 
         return report_instance_fields
@@ -920,10 +920,12 @@ class CastorClient:
             # If the field is not yet in the collection, add it
             if field["field_id"] not in seen:
                 seen.append(field["field_id"])
-                _castor_field = CastorField(field["field_id"],
-                                            field["survey_instance_id"],
-                                            "survey_instance",
-                                            survey_name=field["survey_name"])
+                _castor_field = CastorField(
+                    field["field_id"],
+                    field["survey_instance_id"],
+                    "survey_instance",
+                    survey_name=field["survey_name"],
+                )
                 survey_instance_fields.append(_castor_field)
 
         return survey_instance_fields
@@ -940,9 +942,7 @@ class CastorClient:
 
         # Add all study fields to the collections
         for field in study_field_ids:
-            _castor_field = CastorField(field,
-                                        "STUDY",
-                                        "study")
+            _castor_field = CastorField(field, "STUDY", "study")
             study_fields.append(_castor_field)
 
         return study_fields
@@ -998,6 +998,7 @@ class CastorClient:
 
 class CastorField:
     """Object containing data to reference and manipulate a Castor field in the database."""
+
     def __init__(self, field_id, parent_id, parent_type, survey_name=None):
         self.field_id = field_id
         self.parent_id = parent_id

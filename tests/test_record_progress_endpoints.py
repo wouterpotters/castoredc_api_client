@@ -21,7 +21,7 @@ class TestRecordProgress:
         "complete": "int",
         "sdv": "boolean",
         "locked": "boolean",
-        "signed": "boolean"
+        "signed": "boolean",
     }
 
     record_keys = record_model.keys()
@@ -43,6 +43,8 @@ class TestRecordProgress:
 
             for step in record["steps"]:
                 api_step_keys = step.keys()
-                assert len(api_step_keys) == len(self.steps_keys), "See TODO under report_progress in client"
+                assert len(api_step_keys) == len(
+                    self.steps_keys
+                ), "See TODO under report_progress in client"
                 for key in api_step_keys:
                     assert key in self.steps_keys

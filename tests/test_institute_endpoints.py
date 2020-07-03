@@ -21,7 +21,7 @@ class Testinstitute:
         "country_id": "int",
         "deleted": "boolean",
         "_links": "dict",
-      }
+    }
     model_keys = institute_model.keys()
 
     @pytest.fixture(scope="class")

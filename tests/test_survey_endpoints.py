@@ -20,15 +20,16 @@ def create_survey_package_instance(client, record_id, fake):
     if fake:
         random_package += "FAKE"
 
-    return {"survey_package_id": random_package,
-            "record_id": record_id,
-            "ccr_patient_id": None,
-            "email_address": "clearlyfakemail@itsascam.com",
-            "package_invitation_subject": None,
-            "package_invitation": None,
-            "auto_send": None,
-            "auto_lock_on_finish": None
-            }
+    return {
+        "survey_package_id": random_package,
+        "record_id": record_id,
+        "ccr_patient_id": None,
+        "email_address": "clearlyfakemail@itsascam.com",
+        "package_invitation_subject": None,
+        "package_invitation": None,
+        "auto_send": None,
+        "auto_lock_on_finish": None,
+    }
 
 
 class TestSurveyEndpoints:
@@ -168,8 +169,7 @@ class TestSurveyEndpoints:
             assert random_package is None
 
     # SURVEY PACKAGE INSTANCES
-    def test_all_survey_package_instances(self,
-                                          all_survey_package_instances):
+    def test_all_survey_package_instances(self, all_survey_package_instances):
         for i in range(0, 3):
             random_instance = random.choice(all_survey_package_instances)
             instance_keys = random_instance.keys()
@@ -177,9 +177,9 @@ class TestSurveyEndpoints:
             for key in instance_keys:
                 assert key in self.i_model_keys
 
-    def test_all_survey_package_instance_record_success(self,
-                                                        client,
-                                                        all_survey_package_instances):
+    def test_all_survey_package_instance_record_success(
+        self, client, all_survey_package_instances
+    ):
         for i in range(0, 3):
             random_instance = random.choice(all_survey_package_instances)
             random_record = random_instance["record_id"]
@@ -193,18 +193,18 @@ class TestSurveyEndpoints:
                 for key in instance_keys:
                     assert key in self.i_model_keys
 
-    def test_all_survey_package_instance_record_fail(self,
-                                                     client,
-                                                     all_survey_package_instances):
+    def test_all_survey_package_instance_record_fail(
+        self, client, all_survey_package_instances
+    ):
         for i in range(0, 3):
             random_instance = random.choice(all_survey_package_instances)
             random_record = random_instance["record_id"] + "FAKE"
             instances = client.all_survey_package_instances(record=random_record)
             assert instances is None
 
-    def test_single_survey_package_instance_success(self,
-                                                    client,
-                                                    all_survey_package_instances):
+    def test_single_survey_package_instance_success(
+        self, client, all_survey_package_instances
+    ):
         for i in range(0, 3):
             random_id = random.choice(all_survey_package_instances)["id"]
             random_instance = client.single_survey_package_instance(random_id)
@@ -214,9 +214,9 @@ class TestSurveyEndpoints:
             for key in instance_keys:
                 assert key in self.i_model_keys
 
-    def test_single_survey_package_instance_fail(self,
-                                                 client,
-                                                 all_survey_package_instances):
+    def test_single_survey_package_instance_fail(
+        self, client, all_survey_package_instances
+    ):
         for i in range(0, 3):
             random_id = random.choice(all_survey_package_instances)["id"] + "FAKE"
             random_instance = client.single_survey_package_instance(random_id)
@@ -250,32 +250,32 @@ class TestSurveyEndpoints:
         assert feedback is None
         assert new_amount == old_amount
 
-    def test_patch_survey_package_instance_success(self,
-                                                   client,
-                                                   all_survey_package_instances):
+    def test_patch_survey_package_instance_success(
+        self, client, all_survey_package_instances
+    ):
         random_instance = random.choice(all_survey_package_instances)["id"]
         for i in range(0, 3):
             package = client.single_survey_package_instance(random_instance)
             old_status = package["locked"]
             target_status = not old_status
-            feedback = client.patch_survey_package_instance(random_instance,
-                                                            target_status)
+            feedback = client.patch_survey_package_instance(
+                random_instance, target_status
+            )
             package = client.single_survey_package_instance(random_instance)
             new_status = package["locked"]
             assert feedback is not None
             assert new_status is not old_status
 
-    def test_patch_survey_package_instance_failure(self,
-                                                   client,
-                                                   all_survey_package_instances):
+    def test_patch_survey_package_instance_failure(
+        self, client, all_survey_package_instances
+    ):
         random_instance = random.choice(all_survey_package_instances)["id"]
         for i in range(0, 3):
             package = client.single_survey_package_instance(random_instance)
             old_status = package["locked"]
             target_status = not old_status
             fake_id = random_instance + "FAKE"
-            feedback = client.patch_survey_package_instance(fake_id,
-                                                            target_status)
+            feedback = client.patch_survey_package_instance(fake_id, target_status)
             package = client.single_survey_package_instance(random_instance)
             new_status = package["locked"]
             assert feedback is None

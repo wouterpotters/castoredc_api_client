@@ -28,9 +28,7 @@ class TestCountry:
 
     def test_all_countries(self, all_countries):
         assert len(all_countries) == 250
-        countries = [container["country_name"]
-                     for container
-                     in all_countries]
+        countries = [container["country_name"] for container in all_countries]
         assert "Netherlands" in countries
         assert "Maldives" in countries
 

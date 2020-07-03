@@ -19,7 +19,7 @@ class TestFieldvalidation:
         "text": "string",
         "field_id": "string",
         "_links": "dict",
-      }
+    }
     model_keys = field_val_model.keys()
 
     @pytest.fixture(scope="class")
@@ -50,6 +50,6 @@ class TestFieldvalidation:
 
     def test_single_field_failure(self, client, all_field_vals):
         for i in range(0, 5):
-            rand_id = random.choice(all_field_vals)["id"] - 10**10
+            rand_id = random.choice(all_field_vals)["id"] - 10 ** 10
             opt = client.single_field_validation(rand_id)
             assert opt is None

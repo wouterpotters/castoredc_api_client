@@ -24,14 +24,13 @@ data_options = {
     "slider": "5",
     "checkbox": "1",
     "calculation": "5",
-    "year": "2005", }
+    "year": "2005",
+}
 
 
 @pytest.fixture(scope="session")
 def client():
-    client = CastorClient(auth_data.client_id,
-                          auth_data.client_secret,
-                          test=True)
+    client = CastorClient(auth_data.client_id, auth_data.client_secret, test=True)
 
     """Instantiates the logger for testing purposes."""
     # Set logger name and base level
@@ -39,12 +38,16 @@ def client():
     logger.setLevel(logging.DEBUG)
     # Create file logger
     # Create the directory if it does not exist
-    Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'testinglogs'))).mkdir(parents=True, exist_ok=True)
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logs', 'CastorClient.log'))
-    f_handler = logging.handlers.RotatingFileHandler(file_path,
-                                                     maxBytes=5000000,
-                                                     backupCount=5)
-    f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    Path(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "logs"))).mkdir(
+        parents=True, exist_ok=True
+    )
+    file_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "logs", "CastorClient.log")
+    )
+    f_handler = logging.handlers.RotatingFileHandler(
+        file_path, maxBytes=5000000, backupCount=5
+    )
+    f_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     f_handler.setFormatter(f_format)
     logger.addHandler(f_handler)
 
@@ -72,12 +75,13 @@ def item_totals(client):
         "total_metadatatypes": client.request_size("/metadatatype"),
         "total_phases": client.request_size("/phase"),
         "total_queries": client.request_size("/query"),
-        "total_study_data_points": client.request_size(
-            "/data-point-collection/study"),
+        "total_study_data_points": client.request_size("/data-point-collection/study"),
         "total_report_data_points": client.request_size(
-            "/data-point-collection/report-instance"),
+            "/data-point-collection/report-instance"
+        ),
         "total_survey_data_points": client.request_size(
-            "/data-point-collection/survey-instance"),
+            "/data-point-collection/survey-instance"
+        ),
         "total_records": client.request_size("/record"),
         "total_reports": client.request_size("/report"),
         "total_report_instances": client.request_size("/report-instance"),
@@ -112,8 +116,7 @@ def records_with_survey_package_instances(client, all_record_ids):
     records_with_survey_package_instances = {}
     for record_id in all_record_ids:
         survey_package_instances = client.all_survey_package_instances(record=record_id)
-        if (survey_package_instances is not None
-                and len(survey_package_instances) > 0):
+        if survey_package_instances is not None and len(survey_package_instances) > 0:
             survey_inst_ids = [inst["id"] for inst in survey_package_instances]
             records_with_survey_package_instances[record_id] = survey_inst_ids
     return records_with_survey_package_instances
@@ -127,7 +130,9 @@ def records_with_survey_instances(client, all_record_ids):
         survey_instances = client.all_survey_data_points_record(record_id)
         if survey_instances is not None and len(survey_instances) > 0:
             for instance in survey_instances:
-                survey_instance_ids.append((instance["survey_instance_id"], instance["survey_name"]))
+                survey_instance_ids.append(
+                    (instance["survey_instance_id"], instance["survey_name"])
+                )
             survey_instance_ids = list(set(survey_instance_ids))
             records_with_survey_instances[record_id] = survey_instance_ids
     return records_with_survey_instances

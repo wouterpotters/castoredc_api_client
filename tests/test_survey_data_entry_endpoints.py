@@ -26,16 +26,17 @@ class TestSurveyDataEntry:
 
     data_options = data_options
 
-    def test_single_survey_instance_all_fields_record_success(self,
-                                                              client,
-                                                              all_survey_data_points):
+    def test_single_survey_instance_all_fields_record_success(
+        self, client, all_survey_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in survey data points
             random_survey_field = random.choice(all_survey_data_points)
             survey_id = random_survey_field["survey_instance_id"]
             record_id = random_survey_field["record_id"]
-            survey = client.single_survey_instance_all_fields_record(record_id,
-                                                                     survey_id)
+            survey = client.single_survey_instance_all_fields_record(
+                record_id, survey_id
+            )
             assert len(survey) > 0
             for field in survey:
                 field_keys = field.keys()
@@ -43,52 +44,53 @@ class TestSurveyDataEntry:
                 for key in field_keys:
                     assert key in self.model_keys
 
-    def test_single_survey_instance_all_fields_record_fail(self,
-                                                           client,
-                                                           all_survey_data_points):
+    def test_single_survey_instance_all_fields_record_fail(
+        self, client, all_survey_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in survey data points
             random_survey_field = random.choice(all_survey_data_points)
             survey_id = random_survey_field["survey_instance_id"]
             record_id = random_survey_field["record_id"] + "FAKE"
-            survey = client.single_survey_instance_all_fields_record(record_id,
-                                                                     survey_id)
+            survey = client.single_survey_instance_all_fields_record(
+                record_id, survey_id
+            )
             assert survey is None
 
-    def test_single_survey_instance_single_field_record_success(self,
-                                                                client,
-                                                                all_survey_data_points):
+    def test_single_survey_instance_single_field_record_success(
+        self, client, all_survey_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in survey data points
             random_survey_field = random.choice(all_survey_data_points)
             random_id = random_survey_field["survey_instance_id"]
             random_record = random_survey_field["record_id"]
             random_field = random_survey_field["field_id"]
-            field = client.single_survey_instance_single_field_record(random_record,
-                                                                      random_id,
-                                                                      random_field)
+            field = client.single_survey_instance_single_field_record(
+                random_record, random_id, random_field
+            )
             field_keys = field.keys()
             assert len(field_keys) == len(self.model_keys)
             for key in field_keys:
                 assert key in self.model_keys
 
-    def test_single_survey_instance_single_field_record_fail(self,
-                                                             client,
-                                                             all_survey_data_points):
+    def test_single_survey_instance_single_field_record_fail(
+        self, client, all_survey_data_points
+    ):
         for i in range(0, 3):
             # Get all filled in survey data points
             random_survey_field = random.choice(all_survey_data_points)
             random_id = random_survey_field["survey_instance_id"]
             random_record = random_survey_field["record_id"]
             random_field = random_survey_field["field_id"] + "FAKE"
-            field = client.single_survey_instance_single_field_record(random_record,
-                                                                      random_id,
-                                                                      random_field)
+            field = client.single_survey_instance_single_field_record(
+                random_record, random_id, random_field
+            )
             assert field is None
 
-    def test_update_survey_instance_single_field_record_success(self,
-                                                                client,
-                                                                all_survey_data_points):
+    def test_update_survey_instance_single_field_record_success(
+        self, client, all_survey_data_points
+    ):
         # TODO: Also test if change works if old_value == new_value == post_value
         for i in range(0, 3):
             # Get all filled in survey data points
@@ -115,24 +117,22 @@ class TestSurveyDataEntry:
 
             # Update the field
             change_reason = "Testing API"
-            feedback = client.update_survey_instance_single_field_record(record,
-                                                                         survey,
-                                                                         field,
-                                                                         post_value,
-                                                                         change_reason)
+            feedback = client.update_survey_instance_single_field_record(
+                record, survey, field, post_value, change_reason
+            )
 
             # Check if changing worked
             assert feedback is not None
-            new_value = client.single_survey_instance_single_field_record(record,
-                                                                          survey,
-                                                                          field)
+            new_value = client.single_survey_instance_single_field_record(
+                record, survey, field
+            )
             assert new_value["value"] == str(post_value)
             if str(post_value) != str(old_value):
                 assert new_value["value"] != str(old_value)
 
-    def test_update_survey_instance_single_field_record_fail(self,
-                                                             client,
-                                                             all_survey_data_points):
+    def test_update_survey_instance_single_field_record_fail(
+        self, client, all_survey_data_points
+    ):
         # Also test if no change happens if post_value == old_value
         for i in range(0, 3):
             # Get all filled in survey data points
@@ -159,15 +159,13 @@ class TestSurveyDataEntry:
 
             # Update the field
             change_reason = "Testing API"
-            feedback = client.update_survey_instance_single_field_record(record,
-                                                                         survey,
-                                                                         field + "FAKE",
-                                                                         post_value,
-                                                                         change_reason)
+            feedback = client.update_survey_instance_single_field_record(
+                record, survey, field + "FAKE", post_value, change_reason
+            )
 
             # Check if changing worked
             assert feedback is None
-            new_value = client.single_survey_instance_single_field_record(record,
-                                                                          survey,
-                                                                          field)
+            new_value = client.single_survey_instance_single_field_record(
+                record, survey, field
+            )
             assert new_value["value"] == old_value

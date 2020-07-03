@@ -85,8 +85,7 @@ class TestStudy:
 
     def test_all_users_success(self, all_studies, client):
         random_study = random.choice(all_studies)["study_id"]
-        total_users = client.request_size(f"/study/{random_study}/user",
-                                          base=True)
+        total_users = client.request_size(f"/study/{random_study}/user", base=True)
         all_users = client.all_users_study(random_study)
         assert all_users is not None
         assert len(all_users) == total_users

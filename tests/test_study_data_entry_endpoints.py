@@ -24,9 +24,7 @@ class TestStudyDataEntry:
 
     data_options = data_options
 
-    def test_all_study_data_record_success(self,
-                                           client,
-                                           all_study_data_points):
+    def test_all_study_data_record_success(self, client, all_study_data_points):
         for i in range(0, 3):
             random_field = random.choice(all_study_data_points)
             record = random_field["record_id"]
@@ -38,18 +36,16 @@ class TestStudyDataEntry:
                 for key in field_keys:
                     assert key in self.model_keys
 
-    def test_all_study_data_record_fail(self,
-                                        client,
-                                        all_study_data_points):
+    def test_all_study_data_record_fail(self, client, all_study_data_points):
         for i in range(0, 3):
             random_field = random.choice(all_study_data_points)
             record = random_field["record_id"] + "FAKE"
             study_data = client.all_study_fields_record(record)
             assert study_data is None
 
-    def test_single_study_data_point_record_success(self,
-                                                    client,
-                                                    all_study_data_points):
+    def test_single_study_data_point_record_success(
+        self, client, all_study_data_points
+    ):
         for i in range(0, 3):
             random_field = random.choice(all_study_data_points)
             record = random_field["record_id"]
@@ -60,9 +56,7 @@ class TestStudyDataEntry:
             for key in study_data_keys:
                 assert key in self.model_keys
 
-    def test_single_study_data_point_record_fail(self,
-                                                 client,
-                                                 all_study_data_points):
+    def test_single_study_data_point_record_fail(self, client, all_study_data_points):
         for i in range(0, 3):
             random_field = random.choice(all_study_data_points)
             record = random_field["record_id"]
@@ -70,9 +64,9 @@ class TestStudyDataEntry:
             study_data = client.single_study_field_record(record, field)
             assert study_data is None
 
-    def test_update_single_study_field_record_success(self,
-                                                      client,
-                                                      all_study_data_points):
+    def test_update_single_study_field_record_success(
+        self, client, all_study_data_points
+    ):
         # TODO: Also test if change works if new_value == old_value
         for i in range(0, 3):
             random_field = random.choice(all_study_data_points)
@@ -95,10 +89,9 @@ class TestStudyDataEntry:
 
             # Update the field
             change_reason = "Testing API"
-            feedback = client.update_single_study_field_record(record,
-                                                               field,
-                                                               post_value,
-                                                               change_reason)
+            feedback = client.update_single_study_field_record(
+                record, field, post_value, change_reason
+            )
 
             # Check if changing worked
             assert feedback is not None
@@ -107,9 +100,7 @@ class TestStudyDataEntry:
             if str(post_value) != str(old_value):
                 assert new_value["value"] != str(old_value)
 
-    def test_update_single_study_field_record_fail(self,
-                                                   client,
-                                                   all_study_data_points):
+    def test_update_single_study_field_record_fail(self, client, all_study_data_points):
         # TODO: Also test if no change if post_value == old_value
         for i in range(0, 3):
             random_field = random.choice(all_study_data_points)
@@ -132,10 +123,9 @@ class TestStudyDataEntry:
 
             # Update the field
             change_reason = "Testing API"
-            feedback = client.update_single_study_field_record(record,
-                                                               "FAKE" + field + "FAKE",
-                                                               post_value,
-                                                               change_reason)
+            feedback = client.update_single_study_field_record(
+                record, "FAKE" + field + "FAKE", post_value, change_reason
+            )
 
             assert feedback is None
             new_value = client.single_study_field_record(record, field)

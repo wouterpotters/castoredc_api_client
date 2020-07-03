@@ -19,7 +19,7 @@ class TestPhase:
         "phase_duration": "int",
         "phase_order": "int",
         "_links": "dict",
-      }
+    }
 
     model_keys = phase_model.keys()
 

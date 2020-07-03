@@ -18,7 +18,7 @@ class TestFieldDependency:
         "parent_id": "string",
         "child_id": "string",
         "_links": "dict",
-      }
+    }
     model_keys = field_dep_model.keys()
 
     @pytest.fixture(scope="class")

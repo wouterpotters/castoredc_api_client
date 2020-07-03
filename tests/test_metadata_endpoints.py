@@ -20,7 +20,7 @@ class TestMetadata:
         "element_type": "int",
         "element_id": "int",
         "_links": "dict",
-      }
+    }
     model_keys = metadata_model.keys()
 
     @pytest.fixture(scope="class")

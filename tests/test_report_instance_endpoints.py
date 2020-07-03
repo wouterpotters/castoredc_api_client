@@ -19,9 +19,11 @@ def create_report_instance(client, record_id, fake):
     if fake:
         random_report += "FAKE"
 
-    return {"record_id": record_id,
-            "report_id": random_report,
-            "report_name_custom": custom_name}
+    return {
+        "record_id": record_id,
+        "report_id": random_report,
+        "report_name_custom": custom_name,
+    }
 
 
 class TestReportInstance:
@@ -48,8 +50,7 @@ class TestReportInstance:
 
     def test_all_report_instances(self, all_report_instances, item_totals):
         assert len(all_report_instances) > 0
-        assert len(all_report_instances) \
-               == item_totals["total_report_instances"]
+        assert len(all_report_instances) == item_totals["total_report_instances"]
 
     def test_all_report_instances_model(self, all_report_instances):
         for i in range(0, 3):
@@ -68,17 +69,13 @@ class TestReportInstance:
             for key in self.model_keys:
                 assert key in api_keys
 
-    def test_single_report_instance_failure(self,
-                                            client,
-                                            all_report_instances):
+    def test_single_report_instance_failure(self, client, all_report_instances):
         for i in range(0, 3):
             rand_id = random.choice(all_report_instances)["id"] + "FAKE"
             report_instance = client.single_report_instance(rand_id)
             assert report_instance is None
 
-    def test_all_report_instances_record_success(self,
-                                                 client,
-                                                 records_with_reports):
+    def test_all_report_instances_record_success(self, client, records_with_reports):
         # Assumes record endpoints are working
         # Assumes there is at least 1 record with a report
         records = list(records_with_reports.keys())
@@ -100,31 +97,25 @@ class TestReportInstance:
             reports = client.all_report_instances_record(rand_record)
             assert reports is None
 
-    def test_single_report_instance_record_success(self,
-                                                   client,
-                                                   records_with_reports):
+    def test_single_report_instance_record_success(self, client, records_with_reports):
         records = list(records_with_reports.keys())
         for i in range(0, 3):
             random_record = random.choice(records)
             random_report = random.choice(records_with_reports[random_record])
-            report = client.single_report_instance_record(random_record,
-                                                          random_report)
+            report = client.single_report_instance_record(random_record, random_report)
             assert report is not None
             report_keys = report.keys()
             assert len(self.model_keys) == len(report_keys)
             for key in self.model_keys:
                 assert key in report_keys
 
-    def test_single_report_instance_record_fail(self,
-                                                client,
-                                                records_with_reports):
+    def test_single_report_instance_record_fail(self, client, records_with_reports):
         records = list(records_with_reports.keys())
         for i in range(0, 5):
             random_record = random.choice(records)
             reports = records_with_reports[random_record]
             random_report = random.choice(reports) + "FAKE"
-            report = client.single_report_instance_record(random_record,
-                                                          random_report)
+            report = client.single_report_instance_record(random_record, random_report)
             assert report is None
 
     def test_create_report_instance_record_success(self, client):
@@ -133,9 +124,7 @@ class TestReportInstance:
         records = client.all_records(archived=0)
         random_record = random.choice(records)["id"]
 
-        report_instance = create_report_instance(client,
-                                                 random_record,
-                                                 fake=False)
+        report_instance = create_report_instance(client, random_record, fake=False)
 
         record_reports = client.all_report_instances_record(random_record)
 
@@ -161,9 +150,7 @@ class TestReportInstance:
         records = client.all_records(archived=0)
         random_record = random.choice(records)["id"]
 
-        report_instance = create_report_instance(client,
-                                                 random_record,
-                                                 fake=True)
+        report_instance = create_report_instance(client, random_record, fake=True)
 
         record_reports = client.all_report_instances_record(random_record)
 
@@ -192,9 +179,7 @@ class TestReportInstance:
 
         reports = []
         for i in range(0, 5):
-            report_instance = create_report_instance(client,
-                                                     random_record,
-                                                     fake=False)
+            report_instance = create_report_instance(client, random_record, fake=False)
             reports.append(report_instance)
 
         record_reports = client.all_report_instances_record(random_record)
@@ -204,8 +189,7 @@ class TestReportInstance:
         else:
             amount_reports = len(record_reports)
 
-        created = client.create_multiple_report_instances_record(random_record,
-                                                                 reports)
+        created = client.create_multiple_report_instances_record(random_record, reports)
 
         assert created is not None
         assert created["total_success"] == 5
@@ -216,9 +200,9 @@ class TestReportInstance:
 
         assert amount_reports + 5 == new_amount
 
-    def test_create_multiple_report_instances_record_fail(self,
-                                                          client,
-                                                          records_with_reports):
+    def test_create_multiple_report_instances_record_fail(
+        self, client, records_with_reports
+    ):
         # Assumes record endpoints are working
         # Assumes report endpoints are working
         # Record needs to already have one report
@@ -227,9 +211,7 @@ class TestReportInstance:
 
         reports = []
         for i in range(0, 5):
-            report_instance = create_report_instance(client,
-                                                     random_record,
-                                                     fake=True)
+            report_instance = create_report_instance(client, random_record, fake=True)
             reports.append(report_instance)
 
         record_reports = client.all_report_instances_record(random_record)
@@ -239,8 +221,7 @@ class TestReportInstance:
         else:
             amount_reports = len(record_reports)
 
-        created = client.create_multiple_report_instances_record(random_record,
-                                                                 reports)
+        created = client.create_multiple_report_instances_record(random_record, reports)
 
         assert created is not None
         assert created["total_success"] == 0

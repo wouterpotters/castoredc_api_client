@@ -44,9 +44,7 @@ class TestReportStep:
                 for key in self.model_keys:
                     assert key in api_keys
 
-    def test_single_report_single_step_success(self,
-                                               client,
-                                               reports_with_steps):
+    def test_single_report_single_step_success(self, client, reports_with_steps):
         for i in range(0, 3):
             reports = list(reports_with_steps.keys())
             rand_report = random.choice(reports)
@@ -57,13 +55,10 @@ class TestReportStep:
             for key in self.model_keys:
                 assert key in api_keys
 
-    def test_single_report_single_step_failure(self,
-                                               client,
-                                               reports_with_steps):
+    def test_single_report_single_step_failure(self, client, reports_with_steps):
         for i in range(0, 3):
             reports = list(reports_with_steps.keys())
             rand_report = random.choice(reports)
-            rand_step = random.choice(reports_with_steps[rand_report])["id"] \
-                        + "FAKE"
+            rand_step = random.choice(reports_with_steps[rand_report])["id"] + "FAKE"
             step = client.single_report_single_step(rand_report, rand_step)
             assert step is None

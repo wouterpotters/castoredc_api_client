@@ -23,7 +23,7 @@ class TestQuery:
         "updated_on": "dict",
         "_embedded": "dict",
         "_links": "dict",
-      }
+    }
     model_keys = query_model.keys()
 
     @pytest.fixture(scope="class")

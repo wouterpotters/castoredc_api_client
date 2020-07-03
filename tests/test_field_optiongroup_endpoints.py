@@ -18,7 +18,7 @@ class TestFieldOptionGroup:
         "layout": "boolean",
         "options": "list",
         "_links": "dict",
-      }
+    }
     model_keys = field_opt_model.keys()
 
     @pytest.fixture(scope="class")
