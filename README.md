@@ -32,6 +32,7 @@ c.all_records()
 
 #### Tests
 * Make failing tests expect CastorException
+* Revamp tests, seems to be some unforeseen problems
 * Create docstring for each test
 * Add comments to parts of tests to clarify what is happening
 * Increase test coverage (edge cases)
