@@ -9,6 +9,8 @@ https://orcid.org/0000-0003-3052-596X
 import random
 import pytest
 
+from castoredc_api_client.exceptions import CastorException
+
 
 class TestCountry:
     country_model = {
@@ -47,23 +49,25 @@ class TestCountry:
             assert result is not None
 
     def test_single_country_failure_too_large(self, client):
-        for i in range(0, 5):
+        with pytest.raises(CastorException) as e:
             country_id = random.randrange(252, 400)
             result = client.single_country(country_id)
-            assert result is None
+            assert e == "404 Entity not found."
 
     def test_single_country_failure_negative(self, client):
-        for i in range(0, 5):
+        with pytest.raises(CastorException) as e:
             country_id = random.randrange(-300, 2)
             result = client.single_country(country_id)
-            assert result is None
+            assert e == "404 Entity not found."
 
     def test_single_country_failure_zero(self, client):
-        country_id = 0
-        result = client.single_country(country_id)
-        assert result is None
+        with pytest.raises(CastorException) as e:
+            country_id = 0
+            result = client.single_country(country_id)
+            assert e == "404 Entity not found."
 
     def test_single_country_failure_one(self, client):
-        country_id = 1
-        result = client.single_country(country_id)
-        assert result is None
+        with pytest.raises(CastorException) as e:
+            country_id = 1
+            result = client.single_country(country_id)
+            assert e == "404 Entity not found."
