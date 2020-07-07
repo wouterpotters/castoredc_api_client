@@ -9,18 +9,11 @@ https://orcid.org/0000-0003-3052-596X
 import random
 import pytest
 
+from castoredc_api_client.data_models import country_model
 from castoredc_api_client.exceptions import CastorException
 
 
 class TestCountry:
-    country_model = {
-        "id": "string",
-        "country_id": "string",
-        "country_name": "string",
-        "country_tld": "string",
-        "country_cca2": "string",
-        "country_cca3": "string",
-    }
     model_keys = country_model.keys()
 
     @pytest.fixture(scope="class")
@@ -38,6 +31,7 @@ class TestCountry:
 
     def test_all_countries_model(self, all_countries):
         """Tests if the value returned by the all_countries function is equal to the specified country model."""
+        # TODO: It seems like sometimes _links is in the data model, and sometimes it is not?
         for i in range(0, 5):
             random_country = random.choice(all_countries)
             random_keys = random_country.keys()
@@ -58,27 +52,27 @@ class TestCountry:
     def test_single_country_failure_too_large(self, client):
         """Tests if retrieving a non-existent (edge case: upper range) country ID raises an error."""
         with pytest.raises(CastorException) as e:
-            country_id = random.randrange(253)
-            result = client.single_country(country_id)
+            country_id = 252
+            client.single_country(country_id)
             assert e == "404 Entity not found."
 
     def test_single_country_failure_negative(self, client):
         """Tests if retrieving a non-existent (edge case: negative) country ID raises an error."""
         with pytest.raises(CastorException) as e:
             country_id = random.randrange(-300, -1)
-            result = client.single_country(country_id)
+            client.single_country(country_id)
             assert e == "404 Entity not found."
 
     def test_single_country_failure_zero(self, client):
         """Tests if retrieving a non-existent (edge case: zero) country ID raises an error."""
         with pytest.raises(CastorException) as e:
             country_id = 0
-            result = client.single_country(country_id)
+            client.single_country(country_id)
             assert e == "404 Entity not found."
 
     def test_single_country_failure_one(self, client):
         """Tests if retrieving a non-existent (edge case: lower range) country ID raises an error."""
         with pytest.raises(CastorException) as e:
             country_id = 1
-            result = client.single_country(country_id)
+            client.single_country(country_id)
             assert e == "404 Entity not found."
