@@ -9,131 +9,103 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from castoredc_api_client.data_models import study_data_point_model, report_data_point_model, survey_data_point_model
+from castoredc_api_client.exceptions import CastorException
+
 
 class TestDataPoint:
-    study_data_point_model = {
-        "field_id": "string",
-        "field_value": "string",
-        "record_id": "string",
-        "updated_on": "int",
-    }
     study_data_point_model_keys = study_data_point_model.keys()
-
-    report_data_point_model = {
-        "field_id": "string",
-        "report_instance_id": "string",
-        "report_instance_name": "string",
-        "field_value": "string",
-        "record_id": "string",
-        "updated_on": "string",
-    }
     report_data_point_model_keys = report_data_point_model.keys()
-
-    survey_data_point_model = {
-        "field_id": "string",
-        "survey_instance_id": "string",
-        "survey_name": "string",
-        "field_value": "string",
-        "record_id": "string",
-        "updated_on": "string",
-        # "survey_package_id": "string",
-    }
     survey_data_point_model_keys = survey_data_point_model.keys()
 
-    # NON RECORD SPECIFIC DATA
-    @pytest.fixture(scope="class")
-    def all_study_data_points(self, client):
-        all_study_data_points = client.all_study_data_points()
-        return all_study_data_points
-
-    def test_all_study_data_points(self, all_study_data_points, item_totals):
-        assert len(all_study_data_points) > 0
+    def test_all_study_data_points_amount(self, all_study_data_points, item_totals):
+        """Tests that the all_study_data_points retrieves the same number as data points as Castor says that are in
+        the database."""
         assert len(all_study_data_points) == item_totals["total_study_data_points"]
 
-    def test_all_data_points_model(self, all_study_data_points):
-        for i in range(0, 5):
-            rand_data_point = random.choice(all_study_data_points)
-            api_keys = rand_data_point.keys()
+    def test_all_study_data_points_model(self, all_study_data_points):
+        """Tests if the study data point model is the same as the specified model."""
+        for i in range(0, 3):
+            random_study_data_point = random.choice(all_study_data_points)
+            api_keys = random_study_data_point.keys()
             assert len(self.study_data_point_model_keys) == len(api_keys)
-            for key in self.study_data_point_model_keys:
-                assert key in api_keys
+            for key in api_keys:
+                assert key in self.study_data_point_model_keys
+                assert type(random_study_data_point[key]) is study_data_point_model[key]
 
-    def test_all_report_data_points(self, all_report_data_points, item_totals):
-        assert len(all_report_data_points) > 0
+    def test_all_report_data_points_amount(self, all_report_data_points, item_totals):
+        """Tests that the all_report_data_points retrieves the same number as data points as Castor says that are in
+        the database."""
         assert len(all_report_data_points) == item_totals["total_report_data_points"]
 
     def test_all_report_data_points_model(self, all_report_data_points):
-        for i in range(0, 5):
-            rand_data_point = random.choice(all_report_data_points)
-            api_keys = rand_data_point.keys()
+        """Tests if the report data point model is the same as the specified model."""
+        for i in range(0, 3):
+            random_report_data_point = random.choice(all_report_data_points)
+            api_keys = random_report_data_point.keys()
             assert len(self.report_data_point_model_keys) == len(api_keys)
-            for key in self.report_data_point_model_keys:
-                assert key in api_keys
+            for key in api_keys:
+                assert key in self.report_data_point_model_keys
+                assert type(random_report_data_point[key]) is report_data_point_model[key]
+
+    def test_all_survey_data_points_amount(self, all_survey_data_points, item_totals):
+        """Tests that the all_survey_data_points retrieves the same number as data points as Castor says that are in
+        the database."""
+        assert len(all_survey_data_points) == item_totals["total_survey_data_points"]
+
+    def test_all_survey_data_points_model(self, all_survey_data_points):
+        """Tests if the survey data point model is the same as the specified model."""
+        for i in range(0, 3):
+            random_survey_data_point = random.choice(all_survey_data_points)
+            api_keys = random_survey_data_point.keys()
+            assert len(self.survey_data_point_model_keys) == len(api_keys)
+            for key in api_keys:
+                assert key in self.survey_data_point_model_keys
+                assert type(random_survey_data_point[key]) is survey_data_point_model[key]
 
     def test_single_report_instance_data_points_success(
         self, client, all_report_data_points
     ):
-        for i in range(0, 3):
-            random_report = random.choice(all_report_data_points)
-            rand_id = random_report["report_instance_id"]
-            api_report = client.single_report_instance_data_points(rand_id)
-            assert api_report is not None
-            assert len(api_report) > 0
-            for data_point in api_report:
-                api_keys = data_point.keys()
-                for key in self.report_data_point_model_keys:
-                    assert key in api_keys
+        """Tests if single_report_instance_data_points returns the data points in the proper model."""
+        random_report_id = random.choice(all_report_data_points)["report_instance_id"]
+        random_report = client.single_report_instance_data_points(random_report_id)
+        for random_report_data_point in random_report:
+            api_keys = random_report_data_point.keys()
+            for key in api_keys:
+                assert key in self.report_data_point_model_keys
+                assert type(random_report_data_point[key]) is report_data_point_model[key]
 
     def test_single_report_instance_data_points_fail(
         self, client, all_report_data_points
     ):
-        for i in range(0, 3):
-            random_report = random.choice(all_report_data_points)
-            rand_id = random_report["report_instance_id"] + "FAKE"
-            api_report = client.single_report_instance_data_points(rand_id)
-            assert api_report is None
-
-    @pytest.fixture(scope="class")
-    def all_survey_data_points(self, client):
-        all_survey_data_points = client.all_survey_data_points()
-        return all_survey_data_points
-
-    def test_all_survey_data_points(self, all_survey_data_points, item_totals):
-        assert len(all_survey_data_points) > 0
-        assert len(all_survey_data_points) == item_totals["total_survey_data_points"]
-
-    def test_all_survey_data_points_model(self, all_survey_data_points):
-        for i in range(0, 3):
-            rand_data_point = random.choice(all_survey_data_points)
-            api_keys = rand_data_point.keys()
-            assert len(self.survey_data_point_model_keys) == len(api_keys)
-            for key in self.survey_data_point_model_keys:
-                assert key in api_keys
+        """Tests if single_report_instance_data_points throws proper error when non-existing report is called."""
+        with pytest.raises(CastorException) as e:
+            random_report_id = random.choice(all_report_data_points)["report_instance_id"] + "FAKE"
+            client.single_report_instance_data_points(random_report_id)
+            assert e == "404 Report Instance not found"
 
     def test_single_survey_instance_data_points_success(
         self, client, all_survey_data_points
     ):
-        for i in range(0, 3):
-            random_survey = random.choice(all_survey_data_points)
-            rand_id = random_survey["survey_instance_id"]
-            api_survey = client.single_survey_instance_data_points(rand_id)
-            assert api_survey is not None
-            assert len(api_survey) > 0
-            for data_point in api_survey:
-                api_keys = data_point.keys()
-                for key in self.survey_data_point_model_keys:
-                    assert key in api_keys
+        """Tests if single_survey_instance_data_points returns the data points in the proper model."""
+        random_survey_id = random.choice(all_survey_data_points)["survey_instance_id"]
+        random_survey = client.single_survey_instance_data_points(random_survey_id)
+        for random_survey_data_point in random_survey:
+            api_keys = random_survey_data_point.keys()
+            for key in api_keys:
+                assert key in self.survey_data_point_model_keys
+                assert type(random_survey_data_point[key]) is survey_data_point_model[key]
 
     def test_single_survey_instance_data_points_fail(
         self, client, all_survey_data_points
     ):
-        for i in range(0, 5):
-            random_survey = random.choice(all_survey_data_points)
-            rand_id = random_survey["survey_instance_id"] + "FAKE"
-            api_survey = client.single_survey_instance_data_points(rand_id)
-            assert api_survey is None
+        """Tests if single_survey_instance_data_points throws proper error when non-existing survey is called."""
+        with pytest.raises(CastorException) as e:
+            random_survey_id = random.choice(all_survey_data_points)["survey_instance_id"] + "FAKE"
+            client.single_survey_instance_data_points(random_survey_id)
+            assert e == "404 Survey instance not found"
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="session")
     def all_survey_package_instance_ids(self, client):
         all_survey_package_instance = client.all_survey_package_instances()
         all_survey_package_instance_ids = [
@@ -146,7 +118,7 @@ class TestDataPoint:
         self, client, all_survey_package_instance_ids
     ):
         # TODO: Only select package instances that are filled in
-        # Now all package instances are tested, and most dont have data points
+        # Now all package instances are extracted, and most dont have data points
         for i in range(0, 3):
             rand_id = random.choice(all_survey_package_instance_ids)
             api_package = client.single_survey_package_instance_data_points(rand_id)

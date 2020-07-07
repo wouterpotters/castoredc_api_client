@@ -64,25 +64,25 @@ class CastorClient:
 
     def single_country(self, country_id):
         """Returns a dict with the given country based on country_id.
-        Returns None if country not found."""
+        Raises CastorException if country not found."""
         endpoint = "/country/{0}".format(country_id)
         return self.retrieve_general_data(endpoint=endpoint)
 
     # DATA-POINT-COLLECTION GET (STUDY)
     def all_study_data_points(self):
-        """Returns a list of dicts of all study data."""
+        """Returns a list of dicts of all filled in study data."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/data-point-collection/study", data_name="items"
         )
 
     def all_report_data_points(self):
-        """Returns a list of dicts all report data."""
+        """Returns a list of dicts all filled in report data."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/data-point-collection/report-instance", data_name="items"
         )
 
     def all_survey_data_points(self):
-        """Returns a list of dicts all survey data."""
+        """Returns a list of dicts all filled in survey data."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/data-point-collection/survey-instance", data_name="items"
         )
@@ -90,7 +90,7 @@ class CastorClient:
     # DATA-POINT-COLLECTION GET (INSTANCE)
     def single_report_instance_data_points(self, report_id):
         """Returns a list of the data for given report_id. 
-        Returns None if report not found."""
+        Raises CastorException if report not found."""
         url = "/data-point-collection/report-instance/{report_id}".format(
             report_id=report_id
         )
@@ -98,7 +98,7 @@ class CastorClient:
 
     def single_survey_instance_data_points(self, survey_instance_id):
         """Returns a list of data from a single survey instance id.
-        Returns None if report not found."""
+        Raises CastorException if survey not found."""
         url = "/data-point-collection/survey-instance/{survey_instance_id}".format(
             survey_instance_id=survey_instance_id
         )

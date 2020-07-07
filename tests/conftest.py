@@ -139,19 +139,22 @@ def records_with_survey_instances(client, all_record_ids):
 
 
 @pytest.fixture(scope="class")
-def all_report_data_points(client):
-    all_report_data_points = client.all_report_data_points()
-    return all_report_data_points
-
-
-@pytest.fixture(scope="class")
 def all_study_data_points(client):
+    """Tests rely on the assumption that there is >= 1 study data point"""
     all_study_data_points = client.all_study_data_points()
     return all_study_data_points
 
 
 @pytest.fixture(scope="class")
+def all_report_data_points(client):
+    """Tests rely on the assumption that there is >= report 1 data point"""
+    all_report_data_points = client.all_report_data_points()
+    return all_report_data_points
+
+
+@pytest.fixture(scope="class")
 def all_survey_data_points(client):
+    """Tests rely on the assumption that there is >= 1 survey data point"""
     all_survey_data_points = client.all_survey_data_points()
     return all_survey_data_points
 
