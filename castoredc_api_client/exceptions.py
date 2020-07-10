@@ -27,6 +27,6 @@ def castor_exception_handler(func):
                 + " stack: {0}".format(func)
                 + " - args: {0} - kwargs: {1}".format(args, kwargs)
             )
-            raise CastorException(e)
+            raise
 
     return wrapper

@@ -13,6 +13,7 @@ from pathlib import Path
 from castoredc_api_client.castoredc_api_client import CastorClient
 import pytest
 import auth.auth_data as auth_data
+from castoredc_api_client.exceptions import CastorException
 
 data_options = {
     "numeric": "1",
@@ -104,10 +105,16 @@ def all_record_ids(client):
 def records_with_reports(client, all_record_ids):
     records_with_reports = {}
     for record_id in all_record_ids:
-        report_instances = client.all_report_instances_record(record_id)
-        if report_instances is not None and len(report_instances) > 0:
-            report_inst_ids = [inst["id"] for inst in report_instances]
-            records_with_reports[record_id] = report_inst_ids
+        try:
+            report_instances = client.all_report_instances_record(record_id)
+            if report_instances is not None and len(report_instances) > 0:
+                report_inst_ids = [inst["id"] for inst in report_instances]
+                records_with_reports[record_id] = report_inst_ids
+        except CastorException as e:
+            if str(e) == "404 There are no report instances.":
+                pass
+            else:
+                raise
     return records_with_reports
 
 

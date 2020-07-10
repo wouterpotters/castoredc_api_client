@@ -79,10 +79,10 @@ class TestDataPoint:
         self, client, all_report_data_points
     ):
         """Tests if single_report_instance_data_points throws proper error when non-existing report is called."""
+        random_report_id = random.choice(all_report_data_points)["report_instance_id"] + "FAKE"
         with pytest.raises(CastorException) as e:
-            random_report_id = random.choice(all_report_data_points)["report_instance_id"] + "FAKE"
             client.single_report_instance_data_points(random_report_id)
-            assert e == "404 Report Instance not found"
+        assert str(e.value) == "404 Report Instance not found"
 
     def test_single_survey_instance_data_points_success(
         self, client, all_survey_data_points
@@ -100,10 +100,10 @@ class TestDataPoint:
         self, client, all_survey_data_points
     ):
         """Tests if single_survey_instance_data_points throws proper error when non-existing survey is called."""
+        random_survey_id = random.choice(all_survey_data_points)["survey_instance_id"] + "FAKE"
         with pytest.raises(CastorException) as e:
-            random_survey_id = random.choice(all_survey_data_points)["survey_instance_id"] + "FAKE"
             client.single_survey_instance_data_points(random_survey_id)
-            assert e == "404 Survey instance not found"
+        assert str(e.value) == "404 Survey Package Instance not found"
 
     @pytest.fixture(scope="session")
     def all_survey_package_instance_ids(self, client):
@@ -131,10 +131,10 @@ class TestDataPoint:
     def test_single_survey_package_instance_data_points_fail(
         self, client, all_survey_package_instance_ids
     ):
-        for i in range(0, 3):
-            rand_id = random.choice(all_survey_package_instance_ids) + "FAKE"
-            api_package = client.single_survey_package_instance_data_points(rand_id)
-            assert api_package is None
+        rand_id = random.choice(all_survey_package_instance_ids) + "FAKE"
+        with pytest.raises(CastorException) as e:
+            client.single_survey_package_instance_data_points(rand_id)
+        assert str(e.value) == "404 Survey Package Instance not found"
 
     # ALL DATA - RECORD SPECIFIC
     def test_all_study_data_points_record_success(self, client, all_record_ids):
@@ -151,10 +151,10 @@ class TestDataPoint:
                     assert key in api_keys
 
     def test_all_study_data_points_record_fail(self, client, all_record_ids):
-        for i in range(0, 3):
-            random_id = random.choice(all_record_ids) + "FAKE"
-            all_data = client.all_study_data_points_record(random_id)
-            assert all_data is None
+        random_id = random.choice(all_record_ids) + "FAKE"
+        with pytest.raises(CastorException) as e:
+            client.all_study_data_points_record(random_id)
+        assert str(e.value) == "404 Record not found"
 
     def test_all_report_data_points_record_success(self, client, all_record_ids):
         for i in range(0, 3):
@@ -170,10 +170,10 @@ class TestDataPoint:
                     assert key in api_keys
 
     def test_all_report_data_points_record_fail(self, client, all_record_ids):
-        for i in range(0, 3):
-            random_id = random.choice(all_record_ids) + "FAKE"
-            all_data = client.all_report_data_points_record(random_id)
-            assert all_data is None
+        random_id = random.choice(all_record_ids) + "FAKE"
+        with pytest.raises(CastorException) as e:
+            client.all_report_data_points_record(random_id)
+        assert str(e.value) == "404 Record not found"
 
     def test_all_survey_data_points_record_success(self, client, all_record_ids):
         for i in range(0, 3):
@@ -189,10 +189,10 @@ class TestDataPoint:
                     assert key in api_keys
 
     def test_all_survey_data_points_record_fail(self, client, all_record_ids):
-        for i in range(0, 3):
-            random_id = random.choice(all_record_ids) + "FAKE"
-            all_data = client.all_survey_data_points_record(random_id)
-            assert all_data is None
+        random_id = random.choice(all_record_ids) + "FAKE"
+        with pytest.raises(CastorException) as e:
+            client.all_survey_data_points_record(random_id)
+        assert str(e.value) == "404 Record not found"
 
     # SINGLE SURVEY/REPORT - RECORD SPECIFIC
     def test_single_report_data_points_record_success(
@@ -200,29 +200,28 @@ class TestDataPoint:
     ):
         # TODO: Only select records that have data
         # Now all records are tested, and most dont have data points
-        for i in range(0, 3):
-            records = list(records_with_reports.keys())
-            random_id = random.choice(records)
-            random_report = random.choice(records_with_reports[random_id])
-            report_data = client.single_report_data_points_record(
-                random_id, random_report
-            )
-            assert report_data is not None
-            for data_point in report_data:
-                api_keys = data_point.keys()
-                assert len(self.report_data_point_model_keys) == len(api_keys)
-                for key in self.report_data_point_model_keys:
-                    assert key in api_keys
+        records = list(records_with_reports.keys())
+        random_id = random.choice(records)
+        random_report = random.choice(records_with_reports[random_id])
+        report_data = client.single_report_data_points_record(
+            random_id, random_report
+        )
+        assert report_data is not None
+        for data_point in report_data:
+            api_keys = data_point.keys()
+            assert len(self.report_data_point_model_keys) == len(api_keys)
+            for key in self.report_data_point_model_keys:
+                assert key in api_keys
 
     def test_single_report_data_points_record_fail(self, client, records_with_reports):
-        for i in range(0, 3):
-            records = list(records_with_reports.keys())
-            random_id = random.choice(records)
-            random_report = random.choice(records_with_reports[random_id]) + "FAKE"
-            report_data = client.single_report_data_points_record(
+        records = list(records_with_reports.keys())
+        random_id = random.choice(records)
+        random_report = random.choice(records_with_reports[random_id]) + "FAKE"
+        with pytest.raises(CastorException) as e:
+            client.single_report_data_points_record(
                 random_id, random_report
             )
-            assert report_data is None
+        assert str(e.value) == "404 Report Instance not found"
 
     # TODO: Sometimes returns a dict of 7 values, sometimes 6..??
     def test_single_survey_package_data_points_record_success(
@@ -252,16 +251,16 @@ class TestDataPoint:
     def test_single_survey_package_data_points_record_fail(
         self, client, records_with_survey_package_instances
     ):
-        for i in range(0, 3):
-            records = list(records_with_survey_package_instances.keys())
-            random_id = random.choice(records)
-            random_package = (
+        records = list(records_with_survey_package_instances.keys())
+        random_id = random.choice(records)
+        random_package = (
                 random.choice(records_with_survey_package_instances[random_id]) + "FAKE"
-            )
-            survey_data = client.single_survey_package_data_points_record(
+        )
+        with pytest.raises(CastorException) as e:
+            client.single_survey_package_data_points_record(
                 random_id, random_package
             )
-            assert survey_data is None
+        assert str(e.value) == "404 Survey Package Instance not found"
 
     def test_single_survey_data_points_record_success(
         self, client, records_with_survey_instances
@@ -285,16 +284,16 @@ class TestDataPoint:
     def test_single_survey_data_points_record_fail(
         self, client, records_with_survey_instances
     ):
-        for i in range(0, 3):
-            records = list(records_with_survey_instances.keys())
-            random_id = random.choice(records)
-            random_survey = (
+        records = list(records_with_survey_instances.keys())
+        random_id = random.choice(records)
+        random_survey = (
                 random.choice(records_with_survey_instances[random_id])[0] + "FAKE"
-            )
-            survey_data = client.single_survey_data_points_record(
+        )
+        with pytest.raises(CastorException) as e:
+            client.single_survey_data_points_record(
                 random_id, random_survey
             )
-            assert survey_data is None
+        assert str(e.value) == "404 Survey Package Instance not found"
 
     # POST
     def test_create_study_data_points_success(self, client, all_record_ids):
@@ -311,11 +310,10 @@ class TestDataPoint:
             for field in random_fields
         ]
         feedback = client.update_study_data_record(random_record, common, data)
-        assert feedback is not None
         assert feedback["total_processed"] == 5
         # Assert that not everything failed, indication that it worked
         # TODO: make sure only valid values are entered
-        assert feedback["total_failed"] < 5
+        assert feedback["total_failed"] == 0
         # TODO: Test that things truly changed in database (according to audit
         # log they did)
 
@@ -352,8 +350,9 @@ class TestDataPoint:
             }
             for field in random_fields
         ]
-        feedback = client.update_study_data_record(random_record, common, data)
-        assert feedback is None
+        with pytest.raises(CastorException) as e:
+            client.update_study_data_record(random_record, common, data)
+        assert str(e.value) == "404 Record not found"
         # TODO: Test that things truly did not change changed in database
         # according to audit log they did not
 
@@ -473,10 +472,11 @@ class TestDataPoint:
         ]
 
         # Update the report
-        feedback = client.update_report_data_record(
-            random_record + "FAKE", rand_report_instance, common, data
-        )
-        assert feedback is None
+        with pytest.raises(CastorException) as e:
+            client.update_report_data_record(
+                random_record + "FAKE", rand_report_instance, common, data
+            )
+        assert str(e.value) == "404 Record not found"
         # TODO: Test that nothing changed in the database
 
     def test_create_survey_instance_data_points_success(
@@ -589,10 +589,11 @@ class TestDataPoint:
         ]
 
         # Update the survey
-        feedback = client.update_survey_instance_data_record(
-            random_record + "FAKE", random_survey_instance, data
-        )
-        assert feedback is None
+        with pytest.raises(CastorException) as e:
+            client.update_survey_instance_data_record(
+                random_record + "FAKE", random_survey_instance, data
+            )
+        assert str(e.value) == "404 Record not found"
         # TODO: Test that things did not change in database
 
     def test_create_survey_package_instance_data_points_success(
@@ -680,10 +681,11 @@ class TestDataPoint:
         ]
 
         # Update the survey
-        feedback = client.update_survey_package_instance_data_record(
-            random_record, random_package_id, data
-        )
-        assert feedback is None
+        with pytest.raises(CastorException) as e:
+            client.update_survey_package_instance_data_record(
+                random_record, random_package_id, data
+            )
+        assert str(e.value) == "404 Field not found"
         # TODO: It seems like this one fails with a server error when supplying
         # wrong field ids, while the other tests return an error message
 
@@ -724,7 +726,8 @@ class TestDataPoint:
         ]
 
         # Update the survey
-        feedback = client.update_survey_package_instance_data_record(
+        with pytest.raises(CastorException) as e:
+            client.update_survey_package_instance_data_record(
             random_record + "FAKE", random_package_id, data
         )
-        assert feedback is None
+        assert str(e.value) == "404 Record not found"
