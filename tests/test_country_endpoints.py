@@ -9,12 +9,13 @@ https://orcid.org/0000-0003-3052-596X
 import random
 import pytest
 
-from castoredc_api_client.data_models import country_model
+from castoredc_api_client.data_models import country_model_1, country_model_2
 from castoredc_api_client.exceptions import CastorException
 
 
 class TestCountry:
-    model_keys = country_model.keys()
+    model_keys_1 = country_model_1.keys()
+    model_keys_2 = country_model_2.keys()
 
     @pytest.fixture(scope="class")
     def all_countries(self, client):
@@ -31,13 +32,13 @@ class TestCountry:
 
     def test_all_countries_model(self, all_countries):
         """Tests if the value returned by the all_countries function is equal to the specified country model."""
-        # TODO: It seems like sometimes _links is in the data model, and sometimes it is not?
+        # It seems like sometimes _links is in the data model, and sometimes it is not?
         for i in range(0, 5):
             random_country = random.choice(all_countries)
             random_keys = random_country.keys()
-            assert len(random_keys) == len(self.model_keys)
+            assert (len(random_keys) == len(self.model_keys_1) or len(random_keys) == len(self.model_keys_2))
             for key in random_keys:
-                assert key in self.model_keys
+                assert key in self.model_keys_1
 
     def test_single_country_success(self, client):
         """Tests if the single_country function returns a proper country model."""
@@ -45,9 +46,9 @@ class TestCountry:
             country_id = random.randrange(2, 252)
             result = client.single_country(country_id)
             result_keys = result.keys()
-            assert len(result_keys) == len(self.model_keys)
+            assert len(result_keys) == len(self.model_keys_1)
             for key in result_keys:
-                assert key in self.model_keys
+                assert key in self.model_keys_1
 
     def test_single_country_failure_too_large(self, client):
         """Tests if retrieving a non-existent (edge case: upper range) country ID raises an error."""

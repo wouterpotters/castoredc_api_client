@@ -6,7 +6,7 @@ Contains the definition of all data models according to the Castor EDC API.
 https://orcid.org/0000-0003-3052-596X
 """
 
-country_model = {
+country_model_1 = {
     "id": str,
     "country_id": str,
     "country_name": str,
@@ -14,6 +14,15 @@ country_model = {
     "country_cca2": str,
     "country_cca3": str,
     "_links": dict,
+}
+
+country_model_2 = {
+    "id": str,
+    "country_id": str,
+    "country_name": str,
+    "country_tld": str,
+    "country_cca2": str,
+    "country_cca3": str,
 }
 
 study_data_point_model = {
