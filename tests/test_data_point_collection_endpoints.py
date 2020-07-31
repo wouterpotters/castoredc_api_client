@@ -446,8 +446,6 @@ class TestDataPoint:
                 if field.parent_id == report_id
             ]
 
-
-
         # Instantiate fake data
         common = {"change_reason": "Testing API", "confirmed_changes": True}
 

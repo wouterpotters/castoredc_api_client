@@ -9,39 +9,11 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from castoredc_api_client.data_models import field_model
+from castoredc_api_client.exceptions import CastorException
+
 
 class TestField:
-    field_model = {
-        "id": "string",
-        "parent_id": "string",
-        "field_id": "string",
-        "field_number": "int",
-        "field_label": "string",
-        "field_is_alias": "boolean",
-        "field_variable_name": "string",
-        "field_type": "string",
-        "field_required": "int",
-        "field_hidden": "int",
-        "field_info": "string",
-        "field_units": "string",
-        "field_min": "int",
-        "field_min_label": "string",
-        "field_max": "int",
-        "field_max_label": "string",
-        "field_summary_template": "string",
-        "field_slider_step": "unknown",  # TODO: unclear return value
-        "report_id": "",
-        "field_length": "unknown",  # TODO: unclear return value
-        "additional_config": "string",
-        "exclude_on_data_export": "boolean",
-        "option_group": "unknown",  # TODO: unclear return value
-        "metadata_points": "list",
-        "validations": "list",
-        "dependency_parents": "list",
-        "dependency_children": "list",
-        "_links": "dict",
-    }
-
     model_keys = field_model.keys()
 
     @pytest.fixture(scope="class")
@@ -60,6 +32,7 @@ class TestField:
             assert len(self.model_keys) == len(api_keys)
             for key in self.model_keys:
                 assert key in api_keys
+                assert type(rand_field[key]) in field_model[key]
 
     def test_single_field_success(self, client, all_fields):
         for i in range(0, 3):
@@ -69,9 +42,9 @@ class TestField:
             assert len(self.model_keys) == len(api_keys)
             for key in self.model_keys:
                 assert key in api_keys
+                assert type(field[key]) in field_model[key], f"{key}"
 
     def test_single_field_failure(self, client, all_fields):
-        for i in range(0, 3):
-            rand_field = random.choice(all_fields)["field_id"] + "FAKE"
-            field = client.single_field(rand_field)
-            assert field is None
+        with pytest.raises(CastorException) as e:
+            client.single_field(random.choice(all_fields)["field_id"] + "FAKE")
+        assert str(e.value) == "404 Entity not found."
