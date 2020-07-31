@@ -15,6 +15,7 @@ from tests.helper_functions import allowed_value
 
 
 class TestDataPoint:
+    # TODO: add field reponse type checking for every test working with fields of a return object
     study_data_point_model_keys = study_data_point_model.keys()
     report_data_point_model_keys = report_data_point_model.keys()
     survey_data_point_model_keys = survey_data_point_model.keys()

@@ -66,7 +66,7 @@ field_model = {
     "field_number": [int, ],
     "field_label": [str, ],
     "field_is_alias": [bool, ],
-    "field_variable_name": [str, ],
+    "field_variable_name": [str, type(None)],
     "field_type": [str, ],
     "field_required": [int, ],
     "field_hidden": [int, ],
@@ -88,4 +88,13 @@ field_model = {
     "dependency_parents": [list, ],
     "dependency_children": [list, ],
     "_links": [dict, ],
+}
+
+field_opt_model = {
+    "id": str,
+    "name": str,
+    "description": str,
+    "layout": bool,
+    "options": list,
+    "_links": dict,
 }
