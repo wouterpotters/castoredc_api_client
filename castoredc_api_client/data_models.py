@@ -49,3 +49,12 @@ survey_data_point_model = {
     "record_id": str,
     "updated_on": str,
 }
+
+field_dep_model = {
+    "id": "string",
+    "operator": "string",
+    "value": "string",
+    "parent_id": "string",
+    "child_id": "string",
+    "_links": "dict",
+}

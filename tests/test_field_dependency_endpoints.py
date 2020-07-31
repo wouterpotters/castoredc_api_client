@@ -9,16 +9,11 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from castoredc_api_client.data_models import field_dep_model
+from castoredc_api_client.exceptions import CastorException
+
 
 class TestFieldDependency:
-    field_dep_model = {
-        "id": "string",
-        "operator": "string",
-        "value": "string",
-        "parent_id": "string",
-        "child_id": "string",
-        "_links": "dict",
-    }
     model_keys = field_dep_model.keys()
 
     @pytest.fixture(scope="class")
@@ -50,7 +45,6 @@ class TestFieldDependency:
     def test_single_field_failure(self, client, all_field_deps):
         # NOTE: API seems to truncate text after the ID.
         # i.e. if 247 is an existing ID, then 247TEXT also works.
-        for i in range(0, 3):
-            rand_id = "FAKE" + random.choice(all_field_deps)["id"] + "FAKE"
-            dep = client.single_field_dependency(rand_id)
-            assert dep is None
+        with pytest.raises(CastorException) as e:
+            client.single_field_dependency("FAKE" + random.choice(all_field_deps)["id"])
+        assert str(e.value) == "404 Entity not found."
