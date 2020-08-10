@@ -98,3 +98,13 @@ field_opt_model = {
     "options": list,
     "_links": dict,
 }
+
+field_val_model = {
+    "id": int,
+    "type": str,
+    "value": str,
+    "operator": str,
+    "text": str,
+    "field_id": str,
+    "_links": dict,
+}
