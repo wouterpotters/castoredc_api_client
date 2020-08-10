@@ -15,7 +15,6 @@ from tests.helper_functions import allowed_value
 
 
 class TestDataPoint:
-    # TODO: add field reponse type checking for every test working with fields of a return object
     study_data_point_model_keys = study_data_point_model.keys()
     report_data_point_model_keys = report_data_point_model.keys()
     survey_data_point_model_keys = survey_data_point_model.keys()
@@ -119,16 +118,17 @@ class TestDataPoint:
     def test_single_survey_package_instance_data_points_success(
             self, client, all_survey_package_instance_ids
     ):
-        # TODO: Only select package instances that are filled in
-        # Now all package instances are extracted, and most dont have data points
-        for i in range(0, 3):
+        api_package = []
+        # Find a survey package with filled in fields
+        while len(api_package) == 0:
             rand_id = random.choice(all_survey_package_instance_ids)
             api_package = client.single_survey_package_instance_data_points(rand_id)
-            assert api_package is not None
-            for data_point in api_package:
-                api_keys = data_point.keys()
-                for key in self.survey_data_point_model_keys:
-                    assert key in api_keys
+
+        for data_point in api_package:
+            api_keys = data_point.keys()
+            for key in self.survey_data_point_model_keys:
+                assert key in api_keys
+                assert type(data_point[key]) is survey_data_point_model[key]
 
     def test_single_survey_package_instance_data_points_fail(
             self, client, all_survey_package_instance_ids
@@ -140,17 +140,19 @@ class TestDataPoint:
 
     # ALL DATA - RECORD SPECIFIC
     def test_all_study_data_points_record_success(self, client, all_record_ids):
-        for i in range(0, 3):
-            # TODO: Only select records that have data
-            # Now all records are tested, and most dont have data points
+        all_data = []
+
+        # Find a record with fields
+        while len(all_data) == 0:
             random_id = random.choice(all_record_ids)
             all_data = client.all_study_data_points_record(random_id)
-            assert all_data is not None
-            for data_point in all_data:
-                api_keys = data_point.keys()
-                assert len(self.study_data_point_model_keys) == len(api_keys)
-                for key in self.study_data_point_model_keys:
-                    assert key in api_keys
+
+        for data_point in all_data:
+            api_keys = data_point.keys()
+            assert len(self.study_data_point_model_keys) == len(api_keys)
+            for key in self.study_data_point_model_keys:
+                assert key in api_keys
+                assert type(data_point[key]) is study_data_point_model[key]
 
     def test_all_study_data_points_record_fail(self, client, all_record_ids):
         random_id = random.choice(all_record_ids) + "FAKE"
@@ -159,17 +161,17 @@ class TestDataPoint:
         assert str(e.value) == "404 Record not found"
 
     def test_all_report_data_points_record_success(self, client, all_record_ids):
-        for i in range(0, 3):
-            # TODO: Only select records that have data
-            # Now all records are tested, and most dont have data points
+        all_data = []
+        while len(all_data) == 0:
             random_id = random.choice(all_record_ids)
             all_data = client.all_report_data_points_record(random_id)
-            assert all_data is not None
-            for data_point in all_data:
-                api_keys = data_point.keys()
-                assert len(self.report_data_point_model_keys) == len(api_keys)
-                for key in self.report_data_point_model_keys:
-                    assert key in api_keys
+
+        for data_point in all_data:
+            api_keys = data_point.keys()
+            assert len(self.report_data_point_model_keys) == len(api_keys)
+            for key in self.report_data_point_model_keys:
+                assert key in api_keys
+                assert type(data_point[key]) is report_data_point_model[key]
 
     def test_all_report_data_points_record_fail(self, client, all_record_ids):
         random_id = random.choice(all_record_ids) + "FAKE"
@@ -178,17 +180,17 @@ class TestDataPoint:
         assert str(e.value) == "404 Record not found"
 
     def test_all_survey_data_points_record_success(self, client, all_record_ids):
-        for i in range(0, 3):
-            # TODO: Only select records that have data
-            # Now all records are tested, and most dont have data points
+        all_data = []
+        while len(all_data) == 0:
             random_id = random.choice(all_record_ids)
             all_data = client.all_survey_data_points_record(random_id)
-            assert all_data is not None
-            for data_point in all_data:
-                api_keys = data_point.keys()
-                assert len(self.survey_data_point_model_keys) == len(api_keys)
-                for key in self.survey_data_point_model_keys:
-                    assert key in api_keys
+
+        for data_point in all_data:
+            api_keys = data_point.keys()
+            assert len(self.survey_data_point_model_keys) == len(api_keys)
+            for key in self.survey_data_point_model_keys:
+                assert key in api_keys
+                assert type(data_point[key]) is survey_data_point_model[key]
 
     def test_all_survey_data_points_record_fail(self, client, all_record_ids):
         random_id = random.choice(all_record_ids) + "FAKE"
@@ -200,20 +202,21 @@ class TestDataPoint:
     def test_single_report_data_points_record_success(
             self, client, records_with_reports
     ):
-        # TODO: Only select records that have data
-        # Now all records are tested, and most dont have data points
-        records = list(records_with_reports.keys())
-        random_id = random.choice(records)
-        random_report = random.choice(records_with_reports[random_id])
-        report_data = client.single_report_data_points_record(
-            random_id, random_report
-        )
-        assert report_data is not None
+        report_data = []
+        while len(report_data) == 0:
+            records = list(records_with_reports.keys())
+            random_id = random.choice(records)
+            random_report = random.choice(records_with_reports[random_id])
+            report_data = client.single_report_data_points_record(
+                random_id, random_report
+            )
+
         for data_point in report_data:
             api_keys = data_point.keys()
             assert len(self.report_data_point_model_keys) == len(api_keys)
             for key in self.report_data_point_model_keys:
                 assert key in api_keys
+                assert type(data_point[key]) is report_data_point_model[key]
 
     def test_single_report_data_points_record_fail(self, client, records_with_reports):
         records = list(records_with_reports.keys())
@@ -225,13 +228,11 @@ class TestDataPoint:
             )
         assert str(e.value) == "404 Report Instance not found"
 
-    # TODO: Sometimes returns a dict of 7 values, sometimes 6..??
     def test_single_survey_package_data_points_record_success(
             self, client, records_with_survey_package_instances
     ):
-        # TODO: Only select records that have data
-        # Now all records are tested, and most dont have data points
-        for i in range(0, 3):
+        survey_data = []
+        while len(survey_data) == 0:
             records = list(records_with_survey_package_instances.keys())
             random_id = random.choice(records)
             random_package = random.choice(
@@ -240,15 +241,16 @@ class TestDataPoint:
             survey_data = client.single_survey_package_data_points_record(
                 random_id, random_package
             )
-            assert survey_data is not None
-            for data_point in survey_data:
-                api_keys = data_point.keys()
-                assert (
-                        len(self.survey_data_point_model_keys) == len(api_keys)
-                        or len(api_keys) == 7
-                ), "length is 6 or 7 in api. Does not always contain 'survey_package_id'"
-                for key in self.survey_data_point_model_keys:
-                    assert key in api_keys
+
+        for data_point in survey_data:
+            api_keys = data_point.keys()
+            assert (
+                    len(self.survey_data_point_model_keys) == len(api_keys)
+                    or len(api_keys) == 7
+            ), "length is 6 or 7 in api. Does not always contain 'survey_package_id'"
+            for key in self.survey_data_point_model_keys:
+                assert key in api_keys
+                assert type(data_point[key]) is survey_data_point_model[key]
 
     def test_single_survey_package_data_points_record_fail(
             self, client, records_with_survey_package_instances
@@ -267,21 +269,21 @@ class TestDataPoint:
     def test_single_survey_data_points_record_success(
             self, client, records_with_survey_instances
     ):
-        # TODO: Only select records that have data
-        # Now all records are tested, and most dont have data points
-        for i in range(0, 3):
+        survey_data = []
+        while len(survey_data) == 0:
             records = list(records_with_survey_instances.keys())
             random_id = random.choice(records)
             random_survey = random.choice(records_with_survey_instances[random_id])[0]
             survey_data = client.single_survey_data_points_record(
                 random_id, random_survey
             )
-            assert survey_data is not None
-            for data_point in survey_data:
-                api_keys = data_point.keys()
-                assert len(self.survey_data_point_model_keys) == len(api_keys)
-                for key in self.survey_data_point_model_keys:
-                    assert key in api_keys
+
+        for data_point in survey_data:
+            api_keys = data_point.keys()
+            assert len(self.survey_data_point_model_keys) == len(api_keys)
+            for key in self.survey_data_point_model_keys:
+                assert key in api_keys
+                assert type(data_point[key]) is survey_data_point_model[key]
 
     def test_single_survey_data_points_record_fail(
             self, client, records_with_survey_instances
@@ -400,7 +402,7 @@ class TestDataPoint:
             # Find the parent report of the instance
             report = client.single_report_instance(rand_report_instance)
             report_id = report["_embedded"]["report"]["id"]
-            # Find the fields belonging to the repot
+            # Find the fields belonging to the report
             fields = [
                 field
                 for field in client.field_references["reports"]
@@ -440,7 +442,7 @@ class TestDataPoint:
             # Find the parent report of the instance
             report = client.single_report_instance(rand_report_instance)
             report_id = report["_embedded"]["report"]["id"]
-            # Find the fields belonging to the repot
+            # Find the fields belonging to the report
             fields = [
                 field
                 for field in client.field_references["reports"]
