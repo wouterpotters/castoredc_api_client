@@ -42,7 +42,7 @@ class TestField:
             assert len(self.model_keys) == len(api_keys)
             for key in self.model_keys:
                 assert key in api_keys
-                assert type(field[key]) in field_model[key], f"{key}"
+                assert type(field[key]) in field_model[key]
 
     def test_single_field_failure(self, client, all_fields):
         with pytest.raises(CastorException) as e:

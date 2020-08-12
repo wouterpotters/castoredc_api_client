@@ -31,7 +31,7 @@ class TestMetadataType:
         assert len(self.model_keys) == len(api_keys)
         for key in self.model_keys:
             assert key in api_keys
-            assert type(metadata_type[key]) is metadata_type_model[key]
+            assert type(metadata_type[key]) in metadata_type_model[key]
 
     def test_single_metadata_type_success(self, client, all_metadata_types):
         metadata_type = client.single_metadata_type(random.choice(all_metadata_types)["id"])
@@ -39,7 +39,7 @@ class TestMetadataType:
         assert len(self.model_keys) == len(api_keys)
         for key in self.model_keys:
             assert key in api_keys
-            assert type(metadata_type[key]) is metadata_type_model[key]
+            assert type(metadata_type[key]) in metadata_type_model[key]
 
     def test_single_metadata_type_failure(self, client, all_metadata_types):
         with pytest.raises(CastorException) as e:

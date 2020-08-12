@@ -31,7 +31,7 @@ class TestFieldValidation:
         assert len(self.model_keys) == len(api_keys)
         for key in self.model_keys:
             assert key in api_keys
-            assert type(rand_field[key]) is field_val_model[key]
+            assert type(rand_field[key]) in field_val_model[key]
 
     def test_single_field_success(self, client, all_field_vals):
         rand_id = random.choice(all_field_vals)["id"]
@@ -40,7 +40,7 @@ class TestFieldValidation:
         assert len(self.model_keys) == len(api_keys)
         for key in self.model_keys:
             assert key in api_keys
-            assert type(opt[key]) is field_val_model[key]
+            assert type(opt[key]) in field_val_model[key]
 
     def test_single_field_failure(self, client, all_field_vals):
         with pytest.raises(CastorException) as e:

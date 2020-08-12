@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: [stf-8 -*-
 """
 Contains the definition of all data models according to the Castor EDC API.
 
@@ -7,56 +7,56 @@ https://orcid.org/0000-0003-3052-596X
 """
 
 country_model_1 = {
-    "id": str,
-    "country_id": str,
-    "country_name": str,
-    "country_tld": str,
-    "country_cca2": str,
-    "country_cca3": str,
-    "_links": dict,
+    "id": [str, ],
+    "country_id": [str, ],
+    "country_name": [str, ],
+    "country_tld": [str, ],
+    "country_cca2": [str, ],
+    "country_cca3": [str, ],
+    "_links": [dict, ],
 }
 
 country_model_2 = {
-    "id": str,
-    "country_id": str,
-    "country_name": str,
-    "country_tld": str,
-    "country_cca2": str,
-    "country_cca3": str,
+    "id": [str, ],
+    "country_id": [str, ],
+    "country_name": [str, ],
+    "country_tld": [str, ],
+    "country_cca2": [str, ],
+    "country_cca3": [str, ],
 }
 
 study_data_point_model = {
-    "field_id": str,
-    "field_value": str,
-    "record_id": str,
-    "updated_on": str,
+    "field_id": [str, ],
+    "field_value": [str, ],
+    "record_id": [str, ],
+    "updated_on": [str, ],
 }
 
 report_data_point_model = {
-    "field_id": str,
-    "report_instance_id": str,
-    "report_instance_name": str,
-    "field_value": str,
-    "record_id": str,
-    "updated_on": str,
+    "field_id": [str, ],
+    "report_instance_id": [str, ],
+    "report_instance_name": [str, ],
+    "field_value": [str, ],
+    "record_id": [str, ],
+    "updated_on": [str, ],
 }
 
 survey_data_point_model = {
-    "field_id": str,
-    "survey_instance_id": str,
-    "survey_name": str,
-    "field_value": str,
-    "record_id": str,
-    "updated_on": str,
+    "field_id": [str, ],
+    "survey_instance_id": [str, ],
+    "survey_name": [str, ],
+    "field_value": [str, ],
+    "record_id": [str, ],
+    "updated_on": [str, ],
 }
 
 field_dep_model = {
-    "id": str,
-    "operator": str,
-    "value": str,
-    "parent_id": str,
-    "child_id": str,
-    "_links": dict,
+    "id": [str, ],
+    "operator": [str, ],
+    "value": [str, ],
+    "parent_id": [str, ],
+    "child_id": [str, ],
+    "_links": [dict, ],
 }
 
 field_model = {
@@ -91,22 +91,22 @@ field_model = {
 }
 
 field_opt_model = {
-    "id": str,
-    "name": str,
-    "description": str,
-    "layout": bool,
-    "options": list,
-    "_links": dict,
+    "id": [str, ],
+    "name": [str, ],
+    "description": [str, ],
+    "layout": [bool, ],
+    "options": [list, ],
+    "_links": [dict, ],
 }
 
 field_val_model = {
-    "id": int,
-    "type": str,
-    "value": str,
-    "operator": str,
-    "text": str,
-    "field_id": str,
-    "_links": dict,
+    "id": [int, ],
+    "type": [str, ],
+    "value": [str, ],
+    "operator": [str, ],
+    "text": [str, ],
+    "field_id": [str, ],
+    "_links": [dict, ],
 }
 
 institute_model = {
@@ -133,10 +133,10 @@ metadata_model = {
 }
 
 metadata_type_model = {
-    "id": int,
-    "name": str,
-    "description": str,
-    "_links": dict,
+    "id": [int, ],
+    "name": [str, ],
+    "description": [str, ],
+    "_links": [dict, ],
 }
 
 phase_model = {

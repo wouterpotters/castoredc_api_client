@@ -32,7 +32,7 @@ class TestFieldOptionGroup:
             assert len(self.model_keys) == len(api_keys)
             for key in self.model_keys:
                 assert key in api_keys
-                assert type(rand_field[key]) == field_opt_model[key]
+                assert type(rand_field[key]) in field_opt_model[key]
 
     def test_single_field_success(self, client, all_field_opts):
         for i in range(0, 3):
@@ -42,7 +42,7 @@ class TestFieldOptionGroup:
             assert len(self.model_keys) == len(api_keys)
             for key in self.model_keys:
                 assert key in api_keys
-                assert type(opt[key]) == field_opt_model[key]
+                assert type(opt[key]) in field_opt_model[key]
 
     def test_single_field_failure(self, client, all_field_opts):
         with pytest.raises(CastorException) as e:

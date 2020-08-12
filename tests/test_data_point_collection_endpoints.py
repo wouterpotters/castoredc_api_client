@@ -32,7 +32,7 @@ class TestDataPoint:
             assert len(self.study_data_point_model_keys) == len(api_keys)
             for key in api_keys:
                 assert key in self.study_data_point_model_keys
-                assert type(random_study_data_point[key]) is study_data_point_model[key]
+                assert type(random_study_data_point[key]) in study_data_point_model[key]
 
     def test_all_report_data_points_amount(self, all_report_data_points, item_totals):
         """Tests that the all_report_data_points retrieves the same number as data points as Castor says that are in
@@ -47,7 +47,7 @@ class TestDataPoint:
             assert len(self.report_data_point_model_keys) == len(api_keys)
             for key in api_keys:
                 assert key in self.report_data_point_model_keys
-                assert type(random_report_data_point[key]) is report_data_point_model[key]
+                assert type(random_report_data_point[key]) in report_data_point_model[key]
 
     def test_all_survey_data_points_amount(self, all_survey_data_points, item_totals):
         """Tests that the all_survey_data_points retrieves the same number as data points as Castor says that are in
@@ -62,7 +62,7 @@ class TestDataPoint:
             assert len(self.survey_data_point_model_keys) == len(api_keys)
             for key in api_keys:
                 assert key in self.survey_data_point_model_keys
-                assert type(random_survey_data_point[key]) is survey_data_point_model[key]
+                assert type(random_survey_data_point[key]) in survey_data_point_model[key]
 
     def test_single_report_instance_data_points_success(
             self, client, all_report_data_points
@@ -74,7 +74,7 @@ class TestDataPoint:
             api_keys = random_report_data_point.keys()
             for key in api_keys:
                 assert key in self.report_data_point_model_keys
-                assert type(random_report_data_point[key]) is report_data_point_model[key]
+                assert type(random_report_data_point[key]) in report_data_point_model[key]
 
     def test_single_report_instance_data_points_fail(
             self, client, all_report_data_points
@@ -95,7 +95,7 @@ class TestDataPoint:
             api_keys = random_survey_data_point.keys()
             for key in api_keys:
                 assert key in self.survey_data_point_model_keys
-                assert type(random_survey_data_point[key]) is survey_data_point_model[key]
+                assert type(random_survey_data_point[key]) in survey_data_point_model[key]
 
     def test_single_survey_instance_data_points_fail(
             self, client, all_survey_data_points
@@ -128,7 +128,7 @@ class TestDataPoint:
             api_keys = data_point.keys()
             for key in self.survey_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is survey_data_point_model[key]
+                assert type(data_point[key]) in survey_data_point_model[key]
 
     def test_single_survey_package_instance_data_points_fail(
             self, client, all_survey_package_instance_ids
@@ -152,7 +152,7 @@ class TestDataPoint:
             assert len(self.study_data_point_model_keys) == len(api_keys)
             for key in self.study_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is study_data_point_model[key]
+                assert type(data_point[key]) in study_data_point_model[key]
 
     def test_all_study_data_points_record_fail(self, client, all_record_ids):
         random_id = random.choice(all_record_ids) + "FAKE"
@@ -171,7 +171,7 @@ class TestDataPoint:
             assert len(self.report_data_point_model_keys) == len(api_keys)
             for key in self.report_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is report_data_point_model[key]
+                assert type(data_point[key]) in report_data_point_model[key]
 
     def test_all_report_data_points_record_fail(self, client, all_record_ids):
         random_id = random.choice(all_record_ids) + "FAKE"
@@ -190,7 +190,7 @@ class TestDataPoint:
             assert len(self.survey_data_point_model_keys) == len(api_keys)
             for key in self.survey_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is survey_data_point_model[key]
+                assert type(data_point[key]) in survey_data_point_model[key]
 
     def test_all_survey_data_points_record_fail(self, client, all_record_ids):
         random_id = random.choice(all_record_ids) + "FAKE"
@@ -216,7 +216,7 @@ class TestDataPoint:
             assert len(self.report_data_point_model_keys) == len(api_keys)
             for key in self.report_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is report_data_point_model[key]
+                assert type(data_point[key]) in report_data_point_model[key]
 
     def test_single_report_data_points_record_fail(self, client, records_with_reports):
         records = list(records_with_reports.keys())
@@ -250,7 +250,7 @@ class TestDataPoint:
             ), "length is 6 or 7 in api. Does not always contain 'survey_package_id'"
             for key in self.survey_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is survey_data_point_model[key]
+                assert type(data_point[key]) in survey_data_point_model[key]
 
     def test_single_survey_package_data_points_record_fail(
             self, client, records_with_survey_package_instances
@@ -283,7 +283,7 @@ class TestDataPoint:
             assert len(self.survey_data_point_model_keys) == len(api_keys)
             for key in self.survey_data_point_model_keys:
                 assert key in api_keys
-                assert type(data_point[key]) is survey_data_point_model[key]
+                assert type(data_point[key]) in survey_data_point_model[key]
 
     def test_single_survey_data_points_record_fail(
             self, client, records_with_survey_instances
