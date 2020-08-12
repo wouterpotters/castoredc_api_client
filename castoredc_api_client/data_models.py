@@ -120,3 +120,14 @@ institute_model = {
     "deleted": [bool, ],
     "_links": [dict, ],
 }
+
+metadata_model = {
+    "id": [str, ],
+    "metadata_type": [dict, ],
+    "parent_id": [str, type(None)],
+    "value": [str, ],
+    "description": [str, type(None)],
+    "element_type": [str, ],
+    "element_id": [str],
+    "_links": [dict, ],
+}
