@@ -148,3 +148,17 @@ phase_model = {
     "phase_order": [int, ],
     "_links": [dict, ],
 }
+
+query_model = {
+    "id":  [str, ],
+    "record_id":  [str, ],
+    "field_id":  [str, ],
+    "status":  [str, ],
+    "first_query_remark":  [str, ],
+    "created_by":  [str, ],
+    "created_on":  [dict, ],
+    "updated_by":  [str, ],
+    "updated_on":  [dict, ],
+    "_embedded":  [dict, ],
+    "_links":  [dict, ],
+}
