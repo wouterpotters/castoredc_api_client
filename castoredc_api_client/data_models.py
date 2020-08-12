@@ -138,3 +138,13 @@ metadata_type_model = {
     "description": str,
     "_links": dict,
 }
+
+phase_model = {
+    "id": [str, ],
+    "phase_id": [str, ],
+    "phase_description": [str, type(None)],
+    "phase_name": [str, ],
+    "phase_duration": [int, type(None)],
+    "phase_order": [int, ],
+    "_links": [dict, ],
+}
