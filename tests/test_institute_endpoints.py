@@ -44,5 +44,5 @@ class TestInstitute:
 
     def test_single_institute_failure(self, client, all_institutes):
         with pytest.raises(CastorException) as e:
-            institute = client.single_institute(random.choice(all_institutes)["institute_id"] + "FAKE")
+            client.single_institute(random.choice(all_institutes)["institute_id"] + "FAKE")
         assert str(e.value) == "404 Entity not found."
