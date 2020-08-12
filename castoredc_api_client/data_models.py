@@ -131,3 +131,10 @@ metadata_model = {
     "element_id": [str],
     "_links": [dict, ],
 }
+
+metadata_type_model = {
+    "id": int,
+    "name": str,
+    "description": str,
+    "_links": dict,
+}

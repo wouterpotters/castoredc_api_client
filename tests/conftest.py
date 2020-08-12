@@ -73,7 +73,7 @@ def item_totals(client):
         "total_field_vals": client.request_size("/field-validation"),
         "total_institutes": client.request_size("/institute"),
         "total_metadata": client.request_size("/metadata"),
-        "total_metadatatypes": client.request_size("/metadatatype"),
+        "total_metadata_types": client.request_size("/metadatatype"),
         "total_phases": client.request_size("/phase"),
         "total_queries": client.request_size("/query"),
         "total_study_data_points": client.request_size("/data-point-collection/study"),

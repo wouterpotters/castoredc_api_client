@@ -336,13 +336,13 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint="/metadata", data_id=metadata_id)
 
     # METADATATYPE
-    def all_metadatatypes(self):
+    def all_metadata_types(self):
         """Returns a list of dicts of all metadatatypes."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/metadatatype", data_name="metadatatypes"
         )
 
-    def single_metadatatype(self, metadatatype_id):
+    def single_metadata_type(self, metadatatype_id):
         """Returns a single dict of an metadatatype.
         Returns None if id not found."""
         return self.retrieve_data_by_id(
