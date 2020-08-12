@@ -108,3 +108,15 @@ field_val_model = {
     "field_id": str,
     "_links": dict,
 }
+
+institute_model = {
+    "id": [str, ],
+    "institute_id": [str, ],
+    "name": [str, ],
+    "abbreviation": [str, ],
+    "code": [str, type(None)],
+    "order": [int, ],
+    "country_id": [int, ],
+    "deleted": [bool, ],
+    "_links": [dict, ],
+}
