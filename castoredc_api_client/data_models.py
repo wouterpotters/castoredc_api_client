@@ -41,6 +41,19 @@ report_data_point_model = {
     "updated_on": [str, ],
 }
 
+
+report_data_point_extended_model = {
+    "record_id": [str, ],
+    "field_variable_name": [str, ],
+    "field_id": [str, ],
+    "value": [str, ],
+    "updated_on": [str, ],
+    "report_instance_id": [str, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
+
 survey_data_point_model = {
     "field_id": [str, ],
     "survey_instance_id": [str, ],
