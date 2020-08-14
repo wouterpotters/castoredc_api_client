@@ -9,18 +9,11 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from castoredc_api_client.data_models import report_step_model
+from castoredc_api_client.exceptions import CastorException
+
 
 class TestReportStep:
-    report_step_model = {
-        "id": "string",
-        "report_step_id": "string",
-        "report_step_name": "string",
-        "report_step_description": "string",
-        "report_step_number": "int",
-        "_links": "dict",
-        "_embedded": "dict",
-    }
-
     model_keys = report_step_model.keys()
 
     @pytest.fixture(scope="class")
@@ -30,9 +23,6 @@ class TestReportStep:
         for report in all_reports:
             steps = client.single_report_all_steps(report["id"])
             reports_with_steps[report["id"]] = steps
-
-        assert len(list(reports_with_steps.keys())) > 0
-
         return reports_with_steps
 
     def test_all_report_steps(self, reports_with_steps):
@@ -43,22 +33,21 @@ class TestReportStep:
                 api_keys = step.keys()
                 for key in self.model_keys:
                     assert key in api_keys
+                    assert type(step[key]) in report_step_model[key]
 
     def test_single_report_single_step_success(self, client, reports_with_steps):
-        for i in range(0, 3):
-            reports = list(reports_with_steps.keys())
-            rand_report = random.choice(reports)
-            rand_step = random.choice(reports_with_steps[rand_report])["id"]
-            step = client.single_report_single_step(rand_report, rand_step)
-            api_keys = step.keys()
-            assert len(self.model_keys) == len(api_keys)
-            for key in self.model_keys:
-                assert key in api_keys
+        rand_report = random.choice(list(reports_with_steps.keys()))
+        rand_step = random.choice(reports_with_steps[rand_report])["id"]
+        step = client.single_report_single_step(rand_report, rand_step)
+        api_keys = step.keys()
+        assert len(self.model_keys) == len(api_keys)
+        for key in self.model_keys:
+            assert key in api_keys
+            assert type(step[key]) in report_step_model[key]
 
     def test_single_report_single_step_failure(self, client, reports_with_steps):
-        for i in range(0, 3):
-            reports = list(reports_with_steps.keys())
-            rand_report = random.choice(reports)
-            rand_step = random.choice(reports_with_steps[rand_report])["id"] + "FAKE"
-            step = client.single_report_single_step(rand_report, rand_step)
-            assert step is None
+        rand_report = random.choice(list(reports_with_steps.keys()))
+        rand_step = random.choice(reports_with_steps[rand_report])["id"] + "FAKE"
+        with pytest.raises(CastorException) as e:
+            client.single_report_single_step(rand_report, rand_step)
+        assert str(e.value) == "404 Entity not found."
