@@ -183,3 +183,16 @@ record_model = {
     "_links": [dict, ],
 }
 
+record_progress_model = {
+    "record_id": [str, ],
+    "steps": [list, ],
+    "_links": [dict, ],
+}
+
+steps_model = {
+    "step_id": [str, ],
+    "complete": [int, ],
+    "sdv": [bool, ],
+    "locked": [bool, ],
+    "signed": [bool, ],
+}
