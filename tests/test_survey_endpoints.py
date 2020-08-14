@@ -13,7 +13,7 @@ from castoredc_api_client.exceptions import CastorException
 from tests.data_models import survey_model, package_model, survey_package_instance_model
 
 
-def create_survey_package_instance(client, record_id, fake):
+def create_survey_package_instance_body(client, record_id, fake):
     survey_package = client.all_survey_packages()
     package_ids = [package["id"] for package in survey_package]
     random_package = random.choice(package_ids)
@@ -158,7 +158,7 @@ class TestSurveyEndpoints:
     # POST
     def test_create_survey_package_instance_success(self, client):
         random_record = random.choice(client.all_records(archived=0))["id"]
-        body = create_survey_package_instance(client, random_record, fake=False)
+        body = create_survey_package_instance_body(client, random_record, fake=False)
         old_amount = len(client.all_survey_package_instances(record=random_record))
 
         feedback = client.create_survey_package_instance(**body)
@@ -171,7 +171,7 @@ class TestSurveyEndpoints:
     def test_create_survey_package_instance_fail(self, client):
         records = client.all_records(archived=0)
         random_record = random.choice(records)["id"]
-        body = create_survey_package_instance(client, random_record, fake=True)
+        body = create_survey_package_instance_body(client, random_record, fake=True)
         old_amount = len(client.all_survey_package_instances(record=random_record))
 
         with pytest.raises(CastorException) as e:

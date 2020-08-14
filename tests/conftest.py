@@ -40,7 +40,7 @@ def client():
     logger.addHandler(f_handler)
 
     client.link_study(auth_data.study_id)
-    client.gather_field_map()
+    client.collect_field_map()
     yield client
 
     handlers = client.logger.handlers[:]
@@ -51,8 +51,7 @@ def client():
 
 @pytest.fixture(scope="class")
 def item_totals(client):
-    # TODO: refactor this so that it only runs once, or when it needs
-    # to be updated.
+    # TODO: refactor this so that it only calls and returns the size requested (e.g. /field or /phase)
     item_totals = {
         "total_fields": client.request_size("/field"),
         "total_field_deps": client.request_size("/field-dependency"),

@@ -441,7 +441,6 @@ class TestDataPoint:
         assert feedback["total_failed"] == len(fields)
 
     def test_create_report_data_points_fail_record(self, client, records_with_reports):
-        # TODO: test that nothing has changed
         fields = []
 
         # Keep looking for a report until one with fields is found

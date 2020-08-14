@@ -9,6 +9,8 @@ https://orcid.org/0000-0003-3052-596X
 
 import json
 import logging
+import math
+
 import requests
 
 
@@ -47,9 +49,8 @@ class CastorClient:
         """Link a study to the CastorClient based on the study_id"""
         self.study_url = self.base_url + "/study/" + study_id
 
-    def gather_field_map(self):
+    def collect_field_map(self):
         """Queries the study and collects all fields that are used at least once."""
-        # TODO: Add type of field to field map
         self.field_references["study"] = self.study_fields()
         self.field_references["reports"] = self.report_fields()
         self.field_references["surveys"] = self.survey_fields()
@@ -257,7 +258,7 @@ class CastorClient:
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field",
             data_name="fields",
-            query_string=["include=metadata|validations|optiongroup"],
+            params={"include": "metadata|validations|optiongroup"},
         )
 
     def single_field(self, field_id):
@@ -376,13 +377,13 @@ class CastorClient:
         """Returns a list of dicts of all records. 
         Archived can be None (all records), 0 (unarchived records) 
         or 1 (archived records)."""
-        query_string = []
+        params = {}
         if institute_id is not None:
-            query_string.append("institute={0}".format(institute_id))
+            params["institute"] = str(institute_id)
         if archived is not None:
-            query_string.append("archived={0}".format(archived))
+            params["archived"] = str(archived)
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/record", data_name="records", query_string=query_string
+            endpoint="/record", data_name="records", params=params
         )
 
     def single_record(self, record_id):
@@ -508,11 +509,12 @@ class CastorClient:
             record_id, report_ins_id, field_id
         )
         url = self.study_url + endpoint
-
-        # TODO: Throw error when both file and field_value are None or not None
         body = {}
 
-        if field_value is not None:
+        if field_value is not None and file is not None:
+            raise CastorException("You cannot both upload a field value and a file.")
+
+        elif field_value is not None:
             body = {
                 "field_value": str(field_value),
                 "change_reason": change_reason,
@@ -602,7 +604,7 @@ class CastorClient:
     ):
         """Update a data point for a record.
         Returns None if target not found."""
-        # TODO: create file uploading possibility
+        # TODO: Allow file uploading
         url = self.study_url + "/record/{record_id}/data-point/study/{field_id}".format(
             record_id=record_id, field_id=field_id
         )
@@ -652,9 +654,9 @@ class CastorClient:
                 endpoint=endpoint, data_name=dataname
             )
         else:
-            query = ["record_id=" + record]
+            params = {"record_id": record}
             return self.retrieve_all_data_by_endpoint(
-                endpoint=endpoint, data_name=dataname, query_string=query
+                endpoint=endpoint, data_name=dataname, params=params
             )
 
     def single_survey_package_instance(self, survey_package_instance_id):
@@ -664,7 +666,6 @@ class CastorClient:
             endpoint="/surveypackageinstance", data_id=survey_package_instance_id
         )
 
-    # TODO: refactor this, should be able to be more concise
     def create_survey_package_instance(
         self,
         survey_package_id,
@@ -679,7 +680,7 @@ class CastorClient:
         """Create a survey package. 
         Arguments marked with None are non-obligatory."""
         url = self.study_url + "/surveypackageinstance"
-        temp_body = {
+        body = {
             "survey_package_id": survey_package_id,
             "record_id": record_id,
             "ccr_patient_id": ccr_patient_id,
@@ -689,12 +690,6 @@ class CastorClient:
             "auto_send": auto_send,
             "auto_lock_on_finish": auto_lock_on_finish,
         }
-
-        body = {}
-        for item in temp_body:
-            if temp_body[item] is not None:
-                body[item] = temp_body[item]
-
         return self.castor_post(url, body)
 
     def patch_survey_package_instance(self, survey_package_instance_id, status):
@@ -774,11 +769,22 @@ class CastorClient:
 
     # RECORD PROGRESS
     def record_progress(self):
-        # TODO: Only retrieves 1 page (25 records) and does not give page count through the API, so can't use
-        # TODO: retrieve multiple pages. Need to work with amount of records in study.
-        endpoint = "/record-progress/steps"
-        raw_data = self.retrieve_data_by_id(endpoint, data_id="")
-        return raw_data["_embedded"]["records"]
+        variables = []
+
+        number_of_records = len(self.all_records())
+        # There are 25 records per page
+        pages = math.ceil(number_of_records / 25) + 1
+        print(pages)
+        url = self.study_url + "/record-progress/steps"
+        response = self.retrieve_single_page(url=url, params=None, page="1")
+        fields = response["_embedded"]["records"]
+        variables.extend(fields)
+
+        for i in range(2, pages):
+            response = self.retrieve_single_page(url=url, params=None, page=i)
+            fields = response["_embedded"]["records"]
+            variables.extend(fields)
+        return variables
 
     # HELPER FUNCTIONS
     # noinspection PyMethodMayBeStatic
@@ -863,50 +869,39 @@ class CastorClient:
     def retrieve_data_by_id(self, endpoint, data_id, params=None):
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
-        # TODO: Refactor special case that does not have multiple pages
-        # but also is not filtered on id (see record-progress)
-        if data_id != "":
-            url = self.study_url + endpoint + "/{data_id}".format(data_id=data_id)
-        # Ugly hack to make this function also work for special cases
-        # See also TODO
-        else:
-            url = self.study_url + endpoint
+        url = self.study_url + endpoint + "/{data_id}".format(data_id=data_id)
         return self.castor_get(url=url, params=params)
 
-    def retrieve_all_data_by_endpoint(self, endpoint, data_name, query_string=None):
+    def retrieve_all_data_by_endpoint(self, endpoint, data_name, params=None):
         """Retrieves all data on endpoint.
         data_name is that which holds data within ['_embedded'] (ex: 'fields')
-        query_string is a list of extra information to be sent."""
-        formatted_suffix = endpoint
-        if query_string is not None:
-            formatted_suffix += "?" + "+".join(query_string)
-        url = self.study_url + formatted_suffix
-        return self.retrieve_multiple_pages(url=url, data_name=data_name)
+        params is a dict of extra information to be sent."""
+        url = self.study_url + endpoint
+        return self.retrieve_multiple_pages(url=url, params=params, data_name=data_name)
 
     @castor_exception_handler
-    def retrieve_multiple_pages(self, url, data_name):
+    def retrieve_multiple_pages(self, url, params, data_name):
         """Helper function to gather all data when there are multiple pages.
         data_name is that which holds data within ['_embedded'] (ex: 'fields')
         """
         variables = []
-        response = self.retrieve_single_page(url=url, page="1")
+        response = self.retrieve_single_page(url=url, params=params, page="1")
         fields = response["_embedded"][data_name]
         pages = response["page_count"] + 1
         variables.extend(fields)
         for i in range(2, pages):
-            response = self.retrieve_single_page(url, i)
+            response = self.retrieve_single_page(url, params, i)
             fields = response["_embedded"][data_name]
             variables.extend(fields)
         return variables
 
-    def retrieve_single_page(self, url, page):
+    def retrieve_single_page(self, url, params, page):
         """Helper function to query a single page and return the data from that page."""
-        # TODO: Handle this through params in requests
-        if "?" in url:
-            local_url = url + "&page={0}".format(page)
+        if params is None:
+            params = {"page": page}
         else:
-            local_url = url + "?page={0}".format(page)
-        response = self.castor_get(url=local_url, params=None)
+            params["page"] = page
+        response = self.castor_get(url=url, params=params)
         return response
 
     @castor_exception_handler
