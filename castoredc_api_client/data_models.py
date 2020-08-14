@@ -41,6 +41,20 @@ report_model = {
     "_links": [dict, ],
 }
 
+report_instance_model = {
+    "id": [str, ],
+    "name": [str, ],
+    "status": [str, ],
+    "parent_id": [str, ],
+    "parent_type": [str, ],
+    "record_id": [str, ],
+    "report_name": [str, ],
+    "created_on": [str, ],
+    "created_by": [str, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
 report_data_point_model = {
     "field_id": [str, ],
     "report_instance_id": [str, ],
