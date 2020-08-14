@@ -35,7 +35,7 @@ def allowed_value(client, field_id):
             min_val = 0
         if max_val is None:
             max_val = 99
-        post_value = random.choice(range(int(min_val),int(max_val)))
+        post_value = random.choice(range(int(min_val), int(max_val)))
     else:
         post_value = data_options[field["field_type"]]
 

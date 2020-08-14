@@ -84,5 +84,7 @@ class TestStudy:
         random_study = random.choice(all_studies)["study_id"]
         all_users = client.all_users_study(random_study)
         with pytest.raises(CastorException) as e:
-            client.single_user_study(random_study, random.choice(all_users)["user_id"] + "FAKE")
+            client.single_user_study(
+                random_study, random.choice(all_users)["user_id"] + "FAKE"
+            )
         assert str(e.value) == "404 User not found"

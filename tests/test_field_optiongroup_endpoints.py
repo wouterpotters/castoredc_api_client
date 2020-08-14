@@ -46,5 +46,7 @@ class TestFieldOptionGroup:
 
     def test_single_field_failure(self, client, all_field_opts):
         with pytest.raises(CastorException) as e:
-            client.single_field_optiongroup(random.choice(all_field_opts)["id"] + "FAKE")
+            client.single_field_optiongroup(
+                random.choice(all_field_opts)["id"] + "FAKE"
+            )
         assert str(e.value) == "404 Entity not found."

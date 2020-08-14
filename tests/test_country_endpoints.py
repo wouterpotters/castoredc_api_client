@@ -36,7 +36,9 @@ class TestCountry:
         for i in range(0, 5):
             random_country = random.choice(all_countries)
             random_keys = random_country.keys()
-            assert (len(random_keys) == len(self.model_keys_1) or len(random_keys) == len(self.model_keys_2))
+            assert len(random_keys) == len(self.model_keys_1) or len(
+                random_keys
+            ) == len(self.model_keys_2)
             for key in random_keys:
                 assert key in self.model_keys_1
 

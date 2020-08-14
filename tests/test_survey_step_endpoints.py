@@ -49,8 +49,7 @@ class TestSurveyStep:
     def test_single_survey_single_step_fail(self, client, surveys_with_steps):
         rand_survey = random.choice(list(surveys_with_steps.keys()))
         rand_step = (
-            random.choice(surveys_with_steps[rand_survey])["survey_step_id"]
-            + "FAKE"
+            random.choice(surveys_with_steps[rand_survey])["survey_step_id"] + "FAKE"
         )
 
         with pytest.raises(CastorException) as e:

@@ -23,7 +23,9 @@ class TestRecordProgress:
         return progress_report
 
     def test_record_progress(self, progress_report, all_record_ids):
-        assert len(progress_report) == len(all_record_ids), "See TODO under report_progress in client"
+        assert len(progress_report) == len(
+            all_record_ids
+        ), "See TODO under report_progress in client"
         record = random.choice(progress_report)
         api_record_keys = record.keys()
         assert len(api_record_keys) == len(self.record_progress_keys)

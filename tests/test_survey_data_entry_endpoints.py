@@ -25,9 +25,7 @@ class TestSurveyDataEntry:
         random_survey_field = random.choice(all_survey_data_points)
         survey_id = random_survey_field["survey_instance_id"]
         record_id = random_survey_field["record_id"]
-        survey = client.single_survey_instance_all_fields_record(
-            record_id, survey_id
-        )
+        survey = client.single_survey_instance_all_fields_record(record_id, survey_id)
         for field in survey:
             field_keys = field.keys()
             assert len(field_keys) == len(self.model_keys)
@@ -44,9 +42,7 @@ class TestSurveyDataEntry:
         record_id = random_survey_field["record_id"] + "FAKE"
 
         with pytest.raises(CastorException) as e:
-            client.single_survey_instance_all_fields_record(
-                record_id, survey_id
-            )
+            client.single_survey_instance_all_fields_record(record_id, survey_id)
         assert str(e.value) == "404 The record you requested data for does not exist."
 
     def test_single_survey_instance_single_field_record_success(

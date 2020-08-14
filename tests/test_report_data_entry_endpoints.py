@@ -43,9 +43,7 @@ class TestReportDataEntry:
         random_id = random_report_field["report_instance_id"] + "FAKE"
         random_record = random_report_field["record_id"]
         with pytest.raises(CastorException) as e:
-            client.single_report_instance_all_fields_record(
-                random_record, random_id
-            )
+            client.single_report_instance_all_fields_record(random_record, random_id)
         assert str(e.value) == "404 The report you requested data for does not exist."
 
     def test_single_report_instance_single_field_record_success(

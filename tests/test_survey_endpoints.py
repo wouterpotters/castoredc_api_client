@@ -85,7 +85,9 @@ class TestSurveyEndpoints:
             assert type(random_package[key]) in package_model[key]
 
     def test_single_survey_package_success(self, client, all_survey_packages):
-        random_package = client.single_survey_package(random.choice(all_survey_packages)["id"])
+        random_package = client.single_survey_package(
+            random.choice(all_survey_packages)["id"]
+        )
         package_keys = random_package.keys()
         assert len(package_keys) == len(self.p_model_keys)
         for key in package_keys:
@@ -94,7 +96,9 @@ class TestSurveyEndpoints:
 
     def test_single_survey_package_fail(self, client, all_survey_packages):
         with pytest.raises(CastorException) as e:
-            client.single_survey_package(random.choice(all_survey_packages)["id"] + "FAKE")
+            client.single_survey_package(
+                random.choice(all_survey_packages)["id"] + "FAKE"
+            )
         assert str(e.value) == "404 Entity not found."
 
     # SURVEY PACKAGE INSTANCES
@@ -124,7 +128,9 @@ class TestSurveyEndpoints:
     def test_all_survey_package_instance_record_fail(
         self, client, all_survey_package_instances
     ):
-        random_record = random.choice(all_survey_package_instances)["record_id"] + "FAKE"
+        random_record = (
+            random.choice(all_survey_package_instances)["record_id"] + "FAKE"
+        )
         with pytest.raises(CastorException) as e:
             client.all_survey_package_instances(record=random_record)
         assert str(e.value) == "404 Not found."
@@ -144,7 +150,9 @@ class TestSurveyEndpoints:
         self, client, all_survey_package_instances
     ):
         with pytest.raises(CastorException) as e:
-            client.single_survey_package_instance(random.choice(all_survey_package_instances)["id"] + "FAKE")
+            client.single_survey_package_instance(
+                random.choice(all_survey_package_instances)["id"] + "FAKE"
+            )
         assert str(e.value) == "404 Survey package invitation not found"
 
     # POST
@@ -181,9 +189,7 @@ class TestSurveyEndpoints:
         old_status = package["locked"]
 
         target_status = not old_status
-        client.patch_survey_package_instance(
-            random_instance, target_status
-        )
+        client.patch_survey_package_instance(random_instance, target_status)
 
         package = client.single_survey_package_instance(random_instance)
         new_status = package["locked"]

@@ -44,5 +44,7 @@ class TestFieldValidation:
 
     def test_single_field_failure(self, client, all_field_vals):
         with pytest.raises(CastorException) as e:
-            client.single_field_validation(random.choice(all_field_vals)["id"] - 10 ** 10)
+            client.single_field_validation(
+                random.choice(all_field_vals)["id"] - 10 ** 10
+            )
         assert str(e.value) == "404 Entity not found."

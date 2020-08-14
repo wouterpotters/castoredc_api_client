@@ -60,7 +60,9 @@ class TestReportInstance:
 
     def test_single_report_instance_fail(self, client, all_report_instances):
         with pytest.raises(CastorException) as e:
-            client.single_report_instance(random.choice(all_report_instances)["id"] + "FAKE")
+            client.single_report_instance(
+                random.choice(all_report_instances)["id"] + "FAKE"
+            )
         assert "The request you made was malformed" in str(e.value)
 
     def test_all_report_instances_record_success(self, client, records_with_reports):
@@ -131,7 +133,9 @@ class TestReportInstance:
 
         assert amount_reports == new_amount
 
-    def test_create_multiple_report_instances_record_success(self, client, records_with_reports):
+    def test_create_multiple_report_instances_record_success(
+        self, client, records_with_reports
+    ):
         random_record = random.choice(list(records_with_reports.keys()))
 
         reports = []

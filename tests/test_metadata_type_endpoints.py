@@ -34,7 +34,9 @@ class TestMetadataType:
             assert type(metadata_type[key]) in metadata_type_model[key]
 
     def test_single_metadata_type_success(self, client, all_metadata_types):
-        metadata_type = client.single_metadata_type(random.choice(all_metadata_types)["id"])
+        metadata_type = client.single_metadata_type(
+            random.choice(all_metadata_types)["id"]
+        )
         api_keys = metadata_type.keys()
         assert len(self.model_keys) == len(api_keys)
         for key in self.model_keys:
