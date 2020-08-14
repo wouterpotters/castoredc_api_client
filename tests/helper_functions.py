@@ -38,7 +38,11 @@ def allowed_value(client, field_id):
             max_val = 99
         # Value needs to be between min_val and max_val
         # If they are floats, min_val needs to be rounded up and max_val rounded down.
-        post_value = random.randint(int(math.ceil(min_val), int(max_val)))
+        client.logger.info(min_val)
+        client.logger.info(type(min_val))
+        client.logger.info(max_val)
+        client.logger.info(type(max_val))
+        post_value = random.randint(int(math.ceil(min_val)), int(max_val))
     else:
         post_value = data_options[field["field_type"]]
 
