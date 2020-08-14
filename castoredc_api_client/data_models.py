@@ -32,6 +32,15 @@ study_data_point_model = {
     "updated_on": [str, ],
 }
 
+report_model = {
+    "id": [str, ],
+    "report_id": [str, ],
+    "description": [str, ],
+    "name": [str, ],
+    "type": [str, ],
+    "_links": [dict, ],
+}
+
 report_data_point_model = {
     "field_id": [str, ],
     "report_instance_id": [str, ],
@@ -52,7 +61,6 @@ report_data_point_extended_model = {
     "_embedded": [dict, ],
     "_links": [dict, ],
 }
-
 
 survey_data_point_model = {
     "field_id": [str, ],
