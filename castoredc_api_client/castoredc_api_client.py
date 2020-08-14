@@ -28,8 +28,8 @@ class CastorClient:
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
         client_id and client_secret. If test is set to True, suppresses logging to the command line."""
         # Instantiate Requests sessions
-        self.s = requests.Session()
-        self.s.headers.update(self.headers)
+        self.session = requests.Session()
+        self.session.headers.update(self.headers)
 
         # Instantiate logging
         self.logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ class CastorClient:
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)
         self.headers["authorization"] = "Bearer " + token
-        self.s.headers.update(self.headers)
+        self.session.headers.update(self.headers)
 
         # Instantiate global study variables
         self.study_url = ""
@@ -785,7 +785,7 @@ class CastorClient:
     def castor_get(self, url, params):
         """Query the Castor server with a certain request."""
         try:
-            response = self.s.get(url=url, params=params)
+            response = self.session.get(url=url, params=params)
             content = json.loads(response.content)
             # Check if the return object is an error
             if "status" in content.keys() and "detail" in content.keys():
@@ -801,8 +801,7 @@ class CastorClient:
         """Helper function to post body to url."""
         try:
             body = json.dumps(body).encode()
-            response = self.s.post(url=url, data=body)
-            # Log Auditing Trail for changing data
+            response = self.session.post(url=url, data=body)
             content = json.loads(response.content)
             # Check if the return object is an error
             if "status" in content.keys() and "detail" in content.keys():
@@ -818,8 +817,7 @@ class CastorClient:
         """Helper function to patch body to url."""
         try:
             body = json.dumps(body).encode()
-            response = self.s.patch(url=url, data=body)
-            # Log Auditing Trail for changing data
+            response = self.session.patch(url=url, data=body)
             content = json.loads(response.content)
             if "status" in content.keys():
                 # If Castor server throws an error, raise an error

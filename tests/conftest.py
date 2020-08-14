@@ -81,14 +81,14 @@ def item_totals(client):
     return item_totals
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def all_record_ids(client):
     records = client.all_records(archived=0)
     all_record_ids = [record["id"] for record in records]
     return all_record_ids
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def records_with_reports(client, all_record_ids):
     records_with_reports = {}
     for record_id in all_record_ids:
@@ -105,7 +105,7 @@ def records_with_reports(client, all_record_ids):
     return records_with_reports
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def records_with_survey_package_instances(client, all_record_ids):
     records_with_survey_package_instances = {}
     for record_id in all_record_ids:
@@ -116,7 +116,7 @@ def records_with_survey_package_instances(client, all_record_ids):
     return records_with_survey_package_instances
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def records_with_survey_instances(client, all_record_ids):
     records_with_survey_instances = {}
     for record_id in all_record_ids:
@@ -181,3 +181,11 @@ def study_field_ids(client):
     study_data_points = client.all_study_data_points()
     study_field_ids = set(field["field_id"] for field in study_data_points)
     return study_field_ids
+
+
+@pytest.fixture(scope="function")
+def unlock_survey_package_instances(client):
+    """Unlocks all survey package instances in the study."""
+    instance_ids = [instance["id"] for instance in client.all_survey_package_instances()]
+    for instance_id in instance_ids:
+        client.patch_survey_package_instance(instance_id, False)
