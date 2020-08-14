@@ -54,6 +54,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 report.html
+assets/
 
 # Scrapy stuff:
 .scrapy
