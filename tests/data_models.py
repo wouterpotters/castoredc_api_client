@@ -141,6 +141,62 @@ report_step_model = {
     "_embedded": [dict, ],
 }
 
+survey_model = {
+    "id": [str, ],
+    "survey_id": [str, ],
+    "name": [str, ],
+    "description": [str, ],
+    "intro_text": [str, ],
+    "outro_text": [str, ],
+    "survey_steps": [list, ],
+    "_links": [dict, ],
+}
+
+package_model = {
+    "id": [str, ],
+    "survey_package_id": [str, ],
+    "name": [str, ],
+    "description": [str, ],
+    "intro_text": [str, ],
+    "outro_text": [str, ],
+    "sender_name": [str, ],
+    "sender_email": [str, ],
+    "auto_send": [bool, ],
+    "allow_step_navigation": [bool, ],
+    "show_step_navigator": [bool, ],
+    "finish_url": [str, ],
+    "auto_lock_on_finish": [bool, ],
+    "default_invitation": [str, ],
+    "default_invitation_subject": [str, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
+survey_package_instance_model = {
+    "id": [str, ],
+    "survey_package_instance_id": [str, ],
+    "record_id": [str, ],
+    "institute_id": [str, ],
+    "institute_name": [str, ],
+    "survey_package_id": [str, ],
+    "survey_package_name": [str, ],
+    "invitation_subject": [str, ],
+    "invitation_content": [str, ],
+    "created_on": [dict, ],
+    "created_by": [str, ],
+    "sent_on": [dict, type(None)],
+    "first_opened_on": [dict, type(None)],
+    "finished_on": [dict, type(None)],
+    "locked": [bool, ],
+    "archived": [bool, ],
+    "survey_url_string": [str, ],
+    "progress": [int, ],
+    "auto_lock_on_finish": [bool, ],
+    "auto_send": [bool, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
 survey_data_point_model = {
     "field_id": [str, ],
     "survey_instance_id": [str, ],
