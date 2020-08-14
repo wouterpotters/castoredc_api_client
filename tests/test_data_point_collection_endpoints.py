@@ -324,7 +324,6 @@ class TestDataPoint:
             for field in random_fields
         ]
         feedback = client.update_study_data_record(random_record, common, data)
-        client.logger.error(feedback)
         assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 0
 
