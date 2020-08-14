@@ -786,6 +786,9 @@ class CastorClient:
         """Query the Castor server with a certain request."""
         try:
             response = self.session.get(url=url, params=params)
+        except requests.exceptions.RequestException as e:
+            raise CastorException(e)
+        else:
             content = json.loads(response.content)
             # Check if the return object is an error
             if "status" in content.keys() and "detail" in content.keys():
@@ -793,15 +796,15 @@ class CastorClient:
                 raise CastorException(str(content["status"]) + " " + content["detail"])
             else:
                 return content
-        except requests.exceptions.RequestException as e:
-            raise CastorException(e)
 
-    @castor_exception_handler
     def castor_post(self, url, body):
         """Helper function to post body to url."""
+        body = json.dumps(body).encode()
         try:
-            body = json.dumps(body).encode()
             response = self.session.post(url=url, data=body)
+        except requests.exceptions.RequestException as e:
+            raise CastorException(e)
+        else:
             content = json.loads(response.content)
             # Check if the return object is an error
             if "status" in content.keys() and "detail" in content.keys():
@@ -809,23 +812,21 @@ class CastorClient:
                 raise CastorException(str(content["status"]) + " " + content["detail"])
             else:
                 return content
-        except requests.exceptions.RequestException as e:
-            raise CastorException(e)
 
-    @castor_exception_handler
     def castor_patch(self, url, body):
         """Helper function to patch body to url."""
+        body = json.dumps(body).encode()
         try:
-            body = json.dumps(body).encode()
             response = self.session.patch(url=url, data=body)
+        except requests.exceptions.RequestException as e:
+            raise CastorException(e)
+        else:
             content = json.loads(response.content)
             if "status" in content.keys():
                 # If Castor server throws an error, raise an error
                 raise CastorException(str(content["status"]) + " " + content["detail"])
             else:
                 return content
-        except requests.exceptions.RequestException as e:
-            raise CastorException(e)
 
     @castor_exception_handler
     def request_auth_token(self, client_id, client_secret):
