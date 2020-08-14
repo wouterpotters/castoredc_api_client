@@ -150,6 +150,17 @@ survey_data_point_model = {
     "updated_on": [str, ],
 }
 
+survey_data_point_extended_model = {
+    "record_id": [str, ],
+    "field_variable_name": [str, ],
+    "field_id": [str, ],
+    "value": [str, ],
+    "updated_on": [str, ],
+    "survey_instance_id": [str, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
 field_dep_model = {
     "id": [str, ],
     "operator": [str, ],
@@ -312,4 +323,16 @@ stats_institutes_model = {
     "institute_id": [str, ],
     "institute_name": [str, ],
     "record_count": [int, ],
+}
+data_options = {
+    "numeric": "1",
+    "date": "11-11-2017",
+    "string": "testing",
+    "dropdown": "1",
+    "radio": "1",
+    "textarea": "testing",
+    "slider": "5",
+    "checkbox": "1",
+    "calculation": "5",
+    "year": "2005",
 }

@@ -10,9 +10,8 @@ import random
 
 import pytest
 
-from tests.data_models import report_data_point_extended_model
+from tests.data_models import report_data_point_extended_model, data_options
 from castoredc_api_client.exceptions import CastorException
-from tests.conftest import data_options
 
 
 class TestReportDataEntry:

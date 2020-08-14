@@ -15,19 +15,6 @@ import pytest
 import auth.auth_data as auth_data
 from castoredc_api_client.exceptions import CastorException
 
-data_options = {
-    "numeric": "1",
-    "date": "11-11-2017",
-    "string": "testing",
-    "dropdown": "1",
-    "radio": "1",
-    "textarea": "testing",
-    "slider": "5",
-    "checkbox": "1",
-    "calculation": "5",
-    "year": "2005",
-}
-
 
 @pytest.fixture(scope="session")
 def client():
