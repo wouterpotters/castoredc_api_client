@@ -442,6 +442,7 @@ class TestDataPoint:
         assert feedback["total_failed"] == len(fields)
 
     def test_create_report_data_points_fail_record(self, client, records_with_reports):
+        # TODO: test that nothing has changed
         fields = []
 
         # Keep looking for a report until one with fields is found
@@ -479,7 +480,6 @@ class TestDataPoint:
                 random_record + "FAKE", rand_report_instance, common, data
             )
         assert str(e.value) == "404 Record not found"
-        # TODO: Test that nothing changed in the database
 
     def test_create_survey_instance_data_points_success(
         self, client, records_with_survey_instances, unlock_survey_package_instances,
@@ -591,7 +591,7 @@ class TestDataPoint:
         assert str(e.value) == "404 Record not found"
 
     def test_create_survey_package_instance_data_points_success(
-        self, client, records_with_survey_package_instances, unlock_survey_package_instance,
+        self, client, records_with_survey_package_instances, unlock_survey_package_instances,
     ):
         fields = []
         # Keep looking for a report until one with fields is found
