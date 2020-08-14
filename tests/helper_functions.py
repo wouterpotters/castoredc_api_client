@@ -6,6 +6,7 @@ Link: https://data.castoredc.com/api#/study
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
+import math
 import random
 
 data_options = {
@@ -35,7 +36,9 @@ def allowed_value(client, field_id):
             min_val = 0
         if max_val is None:
             max_val = 99
-        post_value = random.choice(range(int(min_val), int(max_val)))
+        # Value needs to be between min_val and max_val
+        # If they are floats, min_val needs to be rounded up and max_val rounded down.
+        post_value = random.randint(int(math.ceil(min_val), int(max_val)))
     else:
         post_value = data_options[field["field_type"]]
 
