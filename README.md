@@ -20,24 +20,6 @@ c.link_study('MYSTUDYID')
 c.all_records()
 ```
 
-### TODOs
-
-#### Package
-* Expand docstrings for all functions
-* Expand documentation for all lines so users understand different steps
-* Expand data-mapping (efficient sorting algorithms for client.fields)
-* Allow file-uploading functionality
-* Refactor create_survey_package_instance
-* Refactor retrieve_data_by_id to only work for the intentioned use case and create a different function for the usecase of record_progress
-
-#### Tests
-* Make failing tests expect CastorException
-* Revamp tests, seems to be some unforeseen problems
-* Create docstring for each test
-* Add comments to parts of tests to clarify what is happening
-* Increase test coverage (edge cases)
-* Test model values (currently only testing model keys)
-
 ### Prerequisites
 
 1. Python version > 3.6.0
@@ -53,11 +35,11 @@ TODO
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read CONTRIBUTING.md(CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/reiniervlinschoten/castoredc_api_client/tags). 
 
 ## Authors
 
