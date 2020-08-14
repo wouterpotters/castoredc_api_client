@@ -32,6 +32,16 @@ study_data_point_model = {
     "updated_on": [str, ],
 }
 
+study_data_point_extended_model = {
+    "record_id": [str, ],
+    "field_variable_name": [str, ],
+    "field_id": [str, ],
+    "value": [str, ],
+    "updated_on": [str, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
 step_model = {
     "id": [str, ],
     "step_id": [str, ],

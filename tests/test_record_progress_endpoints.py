@@ -10,7 +10,7 @@ import random
 
 import pytest
 
-from castoredc_api_client.data_models import record_progress_model, steps_model
+from tests.data_models import record_progress_model, steps_model
 
 
 class TestRecordProgress:

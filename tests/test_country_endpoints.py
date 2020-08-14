@@ -9,7 +9,7 @@ https://orcid.org/0000-0003-3052-596X
 import random
 import pytest
 
-from castoredc_api_client.data_models import country_model_1, country_model_2
+from tests.data_models import country_model_1, country_model_2
 from castoredc_api_client.exceptions import CastorException
 
 

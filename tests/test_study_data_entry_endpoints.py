@@ -8,18 +8,10 @@ https://orcid.org/0000-0003-3052-596X
 """
 import random
 from tests.conftest import data_options
+from tests.data_models import study_data_point_model
 
 
 class TestStudyDataEntry:
-    study_data_point_model = {
-        "record_id": "string",
-        "field_variable_name": "string",
-        "field_id": "string",
-        "value": "string",
-        "updated_on": "string",
-        "_embedded": "dict",
-        "_links": "dict",
-    }
     model_keys = study_data_point_model.keys()
 
     data_options = data_options
