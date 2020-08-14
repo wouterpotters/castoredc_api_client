@@ -9,18 +9,11 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from castoredc_api_client.data_models import step_model
+from castoredc_api_client.exceptions import CastorException
+
 
 class TestStep:
-    step_model = {
-        "id": "string",
-        "step_id": "string",
-        "step_description": "string",
-        "step_name": "string",
-        "step_order": "int",
-        "_embedded": "dict",
-        "_links": "dict",
-    }
-
     model_keys = step_model.keys()
 
     @pytest.fixture(scope="class")
@@ -37,20 +30,19 @@ class TestStep:
             assert len(step_keys) == len(self.model_keys)
             for key in step_keys:
                 assert key in self.model_keys
+                assert type(step[key]) in step_model[key]
 
     def test_single_step_success(self, all_steps, client):
-        for i in range(0, 3):
-            random_id = random.choice(all_steps)["id"]
-            step = client.single_step(random_id)
-            assert step is not None
+        random_id = random.choice(all_steps)["id"]
+        step = client.single_step(random_id)
 
-            step_keys = step.keys()
-            assert len(step_keys) == len(self.model_keys)
-            for key in step_keys:
-                assert key in self.model_keys
+        step_keys = step.keys()
+        assert len(step_keys) == len(self.model_keys)
+        for key in step_keys:
+            assert key in self.model_keys
+            assert type(step[key]) in step_model[key]
 
     def test_single_step_fail(self, all_steps, client):
-        for i in range(0, 3):
-            random_id = random.choice(all_steps)["id"] + "FAKE"
-            step = client.single_step(random_id)
-            assert step is None
+        with pytest.raises(CastorException) as e:
+            client.single_step(random.choice(all_steps)["id"] + "FAKE")
+        assert str(e.value) == "404 Entity not found."

@@ -32,6 +32,16 @@ study_data_point_model = {
     "updated_on": [str, ],
 }
 
+step_model = {
+    "id": [str, ],
+    "step_id": [str, ],
+    "step_description": [str, ],
+    "step_name": [str, ],
+    "step_order": [int, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
 report_model = {
     "id": [str, ],
     "report_id": [str, ],
