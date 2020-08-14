@@ -296,3 +296,20 @@ steps_model = {
     "locked": [bool, ],
     "signed": [bool, ],
 }
+
+statistics_model = {
+    "study_id": [str, ],
+    "records": [dict, ],
+    "_links": [dict, ],
+}
+
+stats_records_model = {
+    "total_count": [int, ],
+    "institutes": [list, ],
+}
+
+stats_institutes_model = {
+    "institute_id": [str, ],
+    "institute_name": [str, ],
+    "record_count": [int, ],
+}

@@ -8,28 +8,13 @@ https://orcid.org/0000-0003-3052-596X
 """
 import pytest
 
+from tests.data_models import statistics_model, stats_records_model, stats_institutes_model
+
 
 class TestStatistics:
-    statistics_model = {
-        "study_id": "string",
-        "records": "dict",
-        "_links": "dict",
-    }
-
-    records_model = {
-        "total_count": "int",
-        "institutes": "list",
-    }
-
-    institutes_model = {
-        "institute_id": "string",
-        "institute_name": "string",
-        "record_count": "int",
-    }
-
     s_model_keys = statistics_model.keys()
-    r_model_keys = records_model.keys()
-    i_model_keys = institutes_model.keys()
+    r_model_keys = stats_records_model.keys()
+    i_model_keys = stats_institutes_model.keys()
 
     @pytest.fixture(scope="session")
     def stats(self, client):
@@ -41,6 +26,7 @@ class TestStatistics:
         assert len(stats_keys) == len(self.s_model_keys)
         for key in stats_keys:
             assert key in self.s_model_keys
+            assert type(stats[key]) in statistics_model[key]
 
     def test_study_statistics_records(self, stats):
         records = stats["records"]
@@ -48,6 +34,7 @@ class TestStatistics:
         assert len(records_keys) == len(self.r_model_keys)
         for key in records_keys:
             assert key in self.r_model_keys
+            assert type(records[key]) in stats_records_model[key]
 
     def test_study_statistics_institutes(self, stats):
         institutes = stats["records"]["institutes"]
@@ -56,3 +43,4 @@ class TestStatistics:
             assert len(institute_keys) == len(self.i_model_keys)
             for key in institute_keys:
                 assert key in self.i_model_keys
+                assert type(institute[key]) in stats_institutes_model[key]
