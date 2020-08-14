@@ -324,8 +324,8 @@ class TestDataPoint:
             for field in random_fields
         ]
         feedback = client.update_study_data_record(random_record, common, data)
+        client.logger.error(feedback)
         assert feedback["total_processed"] == 5
-        # Assert that not everything failed, indication that it worked
         assert feedback["total_failed"] == 0
 
     def test_create_study_data_points_fail_ids(self, client, all_record_ids):

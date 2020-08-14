@@ -22,7 +22,7 @@ c.all_records()
 
 ### Prerequisites
 
-1. Python version > 3.6.0
+1. Python version > 3.0
 2. Requests
 
 ### Installing Dev Environment
