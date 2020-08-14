@@ -39,4 +39,4 @@ class TestRecordProgress:
                 assert len(api_step_keys) == len(self.steps_keys)
                 for step_key in api_step_keys:
                     assert step_key in self.steps_keys
-                    assert type(step[step_key]) in steps_model[key]
+                    assert type(step[step_key]) in steps_model[step_key]
