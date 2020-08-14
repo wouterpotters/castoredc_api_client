@@ -9,12 +9,12 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
-from tests.data_models import step_model
+from tests.data_models import study_step_model
 from castoredc_api_client.exceptions import CastorException
 
 
 class TestStep:
-    model_keys = step_model.keys()
+    model_keys = study_step_model.keys()
 
     @pytest.fixture(scope="class")
     def all_steps(self, client):
@@ -30,7 +30,7 @@ class TestStep:
             assert len(step_keys) == len(self.model_keys)
             for key in step_keys:
                 assert key in self.model_keys
-                assert type(step[key]) in step_model[key]
+                assert type(step[key]) in study_step_model[key]
 
     def test_single_step_success(self, all_steps, client):
         random_id = random.choice(all_steps)["id"]
@@ -40,7 +40,7 @@ class TestStep:
         assert len(step_keys) == len(self.model_keys)
         for key in step_keys:
             assert key in self.model_keys
-            assert type(step[key]) in step_model[key]
+            assert type(step[key]) in study_step_model[key]
 
     def test_single_step_fail(self, all_steps, client):
         with pytest.raises(CastorException) as e:

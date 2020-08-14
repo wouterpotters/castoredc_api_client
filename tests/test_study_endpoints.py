@@ -9,46 +9,11 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from tests.data_models import study_model, user_model
+
 
 class TestStudy:
-    study_model = {
-        "crf_id": "string",
-        "study_id": "string",
-        "name": "string",
-        "created_by": "string",
-        "created_on": "string",
-        "live": "boolean",
-        "randomization_enabled": "boolean",
-        "gcp_enabled": "boolean",
-        "surveys_enabled": "boolean",
-        "premium_support_enabled": "boolean",
-        "main_contact": "string",
-        "expected_centers": "int",
-        "duration": "int",
-        "expected_records": "int",
-        "slug": "string",
-        "version": "string",
-        "domain": "string",
-        "_links": "dict",
-    }
-
     s_model_keys = study_model.keys()
-
-    user_model = {
-        "id": "string",
-        "user_id": "string",
-        "entity_id": "string",
-        "full_name": "string",
-        "name_first": "string",
-        "name_middle": "string",
-        "name_last": "string",
-        "email_address": "string",
-        "institute": "string",
-        "department": "string",
-        "last_login": "dict",
-        "_links": "dict",
-    }
-
     u_model_keys = user_model.keys()
 
     @pytest.fixture(scope="class")

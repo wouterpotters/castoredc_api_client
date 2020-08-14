@@ -42,13 +42,49 @@ study_data_point_extended_model = {
     "_links": [dict, ],
 }
 
-step_model = {
+study_step_model = {
     "id": [str, ],
     "step_id": [str, ],
     "step_description": [str, ],
     "step_name": [str, ],
     "step_order": [int, ],
     "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
+user_model = {
+    "id": [str, ],
+    "user_id": [str, ],
+    "entity_id": [str, ],
+    "full_name": [str, ],
+    "name_first": [str, ],
+    "name_middle": [str, ],
+    "name_last": [str, ],
+    "email_address": [str, ],
+    "institute": [str, ],
+    "department": [str, ],
+    "last_login": [dict, ],
+    "_links": [dict, ],
+}
+
+study_model = {
+    "crf_id": [str, ],
+    "study_id": [str, ],
+    "name": [str, ],
+    "created_by": [str, ],
+    "created_on": [str, ],
+    "live": [bool, ],
+    "randomization_enabled": [bool, ],
+    "gcp_enabled": [bool, ],
+    "surveys_enabled": [bool, ],
+    "premium_support_enabled": [bool, ],
+    "main_contact": [str, ],
+    "expected_centers": [int, ],
+    "duration": [int, ],
+    "expected_records": [int, ],
+    "slug": [str, ],
+    "version": [str, ],
+    "domain": [str, ],
     "_links": [dict, ],
 }
 
