@@ -9,6 +9,9 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from castoredc_api_client.data_models import record_model
+from castoredc_api_client.exceptions import CastorException
+
 
 def create_record(client, fake):
     institutes = client.all_institutes()
@@ -25,26 +28,6 @@ def create_record(client, fake):
 
 
 class TestRecord:
-    record_model = {
-        "id": "string",
-        "record_id": "string",
-        "_embedded": "dict",
-        "ccr_patient_id": "string",
-        "randomized_id": "string",
-        "randomization_group": "int",
-        "randomization_group_name": "string",
-        "last_opened_step": "string",
-        "progress": "int",
-        "status": "string",
-        "archived": "boolean",
-        "archived_reason": "string",
-        "created_by": "string",
-        "created_on": "dict",
-        "updated_by": "string",
-        "updated_on": "dict",
-        "_links": "dict",
-    }
-
     model_keys = record_model.keys()
 
     @pytest.fixture(scope="class")
@@ -57,12 +40,12 @@ class TestRecord:
         assert len(all_records) == item_totals["total_records"]
 
     def test_all_records_model(self, all_records):
-        for i in range(0, 3):
-            random_record = random.choice(all_records)
-            api_keys = random_record.keys()
-            assert len(self.model_keys) == len(api_keys)
-            for key in self.model_keys:
-                assert key in api_keys
+        random_record = random.choice(all_records)
+        api_keys = random_record.keys()
+        assert len(self.model_keys) == len(api_keys)
+        for key in self.model_keys:
+            assert key in api_keys
+            assert type(random_record[key]) in record_model[key]
 
     def test_all_records_archived(self, client):
         all_records = client.all_records(archived=1)
@@ -75,28 +58,25 @@ class TestRecord:
             assert record["archived"] is False
 
     def test_all_records_single_center(self, client):
-        # Assumes institute endpoints are working
         institutes = client.all_institutes()
-        for i in range(0, 3):
-            institute = random.choice(institutes)["institute_id"]
-            all_records = client.all_records(institute_id=institute)
-            for record in all_records:
-                assert record["_embedded"]["institute"]["id"] == institute
+        institute = random.choice(institutes)["institute_id"]
+        all_records = client.all_records(institute_id=institute)
+        for record in all_records:
+            assert record["_embedded"]["institute"]["id"] == institute
 
     def test_single_record_success(self, client, all_records):
-        for i in range(0, 3):
-            random_id = random.choice(all_records)["id"]
-            random_record = client.single_record(random_id)
-            api_keys = random_record.keys()
-            assert len(self.model_keys) == len(api_keys)
-            for key in self.model_keys:
-                assert key in api_keys
+        random_id = random.choice(all_records)["id"]
+        random_record = client.single_record(random_id)
+        api_keys = random_record.keys()
+        assert len(self.model_keys) == len(api_keys)
+        for key in self.model_keys:
+            assert key in api_keys
+            assert type(random_record[key]) in record_model[key]
 
     def test_single_record_fail(self, client, all_records):
-        for i in range(0, 3):
-            random_id = random.choice(all_records)["id"] + "FAKE"
-            random_record = client.single_record(random_id)
-            assert random_record is None
+        with pytest.raises(CastorException) as e:
+            client.single_record(random.choice(all_records)["id"] + "FAKE")
+        assert str(e.value) == "404 Record not found."
 
     def test_create_record_success(self, client):
         len_records = len(client.all_records())
@@ -104,8 +84,6 @@ class TestRecord:
         record = create_record(client, fake=False)
         created = client.create_record(**record)
         new_record_id = created["id"]
-
-        assert created is not None
 
         new_records = client.all_records()
         new_len = len(new_records)
@@ -117,9 +95,9 @@ class TestRecord:
         len_records = len(client.all_records())
 
         record = create_record(client, fake=True)
-        created = client.create_record(**record)
-
-        assert created is None
+        with pytest.raises(CastorException) as e:
+            client.create_record(**record)
+        assert str(e.value) == "422 Failed Validation"
 
         new_records = client.all_records()
         new_len = len(new_records)

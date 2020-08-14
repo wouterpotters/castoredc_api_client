@@ -162,3 +162,24 @@ query_model = {
     "_embedded":  [dict, ],
     "_links":  [dict, ],
 }
+
+record_model = {
+    "id": [str, ],
+    "record_id": [str, ],
+    "_embedded": [dict, ],
+    "ccr_patient_id": [str, ],
+    "randomized_id": [str, type(None)],
+    "randomization_group": [int, type(None)],
+    "randomization_group_name": [str, type(None)],
+    "last_opened_step": [str, type(None)],
+    "progress": [int, ],
+    "status": [str, ],
+    "archived": [bool, ],
+    "archived_reason": [str, type(None)],
+    "created_by": [str, ],
+    "created_on": [dict, ],
+    "updated_by": [str, ],
+    "updated_on": [dict, ],
+    "_links": [dict, ],
+}
+
