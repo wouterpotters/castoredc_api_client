@@ -217,6 +217,16 @@ survey_data_point_extended_model = {
     "_links": [dict, ],
 }
 
+survey_step_model = {
+    "id": [str, ],
+    "survey_step_id": [str, ],
+    "survey_step_name": [str, ],
+    "survey_step_description": [str, ],
+    "survey_step_number": [int, ],
+    "_embedded": [dict, ],
+    "_links": [dict, ],
+}
+
 field_dep_model = {
     "id": [str, ],
     "operator": [str, ],
