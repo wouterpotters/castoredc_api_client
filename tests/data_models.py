@@ -17,7 +17,6 @@ country_model_1 = {
 }
 
 export_data_model = {
-    # TODO: model returns everything as string, but values might as well be int
     "Study ID": [str, ],
     "Record ID": [str, ],
     "Form Type": [str, ],
@@ -30,21 +29,20 @@ export_data_model = {
 }
 
 export_structure_model = {
-    # TODO: CSV imports all values as strings, but some are int/bool/float
     "Study ID": [str, ],
     "Form Type": [str, ],
     "Form Collection ID": [str, ],
     "Form Collection Name": [str, ],
-    "Form Collection Order": [str, ],  # Actually int
+    "Form Collection Order": [str, ],  # Actually int in database, but csv interprets everything as string
     "Form ID": [str, ],
     "Form Name": [str, ],
-    "Form Order": [str, ],  # Actually int
+    "Form Order": [str, ],  # Actually int in database, but csv interprets everything as string
     "Field ID": [str, ],
     "Field Variable Name": [str, ],
     "Field Label": [str, ],
     "Field Type": [str, ],
-    "Field Order": [str, ],  # Actually int
-    "Field Required": [str, ],  # Acutally bool
+    "Field Order": [str, ],  # Actually int in database, but csv interprets everything as string
+    "Field Required": [str, ],  # Acutally bool in database, but csv interprets everything as string
     "Calculation Template": [str, ],
     "Field Option Group": [str, ]
 }
