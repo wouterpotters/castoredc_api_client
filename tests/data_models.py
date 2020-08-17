@@ -16,6 +16,46 @@ country_model_1 = {
     "_links": [dict, ],
 }
 
+export_data_model = {
+  "Study ID": [str, ],
+  "Record ID": [str, ],
+  "Form Type": [str, ],
+  "Form Instance ID": [str, ],
+  "Form Instance Name": [str, ],
+  "Field ID": [str, ],
+  "Value": [str, ],
+  "Date": [str, ],
+  "User ID": [str, ]
+}
+
+export_structure_model = {
+  "Study ID": [str, ],
+  "Form Type": [str, ],
+  "Form Collection ID": [str, ],
+  "Form Collection Name": [str, ],
+  "Form Collection Order": [int, ],
+  "Form ID": [str, ],
+  "Form Name": [str, ],
+  "Form Order": [int, ],
+  "Field ID": [str, ],
+  "Field Variable Name": [str, ],
+  "Field Label": [str, ],
+  "Field Type": [str, ],
+  "Field Order": [int, ],
+  "Field Required": [bool, ],
+  "Calculation Template": [str, ],
+  "Field Option Group": [str, ]
+}
+
+export_option_group_model = {
+  "Study ID": [str, ],
+  "Option Group ID": [str, ],
+  "Option Group Name": [str, ],
+  "Option ID": [str, ],
+  "Option Name": [str, ],
+  "Option Value": [str, ]
+}
+
 country_model_2 = {
     "id": [str, ],
     "country_id": [str, ],

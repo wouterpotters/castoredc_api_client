@@ -6,13 +6,12 @@ Link: https://data.castoredc.com/api
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-
+import csv
 import json
 import logging
 import math
 
 import requests
-
 
 from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
@@ -22,7 +21,7 @@ class CastorClient:
     base_url = "https://data.castoredc.com/api"
     auth_url = "https://data.castoredc.com/oauth/token"
     headers = {
-        "accept": "application/hal+json",
+        "accept": "*/*",  # "application/hal+json; text/csv",
         "Content-Type": "application/json; charset=utf-8",
     }
 
@@ -155,7 +154,7 @@ class CastorClient:
         return self.retrieve_data_points(url)
 
     def single_survey_package_data_points_record(
-        self, record_id, survey_package_instance_id
+            self, record_id, survey_package_instance_id
     ):
         """Returns a list of data from a single survey package instance 
         collected for given record record_id. Returns None if record not found"""
@@ -203,10 +202,9 @@ class CastorClient:
                 }]
         """
         url = (
-            self.study_url
-            + "/record/{record_id}/data-point-collection/report-instance/{report_id}".format(
-                record_id=record_id, report_id=report_id
-            )
+                self.study_url
+                + "/record/{record_id}/data-point-collection/report-instance/{report_id}".format(
+            record_id=record_id, report_id=report_id)
         )
         post_data = {"common": common, "data": body}
         return self.castor_post(url, post_data)
@@ -222,16 +220,15 @@ class CastorClient:
                 }]
         """
         url = (
-            self.study_url
-            + "/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}".format(
-                record_id=record_id, survey_instance_id=survey_instance_id
-            )
+                self.study_url
+                + "/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}".format(
+            record_id=record_id, survey_instance_id=survey_instance_id)
         )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
 
     def update_survey_package_instance_data_record(
-        self, record_id, survey_package_instance_id, body
+            self, record_id, survey_package_instance_id, body
     ):
         """Creates/updates a survey package instance. 
         Returns None if record not found.
@@ -243,14 +240,20 @@ class CastorClient:
                 }]
         """
         url = (
-            self.study_url
-            + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
-                record_id=record_id,
-                survey_package_instance_id=survey_package_instance_id,
-            )
+                self.study_url
+                + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
+            record_id=record_id,
+            survey_package_instance_id=survey_package_instance_id,
+        )
         )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
+
+    # EXPORT
+    def export_study_data(self):
+        """Returns a list of dicts containing all data in the study (study, surveys, reports)."""
+        url = self.study_url + "/export/data"
+        return self.castor_get(url=url, params=None, content_type="CSV")["content"]
 
     # FIELDS
     def all_fields(self):
@@ -447,7 +450,7 @@ class CastorClient:
         )
 
     def create_report_instance_record(
-        self, record_id, report_id, report_name_custom, parent_id=None
+            self, record_id, report_id, report_name_custom, parent_id=None
     ):
         """Creates a report instance for a record.
         Returns None if creation failed."""
@@ -484,7 +487,7 @@ class CastorClient:
         )
 
     def single_report_instance_single_field_record(
-        self, record_id, report_instance_id, field_id
+            self, record_id, report_instance_id, field_id
     ):
         """Returns a data point for a report for a record.
         Returns None if report not found for given record or field not found
@@ -494,13 +497,13 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint=formatted_url, data_id=data_point)
 
     def update_report_instance_single_field_record(
-        self,
-        record_id,
-        report_ins_id,
-        field_id,
-        change_reason,
-        field_value=None,
-        file=None,
+            self,
+            record_id,
+            report_ins_id,
+            field_id,
+            change_reason,
+            field_value=None,
+            file=None,
     ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
@@ -600,7 +603,7 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_single_study_field_record(
-        self, record_id, field_id, field_value, change_reason
+            self, record_id, field_id, field_value, change_reason
     ):
         """Update a data point for a record.
         Returns None if target not found."""
@@ -667,15 +670,15 @@ class CastorClient:
         )
 
     def create_survey_package_instance(
-        self,
-        survey_package_id,
-        record_id,
-        email_address,
-        ccr_patient_id=None,
-        package_invitation_subject=None,
-        package_invitation=None,
-        auto_send=None,
-        auto_lock_on_finish=None,
+            self,
+            survey_package_id,
+            record_id,
+            email_address,
+            ccr_patient_id=None,
+            package_invitation_subject=None,
+            package_invitation=None,
+            auto_send=None,
+            auto_lock_on_finish=None,
     ):
         """Create a survey package. 
         Arguments marked with None are non-obligatory."""
@@ -712,7 +715,7 @@ class CastorClient:
         )
 
     def single_survey_instance_single_field_record(
-        self, record_id, survey_instance_id, field_id
+            self, record_id, survey_instance_id, field_id
     ):
         """Retrieves a single field with data for the given survey.
         Returns None if record, survey or field not found."""
@@ -722,17 +725,17 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_survey_instance_single_field_record(
-        self, record_id, survey_instance_id, field_id, field_value, change_reason
+            self, record_id, survey_instance_id, field_id, field_value, change_reason
     ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
         url = (
-            self.study_url
-            + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
-                record_id=record_id,
-                survey_instance_id=survey_instance_id,
-                field_id=field_id,
-            )
+                self.study_url
+                + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
+            record_id=record_id,
+            survey_instance_id=survey_instance_id,
+            field_id=field_id,
+        )
         )
 
         body = {
@@ -788,20 +791,50 @@ class CastorClient:
 
     # HELPER FUNCTIONS
     # noinspection PyMethodMayBeStatic
-    def castor_get(self, url, params):
-        """Query the Castor server with a certain request."""
+    def castor_get(self, url: str, params: dict or None, content_type: str) -> dict:
+        """Queries the Castor EDC API on given url with parameters params.
+        Returns a dict.
+
+        :param url: the url for the request
+        :param params: the parameters to be send with the request
+        :param content_type: the type of content expected to be returned
+        """
         try:
             response = self.session.get(url=url, params=params)
         except requests.exceptions.RequestException as e:
             raise CastorException(e)
         else:
-            content = json.loads(response.content)
-            # Check if the return object is an error
-            if "status" in content.keys() and "detail" in content.keys():
-                # If Castor server throws an error, raise an error
-                raise CastorException(str(content["status"]) + " " + content["detail"])
-            else:
-                return content
+            if content_type == "JSON":
+                return self.format_json_content(response)
+            elif content_type == "CSV":
+                return self.format_csv_content(response)
+
+    # noinspection PyMethodMayBeStatic
+    def format_json_content(self, response: requests.models.Response) -> dict:
+        """Loads JSON content from a Response object and checks it for errors.
+
+        :param response: the response object from the Castor EDC database.
+        """
+        content = json.loads(response.content)
+        # Check if the return object is an error
+        if "status" in content.keys() and "detail" in content.keys():
+            # If Castor server throws an error, raise an error
+            raise CastorException(str(content["status"]) + " " + content["detail"])
+        else:
+            return content
+
+    # noinspection PyMethodMayBeStatic
+    def format_csv_content(self, response: requests.models.Response) -> dict:
+        """Loads CSV content from a Response object.
+
+        :param response: the response object from the Castor EDC database.
+        """
+        content_decoded = response.content.decode()
+        content_csv = csv.DictReader(content_decoded.splitlines(), delimiter=";")
+        content = [line for line in content_csv]
+        if len(content) == 0:
+            raise CastorException("No data found, database returned: {}".format(content_decoded))
+        return {"content": content}
 
     def castor_post(self, url, body):
         """Helper function to post body to url."""
@@ -849,7 +882,7 @@ class CastorClient:
     @castor_exception_handler
     def retrieve_general_data(self, endpoint, embedded=False, data_id=""):
         url = self.base_url + endpoint
-        response = self.castor_get(url=url, params=None)
+        response = self.castor_get(url=url, params=None, content_type="JSON")
         if embedded:
             data = response["_embedded"][data_id]
         else:
@@ -862,7 +895,7 @@ class CastorClient:
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
         url = self.study_url + endpoint
-        data = self.castor_get(url=url, params=None)
+        data = self.castor_get(url=url, params=None, content_type="JSON")
         return data["_embedded"]["items"]
 
     @castor_exception_handler
@@ -870,7 +903,7 @@ class CastorClient:
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
         url = self.study_url + endpoint + "/{data_id}".format(data_id=data_id)
-        return self.castor_get(url=url, params=params)
+        return self.castor_get(url=url, params=params, content_type="JSON")
 
     def retrieve_all_data_by_endpoint(self, endpoint, data_name, params=None):
         """Retrieves all data on endpoint.
@@ -901,7 +934,7 @@ class CastorClient:
             params = {"page": page}
         else:
             params["page"] = page
-        response = self.castor_get(url=url, params=params)
+        response = self.castor_get(url=url, params=params, content_type="JSON")
         return response
 
     @castor_exception_handler
@@ -910,7 +943,7 @@ class CastorClient:
             url = self.study_url + endpoint
         else:
             url = self.base_url + endpoint
-        response = self.castor_get(url=url, params=None)
+        response = self.castor_get(url=url, params=None, content_type="JSON")
         return response["total_items"]
 
     # DATA MAPPING FUNCTIONS
