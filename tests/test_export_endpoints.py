@@ -16,8 +16,6 @@ class TestExportEndpoints:
     def test_export_study_data(self, client):
         """Tests the export/data endpoint of the Castor EDC API Wrapper."""
         study_data = client.export_study_data()
-        # Make sure that something is returned as the study contains data
-        assert len(study_data) > 0
         for data in study_data:
             # Assert that the number of keys between the retrieved data and the model are the same
             assert len(data.keys()) == len(export_data_model.keys())
@@ -37,7 +35,7 @@ class TestExportEndpoints:
                 # Assert that each retrieved key should be in the model
                 assert key in export_structure_model.keys()
                 # Assert that the value belonging to each key is according to the model
-                assert type(data[key]) in export_structure_model[key]
+                assert type(data[key]) in export_structure_model[key], "{}".format(key)
 
     def test_export_study_option_group(self, client):
         """Tests the export/optiongroups endpoint of the Castor EDC API Wrapper."""

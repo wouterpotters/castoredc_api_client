@@ -255,6 +255,16 @@ class CastorClient:
         url = self.study_url + "/export/data"
         return self.castor_get(url=url, params=None, content_type="CSV")["content"]
 
+    def export_study_structure(self):
+        """Returns a list of dicts containing the structure of the study."""
+        url = self.study_url + "/export/structure"
+        return self.castor_get(url=url, params=None, content_type="CSV")["content"]
+
+    def export_option_groups(self):
+        """Returns a list of dicts containing all option groups in the study."""
+        url = self.study_url + "/export/optiongroups"
+        return self.castor_get(url=url, params=None, content_type="CSV")["content"]
+
     # FIELDS
     def all_fields(self):
         """Returns a list of dicts of all fields."""

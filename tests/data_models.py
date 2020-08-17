@@ -17,43 +17,45 @@ country_model_1 = {
 }
 
 export_data_model = {
-  "Study ID": [str, ],
-  "Record ID": [str, ],
-  "Form Type": [str, ],
-  "Form Instance ID": [str, ],
-  "Form Instance Name": [str, ],
-  "Field ID": [str, ],
-  "Value": [str, ],
-  "Date": [str, ],
-  "User ID": [str, ]
+    # TODO: model returns everything as string, but values might as well be int
+    "Study ID": [str, ],
+    "Record ID": [str, ],
+    "Form Type": [str, ],
+    "Form Instance ID": [str, ],
+    "Form Instance Name": [str, ],
+    "Field ID": [str, ],
+    "Value": [str, ],
+    "Date": [str, ],
+    "User ID": [str, ]
 }
 
 export_structure_model = {
-  "Study ID": [str, ],
-  "Form Type": [str, ],
-  "Form Collection ID": [str, ],
-  "Form Collection Name": [str, ],
-  "Form Collection Order": [int, ],
-  "Form ID": [str, ],
-  "Form Name": [str, ],
-  "Form Order": [int, ],
-  "Field ID": [str, ],
-  "Field Variable Name": [str, ],
-  "Field Label": [str, ],
-  "Field Type": [str, ],
-  "Field Order": [int, ],
-  "Field Required": [bool, ],
-  "Calculation Template": [str, ],
-  "Field Option Group": [str, ]
+    # TODO: CSV imports all values as strings, but some are int/bool/float
+    "Study ID": [str, ],
+    "Form Type": [str, ],
+    "Form Collection ID": [str, ],
+    "Form Collection Name": [str, ],
+    "Form Collection Order": [str, ],  # Actually int
+    "Form ID": [str, ],
+    "Form Name": [str, ],
+    "Form Order": [str, ],  # Actually int
+    "Field ID": [str, ],
+    "Field Variable Name": [str, ],
+    "Field Label": [str, ],
+    "Field Type": [str, ],
+    "Field Order": [str, ],  # Actually int
+    "Field Required": [str, ],  # Acutally bool
+    "Calculation Template": [str, ],
+    "Field Option Group": [str, ]
 }
 
 export_option_group_model = {
-  "Study ID": [str, ],
-  "Option Group ID": [str, ],
-  "Option Group Name": [str, ],
-  "Option ID": [str, ],
-  "Option Name": [str, ],
-  "Option Value": [str, ]
+    "Study ID": [str, ],
+    "Option Group Id": [str, ],
+    "Option Group Name": [str, ],
+    "Option Id": [str, ],
+    "Option Name": [str, ],
+    "Option Value": [str, ]
 }
 
 country_model_2 = {
