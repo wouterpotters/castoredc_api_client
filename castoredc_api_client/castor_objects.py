@@ -1,11 +1,12 @@
 import itertools
+from typing import Union
 
 
 class CastorField:
     """Object representing a Castor Field. Functions as a node of a tree for all interrelations."""
 
     def __init__(self, field_id: str, field_name: str, field_label: str, field_type: str, field_required: bool,
-                 field_option_group: str) -> None:
+                 field_option_group: Union[str, None]) -> None:
         self.field_id = field_id
         self.field_name = field_name
         self.field_label = field_label
