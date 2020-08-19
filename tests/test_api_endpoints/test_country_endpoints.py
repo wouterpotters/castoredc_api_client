@@ -43,6 +43,11 @@ class TestCountry:
             assert key in self.model_keys
             assert type(country[key]) in country_model[key]
 
+    def test_all_countries_data(self, all_countries):
+        """Tests if all_countries returns the proper data."""
+        # Select a country
+        country = all_countries[167]
+
         # Test if the values are as they should be
         assert country["id"] == "169"
         assert country["country_id"] == "169"
