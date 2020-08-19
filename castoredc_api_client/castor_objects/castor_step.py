@@ -19,7 +19,7 @@ class CastorStep:
     def get_all_fields(self) -> List[CastorField]:
         return self.fields
 
-    def get_field(self, field_id: str) -> CastorField:
+    def get_single_field(self, field_id: str) -> CastorField:
         return next((field for field in self.fields if field.field_id == field_id), None)
 
     def __eq__(self, other):

@@ -1,71 +1,51 @@
 # -*- coding: utf-8 -*-
 """
-Testing class for the CastorForm class.
+Testing class for the CastorStep class.
 
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-from castoredc_api_client.castor_objects import CastorForm, CastorStep, CastorField
+from castoredc_api_client.castor_objects import CastorStep, CastorField
 
 
-class TestCastorForm:
-    """Testing class for CastorForm object unit tests."""
+class TestCastorStep:
+    """Testing class for CastorStep object unit tests."""
 
-    def test_form_create(self):
-        """Tests creation of a form."""
-        form = CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey")
-        assert type(form) is CastorForm
-        assert form.form_id == "FAKE-SURVEY-ID1"
-
-    def test_form_add_step(self):
-        """Tests adding a step to a form."""
-        form = CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey")
-        step = CastorStep("Survey Step 1a", "FAKE-SURVEY-STEP-ID1")
-        form.add_step(step)
-        assert len(form.steps) == 1
-        assert form.steps[0] == step
-        assert step.form == form
-
-    def test_form_get_all_steps(self, forms_with_steps):
-        """Tests getting all steps linked to a form."""
-        form = forms_with_steps[0]
-        steps = form.get_all_steps()
-        assert len(steps) == 3
-        for step in steps:
-            assert type(step) is CastorStep
-
-    def test_form_get_single_step(self, forms_with_steps):
-        """Tests getting a single step by id."""
-        form = forms_with_steps[0]
-        step = form.get_single_step("FAKE-SURVEY-STEP-ID2")
+    def test_step_create(self):
+        """Tests creation of a step."""
+        step = CastorStep("Report Step 2a", "FAKE-REPORT-STEP-ID3")
         assert type(step) is CastorStep
-        assert step.step_id == "FAKE-SURVEY-STEP-ID2"
-        assert step.step_name == "Survey Step 1b"
+        assert step.step_id == "FAKE-REPORT-STEP-ID3"
 
-    def test_form_get_single_step_fail(self, forms_with_steps):
-        """Tests failing to get a single step by id."""
-        form = forms_with_steps[0]
-        step = form.get_single_step("FAKE-SURVEY-STEP-ID4")
-        assert step is None
+    def test_step_add_field(self):
+        """Tests adding a field to a step."""
+        step = CastorStep("Report Step 2a", "FAKE-REPORT-STEP-ID3")
+        field = CastorField(field_id="FAKE-REPORT-FIELD-ID7", field_name="Report Field 2a4",
+                            field_label = "This is the fourth report field", field_type = "checkbox",
+                            field_required = True, field_option_group = "FAKE-OPTION-GROUP-ID5")
+        step.add_field(field)
+        assert len(step.fields) == 1
+        assert step.fields[0] == field
+        assert field.step == step
 
-    def test_form_get_all_fields(self, complete_study):
-        """Tests getting all fields from a form."""
-        form = complete_study.forms[0]
-        fields = form.get_all_fields()
-        assert len(fields) == 6
+    def test_step_get_all_fields(self, steps_with_fields):
+        """Tests getting all fields linked to a step."""
+        step = steps_with_fields[0]
+        fields = step.get_all_fields()
+        assert len(fields) == 3
         for field in fields:
             assert type(field) is CastorField
 
-    def test_form_get_single_field(self, complete_study):
+    def test_step_get_single_field(self, steps_with_fields):
         """Tests getting a single field by id."""
-        form = complete_study.forms[0]
-        field = form.get_single_field("FAKE-SURVEY-FIELD-ID3")
+        step = steps_with_fields[0]
+        field = step.get_single_field("FAKE-SURVEY-FIELD-ID3")
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
         assert field.field_name == "Survey Field 1a3"
 
-    def test_form_get_single_field_fail(self, complete_study):
+    def test_step_get_single_field_fail(self, steps_with_fields):
         """Tests failing to get a single field by id."""
-        form = complete_study.forms[0]
-        field = form.get_single_field("FAKE-SURVEY-FIELD-ID7")
+        step = steps_with_fields[0]
+        field = step.get_single_field("FAKE-SURVEY-FIELD-ID4")
         assert field is None
