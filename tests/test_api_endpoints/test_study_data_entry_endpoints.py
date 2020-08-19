@@ -11,7 +11,7 @@ import random
 import pytest
 
 from castoredc_api_client.exceptions import CastorException
-from tests.data_models import study_data_point_extended_model, data_options
+from tests.test_api_endpoints.data_models import study_data_point_extended_model, data_options
 
 
 class TestStudyDataEntry:

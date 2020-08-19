@@ -8,7 +8,7 @@ https://orcid.org/0000-0003-3052-596X
 """
 import pytest
 
-from tests.data_models import (
+from tests.test_api_endpoints.data_models import (
     statistics_model,
     stats_records_model,
     stats_institutes_model,

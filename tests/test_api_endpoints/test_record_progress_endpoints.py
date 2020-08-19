@@ -10,7 +10,7 @@ import random
 
 import pytest
 
-from tests.data_models import record_progress_model, steps_model
+from tests.test_api_endpoints.data_models import record_progress_model, steps_model
 
 
 class TestRecordProgress:

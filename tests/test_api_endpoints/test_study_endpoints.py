@@ -10,7 +10,7 @@ import pytest
 import random
 
 from castoredc_api_client.exceptions import CastorException
-from tests.data_models import study_model, user_model
+from tests.test_api_endpoints.data_models import study_model, user_model
 
 
 class TestStudy:
