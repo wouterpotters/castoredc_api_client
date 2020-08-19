@@ -13,6 +13,7 @@ import math
 
 import requests
 
+from castoredc_api_client.castor_objects import CastorField, CastorStep, CastorForm, CastorStudy
 from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
 
@@ -41,18 +42,13 @@ class CastorClient:
         self.session.headers.update(self.headers)
 
         # Instantiate global study variables
-        self.study_url = ""
-        self.field_references = {}
+        self.study_url = "Not yet instantiated"
+        self.field_map = "Not yet instantiated"
 
     def link_study(self, study_id):
-        """Link a study to the CastorClient based on the study_id"""
+        """Link a study to the CastorClient based on the study_id and creates the field map."""
         self.study_url = self.base_url + "/study/" + study_id
-
-    def collect_field_map(self):
-        """Queries the study and collects all fields that are used at least once."""
-        self.field_references["study"] = self.study_fields()
-        self.field_references["reports"] = self.report_fields()
-        self.field_references["surveys"] = self.survey_fields()
+        self.field_map = self.map_fields(study_id)
 
     # API ENDPOINTS
     # COUNTRY
@@ -957,136 +953,41 @@ class CastorClient:
         return response["total_items"]
 
     # DATA MAPPING FUNCTIONS
-    def report_instance_fields(self):
-        """Returns a list of field ids for every report in the study.
-        Can only gather data on fields that have already been filled in once
-        for any subject."""
-        # Get all report data fields
-        report_data_points = self.all_report_data_points()
-        seen = []
-        report_instance_fields = []
+    def map_fields(self, study_id: str) -> CastorStudy:
+        """Returns a CastorStudy object with the corresponding variable tree depicting interrelations"""
+        # Get the structure from the API
+        data = self.export_study_structure()
 
-        for field in report_data_points:
-            # If the field is not yet in the collection, add it
-            if field["field_id"] not in seen:
-                seen.append(field["field_id"])
-                _castor_field = CastorField(
-                    field["field_id"], field["report_instance_id"], "report_instance"
-                )
-                report_instance_fields.append(_castor_field)
+        # Instantiate the head of the tree
+        study = CastorStudy(study_id)
 
-        return report_instance_fields
+        # Loop over all fields
+        for field in data:
+            # Check if the form for the field exists, if not, create it
+            form = study.get_single_form(field["Form Collection ID"])
+            if form is None:
+                form = CastorForm(form_collection_type=field["Form Type"],
+                                  form_collection_id=field["Form Collection ID"],
+                                  form_collection_name=field["Form Collection Name"])
+                study.add_form(form)
 
-    def survey_instance_fields(self):
-        """Returns a list of field ids for every survey in the study.
-        Can only gather data on fields that have already been filled in once
-        for any subject."""
-        # Get all survey data fields
-        survey_data_points = self.all_survey_data_points()
-        seen = []
-        survey_instance_fields = []
+            # Check if the step for the field exists, if not, create it
+            step = form.get_single_step(field["Form ID"])
+            if step is None:
+                step = CastorStep(step_id=field["Form ID"],
+                                  step_name=field["Form Name"])
+                form.add_step(step)
 
-        for field in survey_data_points:
-            # If the field is not yet in the collection, add it
-            if field["field_id"] not in seen:
-                seen.append(field["field_id"])
-                _castor_field = CastorField(
-                    field["field_id"],
-                    field["survey_instance_id"],
-                    "survey_instance",
-                    survey_name=field["survey_name"],
-                )
-                survey_instance_fields.append(_castor_field)
+            # Check if the field exists, if not, create it
+            # This should not be possible as there are no doubles, but checking just in case
+            new_field = step.get_single_field(field["Field ID"])
+            if new_field is None:
+                new_field = CastorField(field_id=field["Field ID"],
+                                        field_name=field["Field Variable Name"],
+                                        field_label=field["Field Label"],
+                                        field_type=field["Field Type"],
+                                        field_required=field["Field Required"],
+                                        field_option_group=field["Field Option Group"])
+                step.add_field(new_field)
 
-        return survey_instance_fields
-
-    def study_fields(self):
-        """Returns a list of field ids for every phase/study-field in the study.
-        Can only gather data on fields that have already been filled in once
-        for any subject."""
-        # Get all study fields and remove duplicates
-        study_fields = []
-        study_data_points = self.all_study_data_points()
-        study_field_ids = [field["field_id"] for field in study_data_points]
-        study_field_ids = list(set(study_field_ids))
-
-        # Add all study fields to the collections
-        for field in study_field_ids:
-            _castor_field = CastorField(field, "STUDY", "study")
-            study_fields.append(_castor_field)
-
-        return study_fields
-
-    def report_fields(self):
-        """Transforms a list of CastorVariables that are linked to a report
-        instance and links them to their report"""
-        # Get the list with all report instance fields
-        report_instance_fields = self.report_instance_fields()
-
-        # Get all report instances, and link them to a report
-        report_instances = self.all_report_instances()
-        report_instance_to_report = {}
-        for instance in report_instances:
-            instance_id = instance["id"]
-            report_id = instance["_embedded"]["report"]["id"]
-            report_instance_to_report[instance_id] = report_id
-
-        # Link the field to a report through their report instance
-        report_fields = []
-        for field in report_instance_fields:
-            parent_report = report_instance_to_report[field.parent_id]
-            field.parent_id = parent_report
-            field.parent_type = "report"
-            report_fields.append(field)
-
-        return report_fields
-
-    def survey_fields(self):
-        """Transforms a list of CastorVariables that are linked to a survey
-        instance and links them to their survey"""
-        # Get the list with all survey instance fields
-        survey_instance_fields = self.survey_instance_fields()
-
-        # Get all surveys, and link them to their name
-        surveys = self.all_surveys()
-        survey_id_to_name = {}
-        for survey in surveys:
-            survey_id = survey["id"]
-            survey_name = survey["name"]
-            survey_id_to_name[survey_name] = survey_id
-
-        # Link the field to a survey through the survey name
-        survey_fields = []
-        for field in survey_instance_fields:
-            parent_survey = survey_id_to_name[field.survey_name]
-            field.parent_id = parent_survey
-            field.parent_type = "survey"
-            survey_fields.append(field)
-
-        return survey_fields
-
-
-class CastorField:
-    """Object containing data to reference and manipulate a Castor field in the database."""
-
-    def __init__(self, field_id, parent_id, parent_type, survey_name=None):
-        self.field_id = field_id
-        self.parent_id = parent_id
-        self.parent_type = parent_type
-        if parent_type == "survey_instance":
-            self.survey_name = survey_name
-        else:
-            self.survey_name = None
-
-    def __eq__(self, other):
-        if not isinstance(other, CastorField):
-            return NotImplemented
-
-        return self.field_id == other.field_id
-
-    def __repr__(self):
-        return "id - {field_id}; type - {parent_type}; parent - {parent_id}".format(
-            field_id=self.field_id,
-            parent_type=self.parent_type,
-            parent_id=self.parent_id,
-        )
+        return study

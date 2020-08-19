@@ -15,6 +15,10 @@ import pytest
 import auth.auth_data as auth_data
 from castoredc_api_client.exceptions import CastorException
 
+pytest_plugins = [
+   "tests.test_castor_objects.fixtures_castor_objects",
+]
+
 
 @pytest.fixture(scope="session")
 def client():
@@ -40,7 +44,6 @@ def client():
     logger.addHandler(f_handler)
 
     client.link_study(auth_data.study_id)
-    client.collect_field_map()
     yield client
 
     handlers = client.logger.handlers[:]
