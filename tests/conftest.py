@@ -16,7 +16,7 @@ import auth.auth_data as auth_data
 from castoredc_api_client.exceptions import CastorException
 
 pytest_plugins = [
-   "tests.test_castor_objects.fixtures_castor_objects",
+    "tests.test_castor_objects.fixtures_castor_objects",
 ]
 
 
@@ -52,35 +52,38 @@ def client():
         client.logger.removeHandler(handler)
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="session")
 def item_totals(client):
-    # TODO: refactor this so that it only calls and returns the size requested (e.g. /field or /phase)
-    item_totals = {
-        "total_fields": client.request_size("/field"),
-        "total_field_deps": client.request_size("/field-dependency"),
-        "total_field_opts": client.request_size("/field-optiongroup"),
-        "total_field_vals": client.request_size("/field-validation"),
-        "total_institutes": client.request_size("/institute"),
-        "total_metadata": client.request_size("/metadata"),
-        "total_metadata_types": client.request_size("/metadatatype"),
-        "total_phases": client.request_size("/phase"),
-        "total_queries": client.request_size("/query"),
-        "total_study_data_points": client.request_size("/data-point-collection/study"),
-        "total_report_data_points": client.request_size(
-            "/data-point-collection/report-instance"
-        ),
-        "total_survey_data_points": client.request_size(
-            "/data-point-collection/survey-instance"
-        ),
-        "total_records": client.request_size("/record"),
-        "total_reports": client.request_size("/report"),
-        "total_report_instances": client.request_size("/report-instance"),
-        "total_steps": client.request_size("/step"),
-        "total_studies": client.request_size("/study", base=True),
-        "total_surveys": client.request_size("/survey"),
-        "total_survey_packages": client.request_size("/surveypackage"),
-    }
-    return item_totals
+    def return_item_totals(endpoint, base=False):
+        return client.request_size(endpoint, base)
+
+    return return_item_totals
+
+    # item_totals = {
+    #     "total_fields": client.request_size("/field"),
+    #     "total_field_deps": client.request_size("/field-dependency"),
+    #     "total_field_opts": client.request_size("/field-optiongroup"),
+    #     "total_field_vals": client.request_size("/field-validation"),
+    #     "total_institutes": client.request_size("/institute"),
+    #     "total_metadata": client.request_size("/metadata"),
+    #     "total_metadata_types": client.request_size("/metadatatype"),
+    #     "total_phases": client.request_size("/phase"),
+    #     "total_queries": client.request_size("/query"),
+    #     "total_study_data_points": client.request_size("/data-point-collection/study"),
+    #     "total_report_data_points": client.request_size(
+    #         "/data-point-collection/report-instance"
+    #     ),
+    #     "total_survey_data_points": client.request_size(
+    #         "/data-point-collection/survey-instance"
+    #     ),
+    #     "total_records": client.request_size("/record"),
+    #     "total_reports": client.request_size("/report"),
+    #     "total_report_instances": client.request_size("/report-instance"),
+    #     "total_steps": client.request_size("/step"),
+    #     "total_studies": client.request_size("/study", base=True),
+    #     "total_surveys": client.request_size("/survey"),
+    #     "total_survey_packages": client.request_size("/surveypackage"),
+    # }
 
 
 @pytest.fixture(scope="session")

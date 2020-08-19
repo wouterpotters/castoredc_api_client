@@ -17,34 +17,53 @@ class TestFieldDependency:
     model_keys = field_dep_model.keys()
 
     @pytest.fixture(scope="class")
-    def all_field_deps(self, client):
-        all_field_deps = client.all_field_dependencies()
-        return all_field_deps
+    def all_field_dependencies(self, client):
+        """Get all field dependencies from the Castor database."""
+        all_field_dependencies = client.all_field_dependencies()
+        return all_field_dependencies
 
-    def test_all_field_deps(self, all_field_deps, item_totals):
-        assert len(all_field_deps) > 0
-        assert len(all_field_deps) == item_totals["total_field_deps"]
+    def test_all_field_dependencies(self, all_field_dependencies, item_totals):
+        """Test whether all field dependencies are returned."""
+        # Test whether there are any field dependencies.
+        assert len(all_field_dependencies) > 0, "No field dependencies found, is this right?"
+        assert len(all_field_dependencies) == item_totals("/field-dependency")
 
-    def test_all_field_deps_model(self, all_field_deps):
-        for i in range(0, 3):
-            rand_field = random.choice(all_field_deps)
-            api_keys = rand_field.keys()
+    def test_all_field_dependencies_model(self, all_field_dependencies):
+        """Tests the model of the field dependencies returned by all_field_dependencies."""
+        # Loop over the dependencies
+        for dependency in all_field_dependencies:
+            api_keys = dependency.keys()
+            # Check if the number of keys is the same between the model and the API
             assert len(self.model_keys) == len(api_keys)
+            # Check of the keys and types of values are the same between the model and the API
             for key in self.model_keys:
                 assert key in api_keys
+                assert type(dependency[key]) in field_dep_model[key]
 
-    def test_single_field_success(self, client, all_field_deps):
-        for i in range(0, 3):
-            rand_id = random.choice(all_field_deps)["id"]
-            dep = client.single_field_dependency(rand_id)
-            api_keys = dep.keys()
-            assert len(self.model_keys) == len(api_keys)
-            for key in self.model_keys:
-                assert key in api_keys
+    def test_all_field_dependencies_data(self, all_field_dependencies):
+        """Tests the data of the field dependencies returned by all_field_dependencies."""
+        # Select one dependency
+        field_dependency = all_field_dependencies[4]
+        # Tests whether the proper dependency is returned
+        assert field_dependency == {'id': '9', 'operator': '==', 'value': '1',
+                                    'parent_id': 'BA93857C-1EBB-4DFF-92F3-EEE92D944686',
+                                    'child_id': 'CF86C999-256F-49D6-8D59-90D2A8B9A3D8',
+                                    '_links': {'self':
+                                                   {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
+                                                            '-BF17-71F2BB12A2FD/field-dependency/9'}}}
 
-    def test_single_field_failure(self, client, all_field_deps):
-        # NOTE: API seems to truncate text after the ID.
-        # i.e. if 247 is an existing ID, then 247TEXT also works.
+    def test_single_field_success(self, client, all_field_dependencies):
+        """Tests if single field dependency returns the proper data."""
+        field_dependency = client.single_field_dependency(9)
+        assert field_dependency == {'id': '9', 'operator': '==', 'value': '1',
+                                    'parent_id': 'BA93857C-1EBB-4DFF-92F3-EEE92D944686',
+                                    'child_id': 'CF86C999-256F-49D6-8D59-90D2A8B9A3D8',
+                                    '_links': {'self':
+                                                   {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
+                                                            '-BF17-71F2BB12A2FD/field-dependency/9'}}}
+
+    def test_single_field_failure(self, client, all_field_dependencies):
+        """Tests whether a wrong id throws an error."""
         with pytest.raises(CastorException) as e:
-            client.single_field_dependency("FAKE" + random.choice(all_field_deps)["id"])
+            client.single_field_dependency(2)
         assert str(e.value) == "404 Entity not found."
