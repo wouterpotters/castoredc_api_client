@@ -31,15 +31,19 @@ class TestCountry:
 
     def test_all_countries_model(self, all_countries):
         """Tests if the value returned by the all_countries function is equal to the specified country model."""
+        # Select a country
         country = all_countries[167]
         api_keys = country.keys()
 
+        # Test if the the number of keys is equal between the API and the model
         assert len(api_keys) == len(self.model_keys)
 
+        # Test if the keys are the same, and the value is of the specified type
         for key in api_keys:
             assert key in self.model_keys
             assert type(country[key]) in country_model[key]
 
+        # Test if the values are as they should be
         assert country["id"] == "169"
         assert country["country_id"] == "169"
         assert country["country_name"] == "Netherlands"
@@ -49,15 +53,19 @@ class TestCountry:
 
     def test_single_country_success(self, client):
         """Tests if the single_country function returns a proper country model."""
+        # Get a country
         country = client.single_country("169")
         api_keys = country.keys()
 
+        # Test if the the number of keys is equal between the API and the model
         assert len(api_keys) == len(self.single_country_model_keys)
 
+        # Test if the keys are the same, and the value is of the specified type
         for key in api_keys:
             assert key in self.single_country_model_keys
             assert type(country[key]) in single_country_model[key], "{}".format(country)
 
+        # Test if the values are as they should be
         assert country["id"] == 169
         assert country["country_id"] == 169
         assert country["country_name"] == "Netherlands"
