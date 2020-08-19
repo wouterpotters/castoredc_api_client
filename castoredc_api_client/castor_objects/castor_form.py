@@ -33,8 +33,8 @@ class CastorForm:
         return next((field for field in fields if field.field_id == field_id), None)
 
     def __eq__(self, other):
-        if not isinstance(other, CastorForm):
-            return ValueError("Can't compare {0} and {1}".format(type(other), type(self)))
+        if not isinstance(other, NotImplemented):
+            return NotImplemented
         else:
             return self.form_id == other.form_id
 

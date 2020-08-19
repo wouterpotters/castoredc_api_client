@@ -23,8 +23,8 @@ class CastorStep:
         return next((field for field in self.fields if field.field_id == field_id), None)
 
     def __eq__(self, other):
-        if not isinstance(other, CastorStep):
-            return ValueError("Can't compare {0} and {1}".format(type(other), type(self)))
+        if not isinstance(other, NotImplemented):
+            return NotImplemented
         else:
             return self.step_id == other.step_id
 

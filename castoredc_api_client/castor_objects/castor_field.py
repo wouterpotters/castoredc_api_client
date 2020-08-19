@@ -16,7 +16,7 @@ class CastorField:
 
     def __eq__(self, other):
         if not isinstance(other, CastorField):
-            return ValueError("Can't compare {0} and {1}".format(type(other), type(self)))
+            return NotImplemented
         else:
             return self.field_id == other.field_id
 
