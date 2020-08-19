@@ -1,3 +1,5 @@
+from typing import List
+
 from castoredc_api_client.castor_objects.castor_field import CastorField
 
 
@@ -13,6 +15,9 @@ class CastorStep:
     def add_field(self, field: CastorField) -> None:
         self.fields.append(field)
         field.step = self
+
+    def get_all_fields(self) -> List[CastorField]:
+        return self.fields
 
     def get_field(self, field_id: str) -> CastorField:
         return next((field for field in self.fields if field.field_id == field_id), None)

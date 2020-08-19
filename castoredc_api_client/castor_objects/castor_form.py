@@ -1,3 +1,7 @@
+import itertools
+from typing import List, Optional
+
+from castoredc_api_client.castor_objects.castor_field import CastorField
 from castoredc_api_client.castor_objects.castor_step import CastorStep
 
 
@@ -15,8 +19,18 @@ class CastorForm:
         self.steps.append(step)
         step.form = self
 
-    def get_step(self, step_id: str) -> CastorStep:
+    def get_all_steps(self) -> List[CastorStep]:
+        return self.steps
+
+    def get_single_step(self, step_id: str) -> Optional[CastorStep]:
         return next((step for step in self.steps if step.step_id == step_id), None)
+
+    def get_all_fields(self) -> List[CastorField]:
+        return list(itertools.chain.from_iterable([_step.fields for _step in self.steps]))
+
+    def get_single_field(self, field_id: str) -> Optional[CastorStep]:
+        fields = self.get_all_fields()
+        return next((field for field in fields if field.field_id == field_id), None)
 
     def __eq__(self, other):
         if not isinstance(other, CastorForm):

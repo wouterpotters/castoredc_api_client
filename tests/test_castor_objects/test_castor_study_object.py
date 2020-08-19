@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Testing classes for the different Castor Objects.
+Testing class for the CastorStudy class.
 
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
@@ -11,14 +11,12 @@ from castoredc_api_client.castor_objects import CastorStep, CastorField, CastorF
 class TestCastorStudy:
     """Testing class for CastorStudy object unit tests."""
 
-    # Creating a study
     def test_study_create(self):
         """Tests creation of a study."""
         study = CastorStudy("FAKE-ID")
         assert type(study) is CastorStudy
         assert study.study_id == "FAKE-ID"
 
-    # Adding and getting forms
     def test_study_add_form(self):
         """Tests adding a form to a study."""
         study = CastorStudy("FAKE-ID")
@@ -27,6 +25,7 @@ class TestCastorStudy:
         study.add_form(form)
         assert len(study.forms) == 1
         assert study.forms[0] == form
+        assert form.study == study
 
     def test_study_get_all_forms(self, study_with_forms):
         """Tests getting all forms from the study."""
@@ -43,7 +42,7 @@ class TestCastorStudy:
         assert form.form_type == "Report"
         assert form.form_name == "Fake Report"
 
-    def test_study_get_form_fail(self, study_with_forms):
+    def test_study_get_single_form_fail(self, study_with_forms):
         """Tests failing to get a form from the study."""
         form = study_with_forms.get_single_form("FAKE-REPORT-ID3")
         assert form is None
@@ -62,7 +61,7 @@ class TestCastorStudy:
         assert step.step_id == "FAKE-REPORT-STEP-ID2"
         assert step.step_name == "Report Step 1b"
 
-    def test_study_get_step_fail(self, complete_study):
+    def test_study_get_single_step_fail(self, complete_study):
         """Tests failing to get a step from the study."""
         step = complete_study.get_single_step("FAKE-REPORT-STEP-ID5")
         assert step is None
@@ -81,7 +80,7 @@ class TestCastorStudy:
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
         assert field.field_name == "Survey Field 1a3"
 
-    def test_study_get_field_fail(self, complete_study):
+    def test_study_get_single_field_fail(self, complete_study):
         """Tests failing to get a field from the study."""
         field = complete_study.get_single_field("FAKE-SURVEY-FIELD-ID7")
         assert field is None
