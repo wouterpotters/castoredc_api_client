@@ -44,7 +44,6 @@ def client():
     logger.addHandler(f_handler)
 
     client.link_study(auth_data.study_id)
-    client.collect_field_map()
     yield client
 
     handlers = client.logger.handlers[:]

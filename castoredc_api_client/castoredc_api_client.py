@@ -964,7 +964,7 @@ class CastorClient:
         # Loop over all fields
         for field in data:
             # Check if the form for the field exists, if not, create it
-            form = study.get_form(field["Form Collection ID"])
+            form = study.get_single_form(field["Form Collection ID"])
             if form is None:
                 form = CastorForm(form_collection_type=field["Form Type"],
                                   form_collection_id=field["Form Collection ID"],
@@ -972,7 +972,7 @@ class CastorClient:
                 study.add_form(form)
 
             # Check if the step for the field exists, if not, create it
-            step = form.get_step(field["Form ID"])
+            step = form.get_single_step(field["Form ID"])
             if step is None:
                 step = CastorStep(step_id=field["Form ID"],
                                   step_name=field["Form Name"])
@@ -980,7 +980,7 @@ class CastorClient:
 
             # Check if the field exists, if not, create it
             # This should not be possible as there are no doubles, but checking just in case
-            new_field = step.get_field(field["Field ID"])
+            new_field = step.get_single_field(field["Field ID"])
             if new_field is None:
                 new_field = CastorField(field_id=field["Field ID"],
                                         field_name=field["Field Variable Name"],
