@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union, Any
 
 
 class CastorField:
@@ -6,6 +6,7 @@ class CastorField:
 
     def __init__(self, field_name: str, field_id: str, field_type: str, field_label: str, field_required: bool,
                  field_option_group: Optional[str]) -> None:
+        """Creates a CastorField."""
         self.field_id = field_id
         self.field_name = field_name
         self.field_label = field_label
@@ -14,11 +15,12 @@ class CastorField:
         self.field_option_group = field_option_group
         self.step = None
 
-    def __eq__(self, other):
+    # Standard Operators
+    def __eq__(self, other: Any) -> Union[bool, NotImplemented]:
         if not isinstance(other, CastorField):
             return NotImplemented
         else:
             return self.field_id == other.field_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.field_id
