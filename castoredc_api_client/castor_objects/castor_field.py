@@ -16,7 +16,7 @@ class CastorField:
         self.step = None
 
     # Standard Operators
-    def __eq__(self, other: Any) -> Union[bool, NotImplemented]:
+    def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorField):
             return NotImplemented
         else:

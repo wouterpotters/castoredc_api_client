@@ -67,7 +67,7 @@ class CastorStudy:
         return [field for field in fields if field.step.form.form_type == form_type]
 
     # Standard Operators
-    def __eq__(self, other: Any) -> Union[bool, NotImplemented]:
+    def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorStudy):
             return NotImplemented
         else:

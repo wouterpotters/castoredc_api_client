@@ -27,8 +27,8 @@ class CastorStep:
         return next((field for field in self.fields if field.field_id == field_id), None)
 
     # Standard Operators
-    def __eq__(self, other: Any) -> Union[bool, NotImplemented]:
-        if not isinstance(other, NotImplemented):
+    def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
+        if not isinstance(other, CastorStep):
             return NotImplemented
         else:
             return self.step_id == other.step_id

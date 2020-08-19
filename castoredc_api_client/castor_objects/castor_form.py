@@ -39,8 +39,8 @@ class CastorForm:
         return next((field for field in fields if field.field_id == field_id), None)
 
     # Standard Operators
-    def __eq__(self, other: Any) -> Union[bool, NotImplemented]:
-        if not isinstance(other, NotImplemented):
+    def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
+        if not isinstance(other, CastorForm):
             return NotImplemented
         else:
             return self.form_id == other.form_id

@@ -1,3 +1,6 @@
+import copy
+from typing import List
+
 import pytest
 
 from castoredc_api_client.castor_objects import CastorField, CastorStep, CastorForm, CastorStudy
@@ -5,8 +8,9 @@ from tests.test_castor_objects.helpers_castor_objects import link_study_with_for
     link_steps_with_fields, link_everything
 
 
-@pytest.fixture(scope="function")
-def fields():
+@pytest.fixture(scope="session")
+def fields() -> List[CastorField]:
+    """Creates CastorFields for use in tests."""
     field1 = CastorField(field_id="FAKE-SURVEY-FIELD-ID1", field_name="Survey Field 1a1",
                          field_label="This is the first survey field",
                          field_type="checkbox", field_required=False, field_option_group="FAKE-OPTION-GROUP-ID1")
@@ -62,8 +66,9 @@ def fields():
             field14, field15, field16, field17]
 
 
-@pytest.fixture(scope="function")
-def steps():
+@pytest.fixture(scope="session")
+def steps() -> List[CastorStep]:
+    """Creates CastorSteps for use in tests."""
     step1 = CastorStep("Survey Step 1a", "FAKE-SURVEY-STEP-ID1")
     step2 = CastorStep("Survey Step 1b", "FAKE-SURVEY-STEP-ID2")
     step3 = CastorStep("Survey Step 1c", "FAKE-SURVEY-STEP-ID3")
@@ -76,8 +81,9 @@ def steps():
     return [step1, step2, step3, step4, step5, step6, step7, step8, step9]
 
 
-@pytest.fixture(scope="function")
-def forms():
+@pytest.fixture(scope="session")
+def forms() -> List[CastorForm]:
+    """Creates CastorForms for use in tests."""
     form1 = CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey")
     form2 = CastorForm("Fake Report", "FAKE-REPORT-ID1", "Report")
     form3 = CastorForm("Fake Report", "FAKE-REPORT-ID2", "Report")
@@ -85,27 +91,37 @@ def forms():
     return [form1, form2, form3, form4]
 
 
-@pytest.fixture(scope="function")
-def study():
+@pytest.fixture(scope="session")
+def study() -> CastorStudy:
+    """Creates a CastorStudy for use in tests."""
     study = CastorStudy("FAKE-ID")
     return study
 
 
-@pytest.fixture(scope="function")
-def study_with_forms(study, forms):
-    return link_study_with_forms(study, forms)
+@pytest.fixture(scope="session")
+def study_with_forms(study: CastorStudy, forms: List[CastorForm]) -> CastorStudy:
+    """Creates a CastorStudy with linked forms for use in tests."""
+    # Deepcopy to prevent every fixture linking the objects
+    return link_study_with_forms(copy.deepcopy(study), copy.deepcopy(forms))
 
 
-@pytest.fixture(scope="function")
-def forms_with_steps(forms, steps):
-    return link_forms_with_steps(forms, steps)
+@pytest.fixture(scope="session")
+def forms_with_steps(forms: List[CastorForm], steps: List[CastorStep]) -> List[CastorForm]:
+    """Creates CastorForms with linked steps for use in tests."""
+    # Deepcopy to prevent every fixture linking the objects
+    return link_forms_with_steps(copy.deepcopy(forms), copy.deepcopy(steps))
 
 
-@pytest.fixture(scope="function")
-def steps_with_fields(steps, fields):
-    return link_steps_with_fields(steps, fields)
+@pytest.fixture(scope="session")
+def steps_with_fields(steps: List[CastorStep], fields: List[CastorField]) -> List[CastorStep]:
+    """Creates CastorSteps with linked fields for use in tests."""
+    # Deepcopy to prevent every fixture linking the objects
+    return link_steps_with_fields(copy.deepcopy(steps), copy.deepcopy(fields))
 
 
-@pytest.fixture(scope="function")
-def complete_study(study, forms, steps, fields):
-    return link_everything(study, forms, steps, fields)
+@pytest.fixture(scope="session")
+def complete_study(study: CastorStudy, forms: List[CastorForm],
+                   steps: List[CastorStep], fields: List[CastorField]) -> CastorStudy:
+    """Creates a CastorStudy with linked forms, steps, and fields for use in tests."""#
+    # Deepcopy to prevent every fixture linking the objects
+    return link_everything(copy.deepcopy(study), copy.deepcopy(forms), copy.deepcopy(steps), copy.deepcopy(fields))
