@@ -12,9 +12,8 @@ import logging
 import math
 
 import requests
-from typing import Dict
 
-from castoredc_api_client.castor_objects import CastorField, CastorStudy, CastorForm, CastorStep
+from castoredc_api_client.castor_objects import CastorField, CastorStep, CastorForm, CastorStudy
 from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
 

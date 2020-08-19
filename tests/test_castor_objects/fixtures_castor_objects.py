@@ -1,44 +1,63 @@
 import pytest
 
-from castoredc_api_client.castor_objects import CastorStudy, CastorForm, CastorStep, CastorField
+from castoredc_api_client.castor_objects import CastorField, CastorStep, CastorForm, CastorStudy
+from tests.test_castor_objects.helpers_castor_objects import link_study_with_forms, link_forms_with_steps, \
+    link_steps_with_fields, link_everything
 
 
 @pytest.fixture(scope="function")
 def fields():
-    field1 = CastorField("FAKE-SURVEY-FIELD-ID1", "Survey Field 1a1", "This is the first survey field",
-                         "checkbox", False, "FAKE-OPTION-GROUP-ID1")
-    field2 = CastorField("FAKE-SURVEY-FIELD-ID2", "Survey Field 1a2", "This is the second survey field",
-                         "string", False, None)
-    field3 = CastorField("FAKE-SURVEY-FIELD-ID3", "Survey Field 1a3", "This is the third survey field",
-                         "calculation", False, None)
-    field4 = CastorField("FAKE-SURVEY-FIELD-ID4", "Survey Field 1b1", "This is the first survey field",
-                         "string", False, None)
-    field5 = CastorField("FAKE-SURVEY-FIELD-ID5", "Survey Field 1c1", "This is the first survey field",
-                         "number", False, None)
-    field6 = CastorField("FAKE-SURVEY-FIELD-ID6", "Survey Field 1c2", "This is the second survey field",
-                         "number", False, None)
-    field7 = CastorField("FAKE-REPORT-FIELD-ID1", "Report Field 1a1", "This is the first report field",
-                         "radio", True, "FAKE-OPTION-GROUP-ID2")
-    field8 = CastorField("FAKE-REPORT-FIELD-ID2", "Report Field 1a2", "This is the second report field",
-                         "checkbox", True, "FAKE-OPTION-GROUP-ID3")
-    field9 = CastorField("FAKE-REPORT-FIELD-ID3", "Report Field 1b1", "This is the first report field",
-                         "checkbox", True, "FAKE-OPTION-GROUP-ID4")
-    field10 = CastorField("FAKE-REPORT-FIELD-ID4", "Report Field 2a1", "This is the first report field",
-                          "number", True, None)
-    field11 = CastorField("FAKE-REPORT-FIELD-ID5", "Report Field 2a2", "This is the second report field",
-                          "calculation", True, None)
-    field12 = CastorField("FAKE-REPORT-FIELD-ID6", "Report Field 2a3", "This is the third report field",
-                          "date", True, None)
-    field13 = CastorField("FAKE-REPORT-FIELD-ID7", "Report Field 2a4", "This is the fourth report field",
-                          "checkbox", True, "FAKE-OPTION-GROUP-ID5")
-    field14 = CastorField("FAKE-STUDY-FIELD-ID14", "Study Field 1a1", "This is the first study field",
-                          "calculation", True, None)
-    field15 = CastorField("FAKE-STUDY-FIELD-ID15", "Study Field 1b1", "This is the first study field",
-                          "datetime", True, None)
-    field16 = CastorField("FAKE-STUDY-FIELD-ID16", "Study Field 1b2", "This is the second study field",
-                          "number", True, None)
-    field17 = CastorField("FAKE-STUDY-FIELD-ID17", "Study Field 1c1", "This is the first study field",
-                          "checkbox", False, "FAKE-OPTION-GROUP-ID1")
+    field1 = CastorField(field_id="FAKE-SURVEY-FIELD-ID1", field_name="Survey Field 1a1",
+                         field_label="This is the first survey field",
+                         field_type="checkbox", field_required=False, field_option_group="FAKE-OPTION-GROUP-ID1")
+    field2 = CastorField(field_id="FAKE-SURVEY-FIELD-ID2", field_name="Survey Field 1a2",
+                         field_label="This is the second survey field",
+                         field_type="string", field_required=False, field_option_group=None)
+    field3 = CastorField(field_id="FAKE-SURVEY-FIELD-ID3", field_name="Survey Field 1a3",
+                         field_label="This is the third survey field",
+                         field_type="calculation", field_required=False, field_option_group=None)
+    field4 = CastorField(field_id="FAKE-SURVEY-FIELD-ID4", field_name="Survey Field 1b1",
+                         field_label="This is the first survey field",
+                         field_type="string", field_required=False, field_option_group=None)
+    field5 = CastorField(field_id="FAKE-SURVEY-FIELD-ID5", field_name="Survey Field 1c1",
+                         field_label="This is the first survey field",
+                         field_type="number", field_required=False, field_option_group=None)
+    field6 = CastorField(field_id="FAKE-SURVEY-FIELD-ID6", field_name="Survey Field 1c2",
+                         field_label="This is the second survey field",
+                         field_type="number", field_required=False, field_option_group=None)
+    field7 = CastorField(field_id="FAKE-REPORT-FIELD-ID1", field_name="Report Field 1a1",
+                         field_label="This is the first report field",
+                         field_type="radio", field_required=True, field_option_group="FAKE-OPTION-GROUP-ID2")
+    field8 = CastorField(field_id="FAKE-REPORT-FIELD-ID2", field_name="Report Field 1a2",
+                         field_label="This is the second report field",
+                         field_type="checkbox", field_required=True, field_option_group="FAKE-OPTION-GROUP-ID3")
+    field9 = CastorField(field_id="FAKE-REPORT-FIELD-ID3", field_name="Report Field 1b1",
+                         field_label="This is the first report field",
+                         field_type="checkbox", field_required=True, field_option_group="FAKE-OPTION-GROUP-ID4")
+    field10 = CastorField(field_id="FAKE-REPORT-FIELD-ID4", field_name="Report Field 2a1",
+                          field_label="This is the first report field",
+                          field_type="number", field_required=True, field_option_group=None)
+    field11 = CastorField(field_id="FAKE-REPORT-FIELD-ID5", field_name="Report Field 2a2",
+                          field_label="This is the second report field",
+                          field_type="calculation", field_required=True, field_option_group=None)
+    field12 = CastorField(field_id="FAKE-REPORT-FIELD-ID6", field_name="Report Field 2a3",
+                          field_label="This is the third report field",
+                          field_type="date", field_required=True, field_option_group=None)
+    field13 = CastorField(field_id="FAKE-REPORT-FIELD-ID7", field_name="Report Field 2a4",
+                          field_label="This is the fourth report field",
+                          field_type="checkbox", field_required=True, field_option_group="FAKE-OPTION-GROUP-ID5")
+    field14 = CastorField(field_id="FAKE-STUDY-FIELD-ID1", field_name="Study Field 1a1",
+                          field_label="This is the first study field",
+                          field_type="calculation", field_required=True, field_option_group=None)
+    field15 = CastorField(field_id="FAKE-STUDY-FIELD-ID2", field_name="Study Field 1b1",
+                          field_label="This is the first study field",
+                          field_type="datetime", field_required=True, field_option_group=None)
+    field16 = CastorField(field_id="FAKE-STUDY-FIELD-ID3", field_name="Study Field 1b2",
+                          field_label="This is the second study field",
+                          field_type="number", field_required=True, field_option_group=None)
+    field17 = CastorField(field_id="FAKE-STUDY-FIELD-ID4", field_name="Study Field 1c1",
+                          field_label="This is the first study field",
+                          field_type="checkbox", field_required=False, field_option_group="FAKE-OPTION-GROUP-ID1")
     return [field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13,
             field14, field15, field16, field17]
 
@@ -59,10 +78,10 @@ def steps():
 
 @pytest.fixture(scope="function")
 def forms():
-    form1 = CastorForm("Survey", "FAKE-SURVEY-ID1", "Fake Survey")
-    form2 = CastorForm("Report", "FAKE-REPORT-ID1", "Fake Report")
-    form3 = CastorForm("Report", "FAKE-REPORT-ID2", "Fake Report")
-    form4 = CastorForm("Study", "FAKE-STUDY-ID", "Fake Study")
+    form1 = CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey")
+    form2 = CastorForm("Fake Report", "FAKE-REPORT-ID1", "Report")
+    form3 = CastorForm("Fake Report", "FAKE-REPORT-ID2", "Report")
+    form4 = CastorForm("Fake Study", "FAKE-STUDY-ID", "Study")
     return [form1, form2, form3, form4]
 
 
@@ -74,49 +93,19 @@ def study():
 
 @pytest.fixture(scope="function")
 def study_with_forms(study, forms):
-    study.forms = forms
-    return study
+    return link_study_with_forms(study, forms)
 
 
 @pytest.fixture(scope="function")
 def forms_with_steps(forms, steps):
-    forms[0].steps = steps[:3]
-    forms[1].steps = steps[3:5]
-    forms[2].steps = steps[5]
-    forms[3].steps = steps[6:]
-    return forms
+    return link_forms_with_steps(forms, steps)
 
 
 @pytest.fixture(scope="function")
 def steps_with_fields(steps, fields):
-    steps[0].fields = fields[0:3]
-    steps[1].fields = fields[3]
-    steps[2].fields = fields[4:6]
-    steps[3].fields = fields[6:8]
-    steps[4].fields = fields[8]
-    steps[5].fields = fields[9:13]
-    steps[6].fields = fields[13]
-    steps[7].fields = fields[14:16]
-    steps[8].fields = fields[16]
-    return steps
+    return link_steps_with_fields(steps, fields)
 
 
 @pytest.fixture(scope="function")
 def complete_study(study, forms, steps, fields):
-    steps[0].fields = fields[0:3]
-    steps[1].fields = fields[3]
-    steps[2].fields = fields[4:6]
-    steps[3].fields = fields[6:8]
-    steps[4].fields = fields[8]
-    steps[5].fields = fields[9:13]
-    steps[6].fields = fields[13]
-    steps[7].fields = fields[14:16]
-    steps[8].fields = fields[16]
-
-    forms[0].steps = steps[:3]
-    forms[1].steps = steps[3:5]
-    forms[2].steps = steps[5]
-    forms[3].steps = steps[6:]
-
-    study.forms = forms
-    return study
+    return link_everything(study, forms, steps, fields)
