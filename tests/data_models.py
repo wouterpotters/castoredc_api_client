@@ -6,9 +6,18 @@ Contains the definition of all data models according to the Castor EDC API.
 https://orcid.org/0000-0003-3052-596X
 """
 
-country_model_1 = {
+country_model = {
     "id": [str, ],
     "country_id": [str, ],
+    "country_name": [str, ],
+    "country_tld": [str, ],
+    "country_cca2": [str, ],
+    "country_cca3": [str, ],
+}
+
+single_country_model = {
+    "id": [int, ],
+    "country_id": [int, ],
     "country_name": [str, ],
     "country_tld": [str, ],
     "country_cca2": [str, ],
@@ -54,15 +63,6 @@ export_option_group_model = {
     "Option Id": [str, ],
     "Option Name": [str, ],
     "Option Value": [str, ]
-}
-
-country_model_2 = {
-    "id": [str, ],
-    "country_id": [str, ],
-    "country_name": [str, ],
-    "country_tld": [str, ],
-    "country_cca2": [str, ],
-    "country_cca3": [str, ],
 }
 
 study_data_point_model = {
