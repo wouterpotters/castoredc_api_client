@@ -26,4 +26,7 @@ class TestCastorDataPoint:
         """Tests failure of creation of a data point."""
         with pytest.raises(CastorException) as e:
             CastorDataPoint("FAKE-STUDY-FIELD-ID8", "test", complete_study)
-        assert str(e.value) == "The field that this is an instance of does not exist in the study!"
+        assert (
+            str(e.value)
+            == "The field that this is an instance of does not exist in the study!"
+        )

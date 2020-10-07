@@ -24,7 +24,9 @@ class TestCastorRecord:
         """Tests adding a form instance to a record."""
         record = CastorRecord("110001")
         complete_study.add_record(record)
-        form_instance = CastorFormInstance("FAKE-SURVEY-INSTANCE-ID1", "Survey", "Fake Survey", complete_study)
+        form_instance = CastorFormInstance(
+            "FAKE-SURVEY-INSTANCE-ID1", "Survey", "Fake Survey", complete_study
+        )
         record.add_form_instance(form_instance)
         assert len(record.form_instances) == 1
         assert record.form_instances[0] == form_instance

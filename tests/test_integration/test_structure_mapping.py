@@ -3,6 +3,7 @@ from tests.test_integration.data_ids import form_ids, step_ids, field_ids
 
 class TestStudyMap:
     """Tests the integration between CastorEDCClient and the CastorObjects that map the study structure."""
+
     def test_map_study_number(self, client):
         """Tests if the right number of forms, steps and fields are linked."""
         client.map_structure()
@@ -68,17 +69,27 @@ class TestStudyMap:
         study = client.study
         study.update_links(client)
         # Test Reports
-        assert "B68E831D-1347-4237-9F38-F79E86A58D64" in \
-               study.form_links["Report"]["89FF2394-0D41-4D4C-89FE-AA9AB287B31E"]
-        assert "98CB10D0-B392-4EB9-BEEF-BCBCC59D9A6F" in \
-               study.form_links["Report"]["C4ADC387-9BFD-4171-A861-6B973699A6ED"]
-        assert "C8EE71C5-F266-4F59-BFD3-A643643C4FE1" in \
-               study.form_links["Report"]["770DB401-6100-4CF5-A95F-3402B55EAC48"]
-        assert "2924E308-5718-48D6-881B-7492F350B8F7" in \
-               study.form_links["Report"]["8D4F696E-DA2E-4A0E-ACD8-2F1B71718D6E"]
+        assert (
+            "B68E831D-1347-4237-9F38-F79E86A58D64"
+            in study.form_links["Report"]["89FF2394-0D41-4D4C-89FE-AA9AB287B31E"]
+        )
+        assert (
+            "98CB10D0-B392-4EB9-BEEF-BCBCC59D9A6F"
+            in study.form_links["Report"]["C4ADC387-9BFD-4171-A861-6B973699A6ED"]
+        )
+        assert (
+            "C8EE71C5-F266-4F59-BFD3-A643643C4FE1"
+            in study.form_links["Report"]["770DB401-6100-4CF5-A95F-3402B55EAC48"]
+        )
+        assert (
+            "2924E308-5718-48D6-881B-7492F350B8F7"
+            in study.form_links["Report"]["8D4F696E-DA2E-4A0E-ACD8-2F1B71718D6E"]
+        )
         # Test Surveys
-        assert "QOL Survey" in \
-               study.form_links["Survey"]["D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"]
+        assert (
+            "QOL Survey"
+            in study.form_links["Survey"]["D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"]
+        )
 
     def test_map_study_data(self, client):
         """Tests if the right data is added to the objects"""
@@ -104,24 +115,48 @@ class TestStudyMap:
         """Tests if fields are linked to the right steps"""
         # Test a report field-step combination
         client.map_structure()
-        assert client.study.get_single_field("F33AD264-6483-4E7F-9E1F-CF1E2655661C").step.step_id \
-               == "3F7AAC2D-87CA-4C41-89A8-AB3C53472B04"
+        assert (
+            client.study.get_single_field(
+                "F33AD264-6483-4E7F-9E1F-CF1E2655661C"
+            ).step.step_id
+            == "3F7AAC2D-87CA-4C41-89A8-AB3C53472B04"
+        )
         # Test a study field-step combination
-        assert client.study.get_single_field("08EA24A7-8623-4F68-A170-3A38C44F1885").step.step_id \
-               == "52109C76-EB23-4BCD-95EC-10AC5CD912BF"
+        assert (
+            client.study.get_single_field(
+                "08EA24A7-8623-4F68-A170-3A38C44F1885"
+            ).step.step_id
+            == "52109C76-EB23-4BCD-95EC-10AC5CD912BF"
+        )
         # Test a survey field-step combination
-        assert client.study.get_single_field("FC4FAA2D-08FD-41F7-B482-444B2B6D3116").step.step_id \
-               == "C19211FE-1C53-43F9-BC85-460DF1255153"
+        assert (
+            client.study.get_single_field(
+                "FC4FAA2D-08FD-41F7-B482-444B2B6D3116"
+            ).step.step_id
+            == "C19211FE-1C53-43F9-BC85-460DF1255153"
+        )
 
     def test_map_study_link_step_form(self, client):
         """Tests if steps are linked to the right forms"""
         # Test a report step-form combination
         client.map_structure()
-        assert client.study.get_single_step("3F7AAC2D-87CA-4C41-89A8-AB3C53472B04").form.form_id \
-               == "C4ADC387-9BFD-4171-A861-6B973699A6ED"
+        assert (
+            client.study.get_single_step(
+                "3F7AAC2D-87CA-4C41-89A8-AB3C53472B04"
+            ).form.form_id
+            == "C4ADC387-9BFD-4171-A861-6B973699A6ED"
+        )
         # Test a study step-form combination
-        assert client.study.get_single_step("52109C76-EB23-4BCD-95EC-10AC5CD912BF").form.form_id \
-               == "1046822E-8C8B-4D8B-B29C-183CAC8B28AF"
+        assert (
+            client.study.get_single_step(
+                "52109C76-EB23-4BCD-95EC-10AC5CD912BF"
+            ).form.form_id
+            == "1046822E-8C8B-4D8B-B29C-183CAC8B28AF"
+        )
         # Test a survey step-form combination
-        assert client.study.get_single_step("C19211FE-1C53-43F9-BC85-460DF1255153").form.form_id \
-               == "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
+        assert (
+            client.study.get_single_step(
+                "C19211FE-1C53-43F9-BC85-460DF1255153"
+            ).form.form_id
+            == "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
+        )

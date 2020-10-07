@@ -37,28 +37,33 @@ class CastorStudy:
             # Check if the form for the field exists, if not, create it
             form = self.get_single_form(field["Form Collection ID"])
             if form is None:
-                form = CastorForm(form_collection_type=field["Form Type"],
-                                  form_collection_id=field["Form Collection ID"],
-                                  form_collection_name=field["Form Collection Name"])
+                form = CastorForm(
+                    form_collection_type=field["Form Type"],
+                    form_collection_id=field["Form Collection ID"],
+                    form_collection_name=field["Form Collection Name"],
+                )
                 self.add_form(form)
 
             # Check if the step for the field exists, if not, create it
             step = form.get_single_step(field["Form ID"])
             if step is None:
-                step = CastorStep(step_id=field["Form ID"],
-                                  step_name=field["Form Name"])
+                step = CastorStep(
+                    step_id=field["Form ID"], step_name=field["Form Name"]
+                )
                 form.add_step(step)
 
             # Check if the field exists, if not, create it
             # This should not be possible as there are no doubles, but checking just in case
             new_field = step.get_single_field(field["Field ID"])
             if new_field is None:
-                new_field = CastorField(field_id=field["Field ID"],
-                                        field_name=field["Field Variable Name"],
-                                        field_label=field["Field Label"],
-                                        field_type=field["Field Type"],
-                                        field_required=field["Field Required"],
-                                        field_option_group=field["Field Option Group"])
+                new_field = CastorField(
+                    field_id=field["Field ID"],
+                    field_name=field["Field Variable Name"],
+                    field_label=field["Field Label"],
+                    field_type=field["Field Type"],
+                    field_required=field["Field Required"],
+                    field_option_group=field["Field Option Group"],
+                )
                 step.add_field(new_field)
 
     # DATA MAPPING
@@ -70,8 +75,7 @@ class CastorStudy:
 
     def update_links(self, api_client: "CastorClient") -> None:
         """Creates the links between form and form instances."""
-        form_links = {"Survey": {},
-                      "Report": {}}
+        form_links = {"Survey": {}, "Report": {}}
 
         # Get all survey forms that need to be linked
         survey_forms = self.get_all_survey_forms()
@@ -93,7 +97,9 @@ class CastorStudy:
         report_instances = api_client.all_report_instances()
         # Link instance to form on id
         for instance in report_instances:
-            form_links["Report"][instance["_embedded"]["report"]["id"]].append(instance["id"])
+            form_links["Report"][instance["_embedded"]["report"]["id"]].append(
+                instance["id"]
+            )
 
         self.form_links = form_links
 
@@ -120,28 +126,34 @@ class CastorStudy:
                     form_instance_id = instance_of_form + "-" + record.record_id
                     form_instance = record.get_single_form_instance(form_instance_id)
                     if form_instance is None:
-                        form_instance = CastorFormInstance(instance_id=form_instance_id,
-                                                           instance_type=field["Form Type"],
-                                                           name_of_form=field["Form Instance Name"],
-                                                           study=self)
+                        form_instance = CastorFormInstance(
+                            instance_id=form_instance_id,
+                            instance_type=field["Form Type"],
+                            name_of_form=field["Form Instance Name"],
+                            study=self,
+                        )
                         record.add_form_instance(form_instance)
 
                 else:
-                    form_instance = record.get_single_form_instance(field["Form Instance ID"])
+                    form_instance = record.get_single_form_instance(
+                        field["Form Instance ID"]
+                    )
                     if form_instance is None:
-                        form_instance = CastorFormInstance(instance_id=field["Form Instance ID"],
-                                                           instance_type=field["Form Type"],
-                                                           name_of_form=field["Form Instance Name"],
-                                                           study=self)
+                        form_instance = CastorFormInstance(
+                            instance_id=field["Form Instance ID"],
+                            instance_type=field["Form Type"],
+                            name_of_form=field["Form Instance Name"],
+                            study=self,
+                        )
                         record.add_form_instance(form_instance)
 
                 # Check if the field exists, if not, create it
                 # This should not be possible as there are no doubles, but checking just in case
                 data_point = form_instance.get_single_data_point(field["Field ID"])
                 if data_point is None:
-                    data_point = CastorDataPoint(field_id=field["Field ID"],
-                                                 value=field["Value"],
-                                                 study=self)
+                    data_point = CastorDataPoint(
+                        field_id=field["Field ID"], value=field["Value"], study=self
+                    )
                     form_instance.add_data_point(data_point)
 
     # HELPERS
@@ -186,11 +198,15 @@ class CastorStudy:
 
     def get_single_record(self, record_id: str) -> Optional[CastorRecord]:
         """Get a single CastorRecord based on id."""
-        return next((record for record in self.records if record.record_id == record_id), None)
+        return next(
+            (record for record in self.records if record.record_id == record_id), None
+        )
 
     def get_all_steps(self) -> List[CastorStep]:
         """Get all linked CastorSteps."""
-        steps = list(itertools.chain.from_iterable([_form.steps for _form in self.forms]))
+        steps = list(
+            itertools.chain.from_iterable([_form.steps for _form in self.forms])
+        )
         return steps
 
     def get_single_step(self, step_id: str) -> Optional[CastorStep]:
@@ -200,7 +216,11 @@ class CastorStudy:
 
     def get_all_fields(self) -> List[CastorField]:
         """Get all linked CastorFields."""
-        fields = list(itertools.chain.from_iterable([form.get_all_fields() for form in self.forms]))
+        fields = list(
+            itertools.chain.from_iterable(
+                [form.get_all_fields() for form in self.forms]
+            )
+        )
         return fields
 
     def get_single_field(self, field_id: str) -> Optional[CastorField]:
@@ -227,26 +247,54 @@ class CastorStudy:
 
     def get_all_form_instances(self) -> List["CastorFormInstance"]:
         """Returns all form instances"""
-        form_instances = list(itertools.chain.from_iterable([_record.form_instances for _record in self.records]))
+        form_instances = list(
+            itertools.chain.from_iterable(
+                [_record.form_instances for _record in self.records]
+            )
+        )
         return form_instances
 
-    def get_single_form_instance(self, instance_id: str) -> Optional["CastorFormInstance"]:
+    def get_single_form_instance(
+        self, instance_id: str
+    ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
         all_form_instances = self.get_all_form_instances()
-        return next((instance for instance in all_form_instances if instance.instance_id == instance_id), None)
+        return next(
+            (
+                instance
+                for instance in all_form_instances
+                if instance.instance_id == instance_id
+            ),
+            None,
+        )
 
     def get_all_data_points(self) -> List["CastorDataPoint"]:
         """Returns all data_points of the study"""
-        data_points = list(itertools.chain.from_iterable([_record.get_all_data_points() for _record in self.records]))
+        data_points = list(
+            itertools.chain.from_iterable(
+                [_record.get_all_data_points() for _record in self.records]
+            )
+        )
         return data_points
 
-    def get_single_data_point(self, field_id: str, form_instance_id: str) -> Optional["CastorDataPoint"]:
+    def get_single_data_point(
+        self, field_id: str, form_instance_id: str
+    ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
         form_instance = self.get_single_form_instance(form_instance_id)
         data_points = form_instance.get_all_data_points()
-        return next((_data_point for _data_point in data_points if _data_point.field_id == field_id), None)
+        return next(
+            (
+                _data_point
+                for _data_point in data_points
+                if _data_point.field_id == field_id
+            ),
+            None,
+        )
 
-    def instance_of_form(self, instance_id: str, instance_type: str) -> Optional[CastorForm]:
+    def instance_of_form(
+        self, instance_id: str, instance_type: str
+    ) -> Optional[CastorForm]:
         """Returns the form of which the given id is an instance.
         instance_id is id for type: Report, name for type: Survey, or id+record for type: Study"""
         if instance_type == "Study":
@@ -254,7 +302,10 @@ class CastorStudy:
             return self.get_single_form(instance_id[:-7])
         elif instance_type == "Report" or instance_type == "Survey":
             options = self.form_links[instance_type]
-            form_id = next((form_id for form_id in options if instance_id in options[form_id]), None)
+            form_id = next(
+                (form_id for form_id in options if instance_id in options[form_id]),
+                None,
+            )
             return self.get_single_form(form_id)
         else:
             raise CastorException("{} is not a form type.".format(instance_type))

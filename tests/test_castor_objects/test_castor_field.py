@@ -13,8 +13,13 @@ class TestCastorField:
 
     def test_field_create(self):
         """Tests creation of a field."""
-        field = CastorField(field_id="FAKE-SURVEY-FIELD-ID2", field_name="Survey Field 1a2",
-                            field_label="This is the second survey field",
-                            field_type="string", field_required=False, field_option_group=None)
+        field = CastorField(
+            field_id="FAKE-SURVEY-FIELD-ID2",
+            field_name="Survey Field 1a2",
+            field_label="This is the second survey field",
+            field_type="string",
+            field_required=False,
+            field_option_group=None,
+        )
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID2"

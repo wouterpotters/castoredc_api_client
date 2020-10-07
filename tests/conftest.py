@@ -16,7 +16,7 @@ import auth.auth_data as auth_data
 from castoredc_api_client.exceptions import CastorException
 
 pytest_plugins = [
-   "tests.test_castor_objects.fixtures_castor_objects",
+    "tests.test_castor_objects.fixtures_castor_objects",
 ]
 
 
@@ -188,6 +188,8 @@ def study_field_ids(client):
 @pytest.fixture(scope="function")
 def unlock_survey_package_instances(client):
     """Unlocks all survey package instances in the study."""
-    instance_ids = [instance["id"] for instance in client.all_survey_package_instances()]
+    instance_ids = [
+        instance["id"] for instance in client.all_survey_package_instances()
+    ]
     for instance_id in instance_ids:
         client.patch_survey_package_instance(instance_id, False)

@@ -2,7 +2,9 @@ import itertools
 from typing import Union, Any, TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from castoredc_api_client.castor_objects.castor_form_instance import CastorFormInstance
+    from castoredc_api_client.castor_objects.castor_form_instance import (
+        CastorFormInstance,
+    )
 
 
 class CastorRecord:
@@ -18,25 +20,50 @@ class CastorRecord:
         """Adds a field to the record."""
         self.form_instances.append(form_instance)
         form_instance.record = self
-    
+
     def get_all_form_instances(self) -> List["CastorFormInstance"]:
         """Returns all form instances of the record"""
         return self.form_instances
 
-    def get_single_form_instance(self, instance_id: str) -> Optional["CastorFormInstance"]:
+    def get_single_form_instance(
+        self, instance_id: str
+    ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
-        return next((instance for instance in self.form_instances if instance.instance_id == instance_id), None)
+        return next(
+            (
+                instance
+                for instance in self.form_instances
+                if instance.instance_id == instance_id
+            ),
+            None,
+        )
 
     def get_all_data_points(self) -> List["CastorDataPoint"]:
         """Returns all data_points of the record"""
-        data_points = list(itertools.chain.from_iterable([_form_instance.get_all_data_points() for _form_instance in self.form_instances]))
+        data_points = list(
+            itertools.chain.from_iterable(
+                [
+                    _form_instance.get_all_data_points()
+                    for _form_instance in self.form_instances
+                ]
+            )
+        )
         return data_points
 
-    def get_single_data_point(self, field_id: str, form_instance_id: str) -> Optional["CastorDataPoint"]:
+    def get_single_data_point(
+        self, field_id: str, form_instance_id: str
+    ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
         form_instance = self.get_single_form_instance(form_instance_id)
         data_points = form_instance.get_all_data_points()
-        return next((_data_point for _data_point in data_points if _data_point.field_id == field_id), None)
+        return next(
+            (
+                _data_point
+                for _data_point in data_points
+                if _data_point.field_id == field_id
+            ),
+            None,
+        )
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:

@@ -17,8 +17,9 @@ class TestCastorFormInstance:
 
     def test_survey_form_instance_create(self, complete_study):
         """Tests creation of a Survey form instance."""
-        form_instance = CastorFormInstance("FAKE-SURVEY-INSTANCE-ID3", "Survey", "Fake Survey",
-                                           complete_study)
+        form_instance = CastorFormInstance(
+            "FAKE-SURVEY-INSTANCE-ID3", "Survey", "Fake Survey", complete_study
+        )
         assert type(form_instance) is CastorFormInstance
         assert form_instance.instance_id == "FAKE-SURVEY-INSTANCE-ID3"
         assert form_instance.instance_type == "Survey"
@@ -27,9 +28,9 @@ class TestCastorFormInstance:
 
     def test_report_form_instance_create(self, complete_study):
         """Tests creation of a Report form instance."""
-        form_instance = CastorFormInstance("FAKE-REPORT-INSTANCE-ID2", "Report",
-                                           "Report Name #90212",
-                                           complete_study)
+        form_instance = CastorFormInstance(
+            "FAKE-REPORT-INSTANCE-ID2", "Report", "Report Name #90212", complete_study
+        )
         assert type(form_instance) is CastorFormInstance
         assert form_instance.instance_id == "FAKE-REPORT-INSTANCE-ID2"
         assert form_instance.instance_type == "Report"
@@ -38,7 +39,9 @@ class TestCastorFormInstance:
 
     def test_study_form_instance_create(self, complete_study):
         """Tests creation of a Study form instance."""
-        form_instance = CastorFormInstance("FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study)
+        form_instance = CastorFormInstance(
+            "FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study
+        )
         assert type(form_instance) is CastorFormInstance
         assert form_instance.instance_id == "FAKE-STUDY-ID-110002"
         assert form_instance.instance_type == "Study"
@@ -48,17 +51,30 @@ class TestCastorFormInstance:
     def test_survey_form_instance_create_fail(self, complete_study):
         """Tests creation of a Survey form instance."""
         with pytest.raises(CastorException) as e:
-            CastorFormInstance("FAKE-SURVEY-INSTANCE-ID60", "Survey", "Maximum Fake Survey",
-                               complete_study)
-        assert str(e.value) == "The form that this is an instance of does not exist in the study!"
+            CastorFormInstance(
+                "FAKE-SURVEY-INSTANCE-ID60",
+                "Survey",
+                "Maximum Fake Survey",
+                complete_study,
+            )
+        assert (
+            str(e.value)
+            == "The form that this is an instance of does not exist in the study!"
+        )
 
     def test_report_form_instance_create_fail(self, complete_study):
         """Tests creation of a Report form instance."""
         with pytest.raises(CastorException) as e:
-            CastorFormInstance("FAKE-REPORT-INSTANCE-ID3", "Report",
-                               "Report Name #90212",
-                               complete_study)
-        assert str(e.value) == "The form that this is an instance of does not exist in the study!"
+            CastorFormInstance(
+                "FAKE-REPORT-INSTANCE-ID3",
+                "Report",
+                "Report Name #90212",
+                complete_study,
+            )
+        assert (
+            str(e.value)
+            == "The form that this is an instance of does not exist in the study!"
+        )
 
     def test_study_form_instance_create_fail(self, complete_study):
         """Tests creation of a Study form instance."""
@@ -68,7 +84,9 @@ class TestCastorFormInstance:
 
     def test_form_instance_add_data_point(self, complete_study):
         """Tests adding a data point to a form instance.."""
-        form_instance = CastorFormInstance("FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study)
+        form_instance = CastorFormInstance(
+            "FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study
+        )
         data_point = CastorDataPoint("FAKE-STUDY-FIELD-ID3", "test", complete_study)
         assert len(form_instance.data_points) == 0
         form_instance.add_data_point(data_point)

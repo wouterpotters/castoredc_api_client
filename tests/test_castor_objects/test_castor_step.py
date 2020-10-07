@@ -21,9 +21,14 @@ class TestCastorStep:
     def test_step_add_field(self):
         """Tests adding a field to a step."""
         step = CastorStep("Report Step 2a", "FAKE-REPORT-STEP-ID3")
-        field = CastorField(field_id="FAKE-REPORT-FIELD-ID7", field_name="Report Field 2a4",
-                            field_label = "This is the fourth report field", field_type = "checkbox",
-                            field_required = True, field_option_group = "FAKE-OPTION-GROUP-ID5")
+        field = CastorField(
+            field_id="FAKE-REPORT-FIELD-ID7",
+            field_name="Report Field 2a4",
+            field_label="This is the fourth report field",
+            field_type="checkbox",
+            field_required=True,
+            field_option_group="FAKE-OPTION-GROUP-ID5",
+        )
         step.add_field(field)
         assert len(step.fields) == 1
         assert step.fields[0] == field

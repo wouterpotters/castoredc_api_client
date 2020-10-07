@@ -11,8 +11,13 @@ if TYPE_CHECKING:
 class CastorFormInstance:
     """Object representing a Castor form instance. Examples are survey instance or report instance."""
 
-    def __init__(self, instance_id: str, instance_type: str, name_of_form: str,
-                 study: "CastorStudy") -> None:
+    def __init__(
+        self,
+        instance_id: str,
+        instance_type: str,
+        name_of_form: str,
+        study: "CastorStudy",
+    ) -> None:
         """Creates a CastorFormInstance."""
         self.instance_id = instance_id
         self.instance_type = instance_type
@@ -21,7 +26,9 @@ class CastorFormInstance:
 
         self.instance_of = self.find_form(study)
         if self.instance_of is None:
-            raise CastorException("The form that this is an instance of does not exist in the study!")
+            raise CastorException(
+                "The form that this is an instance of does not exist in the study!"
+            )
 
         self.data_points = []
 
@@ -36,7 +43,14 @@ class CastorFormInstance:
 
     def get_single_data_point(self, field_id: str) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
-        return next((data_point for data_point in self.data_points if data_point.field_id == field_id), None)
+        return next(
+            (
+                data_point
+                for data_point in self.data_points
+                if data_point.field_id == field_id
+            ),
+            None,
+        )
 
     # Helpers
     def find_form(self, study: "CastorStudy") -> Union["CastorForm", CastorException]:
