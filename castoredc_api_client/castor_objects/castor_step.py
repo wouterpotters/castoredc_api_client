@@ -1,5 +1,4 @@
 from typing import List, Any, Union
-
 from castoredc_api_client.castor_objects.castor_field import CastorField
 
 

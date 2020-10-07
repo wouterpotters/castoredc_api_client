@@ -10,10 +10,9 @@ import csv
 import json
 import logging
 import math
-
 import requests
 
-from castoredc_api_client.castor_objects import CastorField, CastorStep, CastorForm, CastorStudy
+from castoredc_api_client.castor_objects.castor_study import CastorStudy
 from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
 
@@ -42,13 +41,25 @@ class CastorClient:
         self.session.headers.update(self.headers)
 
         # Instantiate global study variables
-        self.study_url = "Not yet instantiated"
-        self.field_map = "Not yet instantiated"
+        self.study_url = None
+        self.study = None
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id and creates the field map."""
         self.study_url = self.base_url + "/study/" + study_id
-        self.field_map = self.map_fields(study_id)
+        self.study = CastorStudy(study_id)
+
+    def map_structure(self):
+        if type(self.study) is None:
+            raise CastorException("Study is not yet instantiated")
+        else:
+            self.study.map_structure(self)
+
+    def map_data(self):
+        if type(self.study) is None:
+            raise CastorException("Study is not yet instantiated")
+        else:
+            self.study.link_data(self)
 
     # API ENDPOINTS
     # COUNTRY
@@ -951,43 +962,3 @@ class CastorClient:
             url = self.base_url + endpoint
         response = self.castor_get(url=url, params=None, content_type="JSON")
         return response["total_items"]
-
-    # DATA MAPPING FUNCTIONS
-    def map_fields(self, study_id: str) -> CastorStudy:
-        """Returns a CastorStudy object with the corresponding variable tree depicting interrelations"""
-        # Get the structure from the API
-        data = self.export_study_structure()
-
-        # Instantiate the head of the tree
-        study = CastorStudy(study_id)
-
-        # Loop over all fields
-        for field in data:
-            # Check if the form for the field exists, if not, create it
-            form = study.get_single_form(field["Form Collection ID"])
-            if form is None:
-                form = CastorForm(form_collection_type=field["Form Type"],
-                                  form_collection_id=field["Form Collection ID"],
-                                  form_collection_name=field["Form Collection Name"])
-                study.add_form(form)
-
-            # Check if the step for the field exists, if not, create it
-            step = form.get_single_step(field["Form ID"])
-            if step is None:
-                step = CastorStep(step_id=field["Form ID"],
-                                  step_name=field["Form Name"])
-                form.add_step(step)
-
-            # Check if the field exists, if not, create it
-            # This should not be possible as there are no doubles, but checking just in case
-            new_field = step.get_single_field(field["Field ID"])
-            if new_field is None:
-                new_field = CastorField(field_id=field["Field ID"],
-                                        field_name=field["Field Variable Name"],
-                                        field_label=field["Field Label"],
-                                        field_type=field["Field Type"],
-                                        field_required=field["Field Required"],
-                                        field_option_group=field["Field Option Group"])
-                step.add_field(new_field)
-
-        return study

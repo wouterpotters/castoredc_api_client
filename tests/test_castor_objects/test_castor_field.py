@@ -5,7 +5,7 @@ Testing class for the CastorField class.
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-from castoredc_api_client.castor_objects import CastorField, CastorField
+from castoredc_api_client.castor_objects.castor_field import CastorField
 
 
 class TestCastorField:

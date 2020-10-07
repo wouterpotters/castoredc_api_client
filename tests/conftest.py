@@ -20,7 +20,7 @@ pytest_plugins = [
 ]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def client():
     client = CastorClient(auth_data.client_id, auth_data.client_secret)
 
