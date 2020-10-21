@@ -56,12 +56,12 @@ class TestField:
         # Check if the right data is returned.
         assert field == self.test_field
 
-    def test_single_field_success(self, client, all_fields):
+    def test_single_field_success(self, client):
         """Tests if single field returns the proper data."""
         field = client.single_field("0C895B4D-D362-4A54-9063-7D3CBAAC0F21")
         assert field == self.test_field
 
-    def test_single_field_failure(self, client, all_fields):
+    def test_single_field_failure(self, client):
         """Tests if single field returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_field("FAKE5B4D-D362-4A54-9063-7D3CBAAC0F21")

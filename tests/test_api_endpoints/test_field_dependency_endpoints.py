@@ -52,7 +52,7 @@ class TestFieldDependency:
                                                    {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
                                                             '-BF17-71F2BB12A2FD/field-dependency/9'}}}
 
-    def test_single_field_success(self, client, all_field_dependencies):
+    def test_single_field_success(self, client):
         """Tests if single field dependency returns the proper data."""
         field_dependency = client.single_field_dependency(9)
         assert field_dependency == {'id': '9', 'operator': '==', 'value': '1',
@@ -62,7 +62,7 @@ class TestFieldDependency:
                                                    {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
                                                             '-BF17-71F2BB12A2FD/field-dependency/9'}}}
 
-    def test_single_field_failure(self, client, all_field_dependencies):
+    def test_single_field_failure(self, client):
         """Tests whether a wrong id throws an error."""
         with pytest.raises(CastorException) as e:
             client.single_field_dependency(2)
