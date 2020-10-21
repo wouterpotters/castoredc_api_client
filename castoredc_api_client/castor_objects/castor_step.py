@@ -1,5 +1,4 @@
 from typing import List, Any, Union
-
 from castoredc_api_client.castor_objects.castor_field import CastorField
 
 
@@ -24,7 +23,9 @@ class CastorStep:
 
     def get_single_field(self, field_id: str) -> CastorField:
         """Returns a linked CastorField based on id."""
-        return next((field for field in self.fields if field.field_id == field_id), None)
+        return next(
+            (field for field in self.fields if field.field_id == field_id), None
+        )
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:

@@ -9,7 +9,6 @@ https://orcid.org/0000-0003-3052-596X
 
 from tests.test_api_endpoints.data_models import export_data_model, export_structure_model, export_option_group_model
 
-
 class TestExportEndpoints:
     """Test the export endpoints of the Castor EDC API Wrapper"""
 

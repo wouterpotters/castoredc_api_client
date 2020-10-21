@@ -5,17 +5,50 @@ Testing class for the CastorStudy class.
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-from castoredc_api_client.castor_objects import CastorStep, CastorField, CastorForm, CastorStudy
+from castoredc_api_client.castor_objects.castor_record import CastorRecord
+from castoredc_api_client.castor_objects.castor_study import CastorStudy
+from castoredc_api_client.castor_objects.castor_form import CastorForm
+from castoredc_api_client.castor_objects.castor_step import CastorStep
+from castoredc_api_client.castor_objects.castor_field import CastorField
 
 
 class TestCastorStudy:
     """Testing class for CastorStudy object unit tests."""
 
+    # Works with fake study created in fixtures.
     def test_study_create(self):
         """Tests creation of a study."""
         study = CastorStudy("FAKE-ID")
         assert type(study) is CastorStudy
         assert study.study_id == "FAKE-ID"
+
+    def test_study_add_record(self):
+        """Tests adding a record to a study."""
+        study = CastorStudy("FAKE-ID")
+        assert len(study.records) == 0
+        record = CastorRecord("110001")
+        study.add_record(record)
+        assert len(study.records) == 1
+        assert study.records[0] == record
+        assert record.study == study
+
+    def test_study_get_all_records(self, study_with_records):
+        """Tests getting all records from a study."""
+        records = study_with_records.get_all_records()
+        assert len(records) == 3, "{}".format(records)
+        for record in records:
+            assert type(record) is CastorRecord
+
+    def test_study_get_single_record(self, study_with_records):
+        """Tests getting a single record from the study."""
+        record = study_with_records.get_single_record("110001")
+        assert type(record) is CastorRecord
+        assert record.record_id == "110001"
+
+    def test_study_get_single_record_fail(self, study_with_records):
+        """Tests failing to get a record from the study."""
+        record = study_with_records.get_single_record("110004")
+        assert record is None
 
     def test_study_add_form(self):
         """Tests adding a form to a study."""
@@ -30,7 +63,7 @@ class TestCastorStudy:
     def test_study_get_all_forms(self, study_with_forms):
         """Tests getting all forms from the study."""
         forms = study_with_forms.get_all_forms()
-        assert len(forms) == 4
+        assert len(forms) == 4  # 1 Survey, 1 Study, 2 Reports
         for form in forms:
             assert type(form) is CastorForm
 
@@ -40,11 +73,24 @@ class TestCastorStudy:
         assert type(form) is CastorForm
         assert form.form_id == "FAKE-REPORT-ID2"
         assert form.form_type == "Report"
-        assert form.form_name == "Fake Report"
+        assert form.form_name == "Fake Report 2"
 
     def test_study_get_single_form_fail(self, study_with_forms):
         """Tests failing to get a form from the study."""
         form = study_with_forms.get_single_form("FAKE-REPORT-ID3")
+        assert form is None
+
+    def test_study_get_single_form_name(self, study_with_forms):
+        """Tests getting a single form from the study."""
+        form = study_with_forms.get_single_form_name("Fake Report 2")
+        assert type(form) is CastorForm
+        assert form.form_id == "FAKE-REPORT-ID2"
+        assert form.form_type == "Report"
+        assert form.form_name == "Fake Report 2"
+
+    def test_study_get_single_form_name_fail(self, study_with_forms):
+        """Tests failing to get a form from the study."""
+        form = study_with_forms.get_single_form("Fake Report True Fake")
         assert form is None
 
     def test_study_get_all_steps(self, complete_study):

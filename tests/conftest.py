@@ -20,7 +20,7 @@ pytest_plugins = [
 ]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def client():
     client = CastorClient(auth_data.client_id, auth_data.client_secret)
 
@@ -191,6 +191,8 @@ def study_field_ids(client):
 @pytest.fixture(scope="function")
 def unlock_survey_package_instances(client):
     """Unlocks all survey package instances in the study."""
-    instance_ids = [instance["id"] for instance in client.all_survey_package_instances()]
+    instance_ids = [
+        instance["id"] for instance in client.all_survey_package_instances()
+    ]
     for instance_id in instance_ids:
         client.patch_survey_package_instance(instance_id, False)

@@ -5,7 +5,8 @@ Testing class for the CastorStep class.
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-from castoredc_api_client.castor_objects import CastorStep, CastorField
+from castoredc_api_client.castor_objects.castor_field import CastorField
+from castoredc_api_client.castor_objects.castor_step import CastorStep
 
 
 class TestCastorStep:
@@ -20,9 +21,14 @@ class TestCastorStep:
     def test_step_add_field(self):
         """Tests adding a field to a step."""
         step = CastorStep("Report Step 2a", "FAKE-REPORT-STEP-ID3")
-        field = CastorField(field_id="FAKE-REPORT-FIELD-ID7", field_name="Report Field 2a4",
-                            field_label = "This is the fourth report field", field_type = "checkbox",
-                            field_required = True, field_option_group = "FAKE-OPTION-GROUP-ID5")
+        field = CastorField(
+            field_id="FAKE-REPORT-FIELD-ID7",
+            field_name="Report Field 2a4",
+            field_label="This is the fourth report field",
+            field_type="checkbox",
+            field_required=True,
+            field_option_group="FAKE-OPTION-GROUP-ID5",
+        )
         step.add_field(field)
         assert len(step.fields) == 1
         assert step.fields[0] == field

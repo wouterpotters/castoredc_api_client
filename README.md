@@ -14,9 +14,16 @@ Logging functionalities are included for keeping an audit trail.
 
 ```python
 from castoredc_api_client.castoredc_api_client import CastorClient
-c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET')
+
+# Create a client with your credentials
+c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET') 
+# Link the client to your study in the Castor EDC database
 c.link_study('MYSTUDYID')
 
+# OPTIONAL: Map the structure and data points of your study locally
+c.map_data()
+
+# Then you can interact with the API
 c.all_records()
 ```
 

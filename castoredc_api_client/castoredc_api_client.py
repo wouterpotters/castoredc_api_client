@@ -10,10 +10,9 @@ import csv
 import json
 import logging
 import math
-
 import requests
 
-from castoredc_api_client.castor_objects import CastorField, CastorStep, CastorForm, CastorStudy
+from castoredc_api_client.castor_objects.castor_study import CastorStudy
 from castoredc_api_client.exceptions import castor_exception_handler, CastorException
 
 
@@ -42,13 +41,25 @@ class CastorClient:
         self.session.headers.update(self.headers)
 
         # Instantiate global study variables
-        self.study_url = "Not yet instantiated"
-        self.field_map = "Not yet instantiated"
+        self.study_url = None
+        self.study = None
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id and creates the field map."""
         self.study_url = self.base_url + "/study/" + study_id
-        self.field_map = self.map_fields(study_id)
+        self.study = CastorStudy(study_id)
+
+    def map_structure(self):
+        if type(self.study) is None:
+            raise CastorException("Study is not yet instantiated")
+        else:
+            self.study.map_structure(self)
+
+    def map_data(self):
+        if type(self.study) is None:
+            raise CastorException("Study is not yet instantiated")
+        else:
+            self.study.link_data(self)
 
     # API ENDPOINTS
     # COUNTRY
@@ -150,7 +161,7 @@ class CastorClient:
         return self.retrieve_data_points(url)
 
     def single_survey_package_data_points_record(
-            self, record_id, survey_package_instance_id
+        self, record_id, survey_package_instance_id
     ):
         """Returns a list of data from a single survey package instance 
         collected for given record record_id. Returns None if record not found"""
@@ -198,9 +209,10 @@ class CastorClient:
                 }]
         """
         url = (
-                self.study_url
-                + "/record/{record_id}/data-point-collection/report-instance/{report_id}".format(
-            record_id=record_id, report_id=report_id)
+            self.study_url
+            + "/record/{record_id}/data-point-collection/report-instance/{report_id}".format(
+                record_id=record_id, report_id=report_id
+            )
         )
         post_data = {"common": common, "data": body}
         return self.castor_post(url, post_data)
@@ -216,15 +228,16 @@ class CastorClient:
                 }]
         """
         url = (
-                self.study_url
-                + "/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}".format(
-            record_id=record_id, survey_instance_id=survey_instance_id)
+            self.study_url
+            + "/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}".format(
+                record_id=record_id, survey_instance_id=survey_instance_id
+            )
         )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
 
     def update_survey_package_instance_data_record(
-            self, record_id, survey_package_instance_id, body
+        self, record_id, survey_package_instance_id, body
     ):
         """Creates/updates a survey package instance. 
         Returns None if record not found.
@@ -236,11 +249,11 @@ class CastorClient:
                 }]
         """
         url = (
-                self.study_url
-                + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
-            record_id=record_id,
-            survey_package_instance_id=survey_package_instance_id,
-        )
+            self.study_url
+            + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
+                record_id=record_id,
+                survey_package_instance_id=survey_package_instance_id,
+            )
         )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
@@ -456,7 +469,7 @@ class CastorClient:
         )
 
     def create_report_instance_record(
-            self, record_id, report_id, report_name_custom, parent_id=None
+        self, record_id, report_id, report_name_custom, parent_id=None
     ):
         """Creates a report instance for a record.
         Returns None if creation failed."""
@@ -493,7 +506,7 @@ class CastorClient:
         )
 
     def single_report_instance_single_field_record(
-            self, record_id, report_instance_id, field_id
+        self, record_id, report_instance_id, field_id
     ):
         """Returns a data point for a report for a record.
         Returns None if report not found for given record or field not found
@@ -503,13 +516,13 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint=formatted_url, data_id=data_point)
 
     def update_report_instance_single_field_record(
-            self,
-            record_id,
-            report_ins_id,
-            field_id,
-            change_reason,
-            field_value=None,
-            file=None,
+        self,
+        record_id,
+        report_ins_id,
+        field_id,
+        change_reason,
+        field_value=None,
+        file=None,
     ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
@@ -609,7 +622,7 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_single_study_field_record(
-            self, record_id, field_id, field_value, change_reason
+        self, record_id, field_id, field_value, change_reason
     ):
         """Update a data point for a record.
         Returns None if target not found."""
@@ -676,15 +689,15 @@ class CastorClient:
         )
 
     def create_survey_package_instance(
-            self,
-            survey_package_id,
-            record_id,
-            email_address,
-            ccr_patient_id=None,
-            package_invitation_subject=None,
-            package_invitation=None,
-            auto_send=None,
-            auto_lock_on_finish=None,
+        self,
+        survey_package_id,
+        record_id,
+        email_address,
+        ccr_patient_id=None,
+        package_invitation_subject=None,
+        package_invitation=None,
+        auto_send=None,
+        auto_lock_on_finish=None,
     ):
         """Create a survey package. 
         Arguments marked with None are non-obligatory."""
@@ -721,7 +734,7 @@ class CastorClient:
         )
 
     def single_survey_instance_single_field_record(
-            self, record_id, survey_instance_id, field_id
+        self, record_id, survey_instance_id, field_id
     ):
         """Retrieves a single field with data for the given survey.
         Returns None if record, survey or field not found."""
@@ -731,17 +744,17 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_survey_instance_single_field_record(
-            self, record_id, survey_instance_id, field_id, field_value, change_reason
+        self, record_id, survey_instance_id, field_id, field_value, change_reason
     ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
         url = (
-                self.study_url
-                + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
-            record_id=record_id,
-            survey_instance_id=survey_instance_id,
-            field_id=field_id,
-        )
+            self.study_url
+            + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
+                record_id=record_id,
+                survey_instance_id=survey_instance_id,
+                field_id=field_id,
+            )
         )
 
         body = {
@@ -839,7 +852,9 @@ class CastorClient:
         content_csv = csv.DictReader(content_decoded.splitlines(), delimiter=";")
         content = [line for line in content_csv]
         if len(content) == 0:
-            raise CastorException("No data found, database returned: {}".format(content_decoded))
+            raise CastorException(
+                "No data found, database returned: {}".format(content_decoded)
+            )
         return {"content": content}
 
     def castor_post(self, url, body):
@@ -951,43 +966,3 @@ class CastorClient:
             url = self.base_url + endpoint
         response = self.castor_get(url=url, params=None, content_type="JSON")
         return response["total_items"]
-
-    # DATA MAPPING FUNCTIONS
-    def map_fields(self, study_id: str) -> CastorStudy:
-        """Returns a CastorStudy object with the corresponding variable tree depicting interrelations"""
-        # Get the structure from the API
-        data = self.export_study_structure()
-
-        # Instantiate the head of the tree
-        study = CastorStudy(study_id)
-
-        # Loop over all fields
-        for field in data:
-            # Check if the form for the field exists, if not, create it
-            form = study.get_single_form(field["Form Collection ID"])
-            if form is None:
-                form = CastorForm(form_collection_type=field["Form Type"],
-                                  form_collection_id=field["Form Collection ID"],
-                                  form_collection_name=field["Form Collection Name"])
-                study.add_form(form)
-
-            # Check if the step for the field exists, if not, create it
-            step = form.get_single_step(field["Form ID"])
-            if step is None:
-                step = CastorStep(step_id=field["Form ID"],
-                                  step_name=field["Form Name"])
-                form.add_step(step)
-
-            # Check if the field exists, if not, create it
-            # This should not be possible as there are no doubles, but checking just in case
-            new_field = step.get_single_field(field["Field ID"])
-            if new_field is None:
-                new_field = CastorField(field_id=field["Field ID"],
-                                        field_name=field["Field Variable Name"],
-                                        field_label=field["Field Label"],
-                                        field_type=field["Field Type"],
-                                        field_required=field["Field Required"],
-                                        field_option_group=field["Field Option Group"])
-                step.add_field(new_field)
-
-        return study

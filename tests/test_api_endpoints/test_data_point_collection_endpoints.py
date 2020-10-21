@@ -590,7 +590,10 @@ class TestDataPoint:
         assert str(e.value) == "404 Record not found"
 
     def test_create_survey_package_instance_data_points_success(
-        self, client, records_with_survey_package_instances, unlock_survey_package_instances,
+        self,
+        client,
+        records_with_survey_package_instances,
+        unlock_survey_package_instances,
     ):
         fields = []
         # Keep looking for a report until one with fields is found

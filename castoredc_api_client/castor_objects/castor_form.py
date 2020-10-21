@@ -8,7 +8,12 @@ from castoredc_api_client.castor_objects.castor_step import CastorStep
 class CastorForm:
     """Object representing a form in Castor. Functions as a branch of a tree for all interrelations."""
 
-    def __init__(self, form_collection_name: str, form_collection_id: str, form_collection_type: str) -> None:
+    def __init__(
+        self,
+        form_collection_name: str,
+        form_collection_id: str,
+        form_collection_type: str,
+    ) -> None:
         """Creates a CastorForm."""
         self.form_name = form_collection_name
         self.form_id = form_collection_id
@@ -31,7 +36,9 @@ class CastorForm:
 
     def get_all_fields(self) -> List[CastorField]:
         """Returns a list of linked CastorFields."""
-        return list(itertools.chain.from_iterable([_step.fields for _step in self.steps]))
+        return list(
+            itertools.chain.from_iterable([_step.fields for _step in self.steps])
+        )
 
     def get_single_field(self, field_id: str) -> Optional[CastorStep]:
         """Returns a linked CastorField based on id."""
