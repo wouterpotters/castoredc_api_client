@@ -52,48 +52,22 @@ def client():
         client.logger.removeHandler(handler)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def item_totals(client):
     def return_item_totals(endpoint, base=False):
         return client.request_size(endpoint, base)
 
     return return_item_totals
 
-    # item_totals = {
-    #     "total_fields": client.request_size("/field"),
-    #     "total_field_deps": client.request_size("/field-dependency"),
-    #     "total_field_opts": client.request_size("/field-optiongroup"),
-    #     "total_field_vals": client.request_size("/field-validation"),
-    #     "total_institutes": client.request_size("/institute"),
-    #     "total_metadata": client.request_size("/metadata"),
-    #     "total_metadata_types": client.request_size("/metadatatype"),
-    #     "total_phases": client.request_size("/phase"),
-    #     "total_queries": client.request_size("/query"),
-    #     "total_study_data_points": client.request_size("/data-point-collection/study"),
-    #     "total_report_data_points": client.request_size(
-    #         "/data-point-collection/report-instance"
-    #     ),
-    #     "total_survey_data_points": client.request_size(
-    #         "/data-point-collection/survey-instance"
-    #     ),
-    #     "total_records": client.request_size("/record"),
-    #     "total_reports": client.request_size("/report"),
-    #     "total_report_instances": client.request_size("/report-instance"),
-    #     "total_steps": client.request_size("/step"),
-    #     "total_studies": client.request_size("/study", base=True),
-    #     "total_surveys": client.request_size("/survey"),
-    #     "total_survey_packages": client.request_size("/surveypackage"),
-    # }
 
-
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def all_record_ids(client):
     records = client.all_records(archived=0)
     all_record_ids = [record["id"] for record in records]
     return all_record_ids
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def records_with_reports(client, all_record_ids):
     records_with_reports = {}
     for record_id in all_record_ids:
@@ -110,7 +84,7 @@ def records_with_reports(client, all_record_ids):
     return records_with_reports
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def records_with_survey_package_instances(client, all_record_ids):
     records_with_survey_package_instances = {}
     for record_id in all_record_ids:
@@ -121,7 +95,7 @@ def records_with_survey_package_instances(client, all_record_ids):
     return records_with_survey_package_instances
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def records_with_survey_instances(client, all_record_ids):
     records_with_survey_instances = {}
     for record_id in all_record_ids:
@@ -158,7 +132,7 @@ def all_survey_data_points(client):
     return all_survey_data_points
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def report_field_ids(client):
     """Returns a list of field ids for every report in the study.
     Can only gather data on fields that have already been filled in once
@@ -168,7 +142,7 @@ def report_field_ids(client):
     return report_field_ids
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def survey_field_ids(client):
     """Returns a list of field ids for every survey in the study.
     Can only gather data on fields that have already been filled in once
@@ -178,7 +152,7 @@ def survey_field_ids(client):
     return survey_field_ids
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def study_field_ids(client):
     """Returns a list of field ids for every phase/study-field in the study.
     Can only gather data on fields that have already been filled in once

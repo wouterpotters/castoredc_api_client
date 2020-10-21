@@ -16,7 +16,7 @@ class TestCountry:
     model_keys = country_model.keys()
     single_country_model_keys = single_country_model.keys()
 
-    @pytest.fixture(scope="session")
+    @pytest.fixture(scope="class")
     def all_countries(self, client):
         """Returns a list of dicts containing all countries in the Castor database."""
         all_countries = client.all_countries()
