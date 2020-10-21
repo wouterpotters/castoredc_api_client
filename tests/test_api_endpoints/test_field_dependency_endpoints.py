@@ -16,6 +16,13 @@ from castoredc_api_client.exceptions import CastorException
 class TestFieldDependency:
     model_keys = field_dep_model.keys()
 
+    test_field_dep = {'id': '9', 'operator': '==', 'value': '1',
+                      'parent_id': 'BA93857C-1EBB-4DFF-92F3-EEE92D944686',
+                      'child_id': 'CF86C999-256F-49D6-8D59-90D2A8B9A3D8',
+                      '_links': {'self':
+                                     {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
+                                              '-BF17-71F2BB12A2FD/field-dependency/9'}}}
+
     @pytest.fixture(scope="class")
     def all_field_dependencies(self, client):
         """Get all field dependencies from the Castor database."""
@@ -45,22 +52,12 @@ class TestFieldDependency:
         # Select one dependency
         field_dependency = all_field_dependencies[4]
         # Tests whether the proper dependency is returned
-        assert field_dependency == {'id': '9', 'operator': '==', 'value': '1',
-                                    'parent_id': 'BA93857C-1EBB-4DFF-92F3-EEE92D944686',
-                                    'child_id': 'CF86C999-256F-49D6-8D59-90D2A8B9A3D8',
-                                    '_links': {'self':
-                                                   {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
-                                                            '-BF17-71F2BB12A2FD/field-dependency/9'}}}
+        assert field_dependency == self.test_field_dep
 
     def test_single_field_success(self, client):
         """Tests if single field dependency returns the proper data."""
         field_dependency = client.single_field_dependency(9)
-        assert field_dependency == {'id': '9', 'operator': '==', 'value': '1',
-                                    'parent_id': 'BA93857C-1EBB-4DFF-92F3-EEE92D944686',
-                                    'child_id': 'CF86C999-256F-49D6-8D59-90D2A8B9A3D8',
-                                    '_links': {'self':
-                                                   {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
-                                                            '-BF17-71F2BB12A2FD/field-dependency/9'}}}
+        assert field_dependency == self.test_field_dep
 
     def test_single_field_failure(self, client):
         """Tests whether a wrong id throws an error."""
