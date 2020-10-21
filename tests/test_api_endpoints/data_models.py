@@ -73,18 +73,6 @@ export_option_group_model = {
     "Option Value": [str,],
 }
 
-<<<<<<< HEAD:tests/test_api_endpoints/data_models.py
-=======
-country_model_2 = {
-    "id": [str,],
-    "country_id": [str,],
-    "country_name": [str,],
-    "country_tld": [str,],
-    "country_cca2": [str,],
-    "country_cca3": [str,],
-}
-
->>>>>>> master:tests/data_models.py
 study_data_point_model = {
     "field_id": [str,],
     "field_value": [str,],
