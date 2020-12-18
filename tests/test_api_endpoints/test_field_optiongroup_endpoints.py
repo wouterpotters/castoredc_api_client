@@ -7,7 +7,6 @@ Link: https://data.castoredc.com/api#/field-optiongroup
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
-import random
 
 from tests.test_api_endpoints.data_models import field_opt_model
 from castoredc_api_client.exceptions import CastorException
