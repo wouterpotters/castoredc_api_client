@@ -123,7 +123,7 @@ class CastorStudy:
                 if field["Form Type"] == "Study":
                     instance_of_field = self.get_single_field(field["Field ID"])
                     instance_of_form = instance_of_field.step.form.form_id
-                    form_instance_id = instance_of_form + "-" + record.record_id
+                    form_instance_id = instance_of_form
                     form_instance = record.get_single_form_instance(form_instance_id)
                     if form_instance is None:
                         form_instance = CastorFormInstance(
@@ -255,10 +255,11 @@ class CastorStudy:
         return form_instances
 
     def get_single_form_instance(
-        self, instance_id: str
+            self, record_id: str, instance_id: str,
     ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
-        all_form_instances = self.get_all_form_instances()
+        record = self.get_single_record(record_id)
+        all_form_instances = record.get_all_form_instances()
         return next(
             (
                 instance
@@ -278,10 +279,10 @@ class CastorStudy:
         return data_points
 
     def get_single_data_point(
-        self, field_id: str, form_instance_id: str
+            self, record_id: str, form_instance_id: str, field_id: str
     ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
-        form_instance = self.get_single_form_instance(form_instance_id)
+        form_instance = self.get_single_form_instance(record_id, form_instance_id)
         data_points = form_instance.get_all_data_points()
         return next(
             (
@@ -293,13 +294,12 @@ class CastorStudy:
         )
 
     def instance_of_form(
-        self, instance_id: str, instance_type: str
+            self, instance_id: str, instance_type: str
     ) -> Optional[CastorForm]:
         """Returns the form of which the given id is an instance.
-        instance_id is id for type: Report, name for type: Survey, or id+record for type: Study"""
+        instance_id is id for type: Report, name for type: Survey, or id for type: Study"""
         if instance_type == "Study":
-            # Remove the suffix concerning the record of which study is an instance
-            return self.get_single_form(instance_id[:-7])
+            return self.get_single_form(instance_id)
         elif instance_type == "Report" or instance_type == "Survey":
             options = self.form_links[instance_type]
             form_id = next(

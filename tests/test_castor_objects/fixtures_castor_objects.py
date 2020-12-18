@@ -202,7 +202,7 @@ def forms() -> List[castor_form.CastorForm]:
     form1 = castor_form.CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey")
     form2 = castor_form.CastorForm("Fake Report 1", "FAKE-REPORT-ID1", "Report")
     form3 = castor_form.CastorForm("Fake Report 2", "FAKE-REPORT-ID2", "Report")
-    form4 = castor_form.CastorForm("Fake Study", "FAKE-STUDY-ID", "Study")
+    form4 = castor_form.CastorForm("Fake Study", "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study")
     return [form1, form2, form3, form4]
 
 
@@ -319,10 +319,10 @@ def form_instances(
 
     # Data export does not return names of study form instance, but merely that field belongs to study
     form_instance7 = castor_form_instance.CastorFormInstance(
-        "FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study
+        "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
     )
     form_instance8 = castor_form_instance.CastorFormInstance(
-        "FAKE-STUDY-ID-110003", "Study", "Baseline", complete_study
+        "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
     )
 
     form_instance9 = castor_form_instance.CastorFormInstance(

@@ -441,9 +441,15 @@ class CastorClient:
     # REPORT INSTANCES
     def all_report_instances(self):
         """Returns a list of dicts of all report_instances."""
-        return self.retrieve_all_data_by_endpoint(
-            endpoint="/report-instance", data_name="reportInstances"
-        )
+        try:
+            return self.retrieve_all_data_by_endpoint(
+                endpoint="/report-instance", data_name="reportInstances"
+            )
+        except CastorException as e:
+            if str(e) == "404 There are no report instances.":
+                return []
+            else:
+                raise e
 
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance. 

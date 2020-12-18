@@ -67,7 +67,9 @@ class CastorFormInstance:
         if not isinstance(other, CastorFormInstance):
             return NotImplemented
         else:
-            return self.instance_id == other.instance_id
+            return (self.instance_id == other.instance_id and
+                    self.instance_type == other.instance_type and
+                    self.record == other.record)
 
     def __repr__(self) -> str:
         return self.instance_id

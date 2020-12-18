@@ -40,13 +40,13 @@ class TestCastorFormInstance:
     def test_study_form_instance_create(self, complete_study):
         """Tests creation of a Study form instance."""
         form_instance = CastorFormInstance(
-            "FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study
+            "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
         )
         assert type(form_instance) is CastorFormInstance
-        assert form_instance.instance_id == "FAKE-STUDY-ID-110002"
+        assert form_instance.instance_id == "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID"
         assert form_instance.instance_type == "Study"
         assert form_instance.name_of_form == "Baseline"
-        assert form_instance.instance_of.form_id == "FAKE-STUDY-ID"
+        assert form_instance.instance_of.form_id == "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID"
 
     def test_survey_form_instance_create_fail(self, complete_study):
         """Tests creation of a Survey form instance."""
@@ -85,7 +85,7 @@ class TestCastorFormInstance:
     def test_form_instance_add_data_point(self, complete_study):
         """Tests adding a data point to a form instance.."""
         form_instance = CastorFormInstance(
-            "FAKE-STUDY-ID-110002", "Study", "Baseline", complete_study
+            "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
         )
         data_point = CastorDataPoint("FAKE-STUDY-FIELD-ID3", "test", complete_study)
         assert len(form_instance.data_points) == 0
