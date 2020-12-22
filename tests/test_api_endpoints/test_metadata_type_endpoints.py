@@ -15,8 +15,16 @@ from castoredc_api_client.exceptions import CastorException
 class TestMetadataType:
     model_keys = metadata_type_model.keys()
 
-    test_metadata_type = {'id': 3, 'name': 'SNOMED', 'description': 'SNOMED Metadata',
-                         '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/metadatatype/3'}}}
+    test_metadata_type = {
+        "id": 3,
+        "name": "SNOMED",
+        "description": "SNOMED Metadata",
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/metadatatype/3"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_metadata_types(self, client):
@@ -26,7 +34,9 @@ class TestMetadataType:
 
     def test_all_metadata_types(self, all_metadata_types, item_totals):
         """Tests if all metadata types are returned by the api"""
-        assert len(all_metadata_types) > 0, "No metadata types found in the study, is this right?"
+        assert (
+            len(all_metadata_types) > 0
+        ), "No metadata types found in the study, is this right?"
         assert len(all_metadata_types) == item_totals("/metadatatype")
 
     def test_all_metadata_types_model(self, all_metadata_types):
@@ -57,4 +67,3 @@ class TestMetadataType:
         with pytest.raises(CastorException) as e:
             client.single_metadata_type("2")
         assert str(e.value) == "404 Entity not found."
-

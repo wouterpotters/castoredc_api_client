@@ -7,16 +7,17 @@ Link: https://data.castoredc.com/api#/record
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+import random
 
 from tests.test_api_endpoints.data_models import record_model
 from castoredc_api_client.exceptions import CastorException
 
 
-def create_record(client, fake):
+def create_record(fake):
     if fake:
-        institute = 'FAKE5802-0B07-471F-B97E-B5166332F2C5'
+        institute = "FAKE5802-0B07-471F-B97E-B5166332F2C5"
     else:
-        institute = '1CFF5802-0B07-471F-B97E-B5166332F2C5'
+        institute = "1CFF5802-0B07-471F-B97E-B5166332F2C5"
     return {
         "institute_id": institute,
         "email": "totallyfake@fakeemail.com",
@@ -28,18 +29,53 @@ def create_record(client, fake):
 class TestRecord:
     model_keys = record_model.keys()
 
-    test_record = {'id': '000006', 'record_id': '000006', 'ccr_patient_id': '', 'last_opened_step': None,
-                   'progress': 11, 'status': 'open', 'archived': False, 'archived_reason': None,
-                   'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25',
-                   'created_on': {'date': '2019-10-28 15:24:02.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'},
-                   'updated_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25',
-                   'updated_on': {'date': '2020-07-03 14:13:44.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'},
-                   'randomized_id': None, 'randomization_group': None, 'randomization_group_name': None,
-                   '_embedded': {'institute':
-                                     {'id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'institute_id': '1CFF5802-0B07-471F-B97E-B5166332F2C5',
-                                      'name': 'Test Institute', 'abbreviation': 'TES', 'code': 'TES', 'order': 0, 'deleted': False, 'country_id': 169,
-                                      '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5'}}}},
-                   '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000006'}}}
+    test_record = {
+        "id": "000006",
+        "record_id": "000006",
+        "ccr_patient_id": "",
+        "last_opened_step": None,
+        "progress": 11,
+        "status": "open",
+        "archived": False,
+        "archived_reason": None,
+        "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "created_on": {
+            "date": "2019-10-28 15:24:02.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Amsterdam",
+        },
+        "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "updated_on": {
+            "date": "2020-07-03 14:13:44.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Amsterdam",
+        },
+        "randomized_id": None,
+        "randomization_group": None,
+        "randomization_group_name": None,
+        "_embedded": {
+            "institute": {
+                "id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
+                "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
+                "name": "Test Institute",
+                "abbreviation": "TES",
+                "code": "TES",
+                "order": 0,
+                "deleted": False,
+                "country_id": 169,
+                "_links": {
+                    "self": {
+                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5"
+                    }
+                },
+            }
+        },
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000006"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_records(self, client):
@@ -77,9 +113,14 @@ class TestRecord:
 
     def test_all_records_single_center(self, client):
         """Tests if institute filtering only retrieves records from the given institute."""
-        all_records = client.all_records(institute_id='1CFF5802-0B07-471F-B97E-B5166332F2C5')
+        all_records = client.all_records(
+            institute_id="1CFF5802-0B07-471F-B97E-B5166332F2C5"
+        )
         for record in all_records:
-            assert record["_embedded"]["institute"]["id"] == '1CFF5802-0B07-471F-B97E-B5166332F2C5'
+            assert (
+                record["_embedded"]["institute"]["id"]
+                == "1CFF5802-0B07-471F-B97E-B5166332F2C5"
+            )
 
     def test_all_records_data(self, all_records):
         """Tests the data of the records returned by all_records"""
@@ -103,7 +144,7 @@ class TestRecord:
         """Tests creating a new record."""
         len_records = len(client.all_records())
 
-        record = create_record(client, fake=False)
+        record = create_record(fake=False)
         created = client.create_record(**record)
         new_record_id = created["id"]
 
@@ -117,7 +158,7 @@ class TestRecord:
         """Tests if creating a record for a non-existing institute raises an error."""
         len_records = len(client.all_records())
 
-        record = create_record(client, fake=True)
+        record = create_record(fake=True)
         with pytest.raises(CastorException) as e:
             client.create_record(**record)
         assert str(e.value) == "422 Failed Validation"

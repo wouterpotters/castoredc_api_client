@@ -10,7 +10,11 @@ import pytest
 import random
 
 from castoredc_api_client.exceptions import CastorException
-from tests.test_api_endpoints.data_models import survey_model, package_model, survey_package_instance_model
+from tests.test_api_endpoints.data_models import (
+    survey_model,
+    package_model,
+    survey_package_instance_model,
+)
 
 
 def create_survey_package_instance_body(client, record_id, fake):

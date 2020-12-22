@@ -5,7 +5,9 @@ if TYPE_CHECKING:
     from castoredc_api_client.castor_objects.castor_form_instance import (
         CastorFormInstance,
     )
-
+    from castoredc_api_client.castor_objects.castor_data_point import (
+        CastorDataPoint,
+    )
 
 class CastorRecord:
     """Object representing a Castor Record."""

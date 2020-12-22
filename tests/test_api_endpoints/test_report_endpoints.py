@@ -15,9 +15,18 @@ from castoredc_api_client.exceptions import CastorException
 class TestReport:
     model_keys = report_model.keys()
 
-    test_report = {'id': '770DB401-6100-4CF5-A95F-3402B55EAC48', 'report_id': '770DB401-6100-4CF5-A95F-3402B55EAC48',
-                   'name': 'Comorbidities', 'description': '', 'type': 'other',
-                   '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/report/770DB401-6100-4CF5-A95F-3402B55EAC48'}}}
+    test_report = {
+        "id": "770DB401-6100-4CF5-A95F-3402B55EAC48",
+        "report_id": "770DB401-6100-4CF5-A95F-3402B55EAC48",
+        "name": "Comorbidities",
+        "description": "",
+        "type": "other",
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/report/770DB401-6100-4CF5-A95F-3402B55EAC48"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_reports(self, client):

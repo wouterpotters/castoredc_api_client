@@ -51,6 +51,7 @@ def client():
         handler.close()
         client.logger.removeHandler(handler)
 
+
 #
 # @pytest.fixture(scope="class")
 # def all_record_ids(client):

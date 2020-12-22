@@ -15,13 +15,43 @@ from castoredc_api_client.exceptions import CastorException
 class TestFieldOptionGroup:
     model_keys = field_opt_model.keys()
 
-    test_field_opt = {'id': '1A90F1BC-1329-43B5-B494-DFBB87C21E99', 'name': 'Severity', 'description': '',
-                      'layout': False, 'options':
-                          [{'id': '89D3D962-236D-41F0-AEAD-01653A6E9DC9', 'name': 'Mild', 'value': '1', 'groupOrder': 0},
-                           {'id': '5808B803-3F3F-4E76-A5D5-1FB6F04C6E1D', 'name': 'Moderate', 'value': '2', 'groupOrder': 1},
-                           {'id': '0E85C3B9-10A0-486A-A56D-404AF10FC2D7', 'name': 'Severe', 'value': '3', 'groupOrder': 2},
-                           {'id': '7E2443AA-7920-4748-B4DD-8499D45282D7', 'name': 'Life-threatening', 'value': '4', 'groupOrder': 3}],
-                      '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field-optiongroup/1A90F1BC-1329-43B5-B494-DFBB87C21E99'}}}
+    test_field_opt = {
+        "id": "1A90F1BC-1329-43B5-B494-DFBB87C21E99",
+        "name": "Severity",
+        "description": "",
+        "layout": False,
+        "options": [
+            {
+                "id": "89D3D962-236D-41F0-AEAD-01653A6E9DC9",
+                "name": "Mild",
+                "value": "1",
+                "groupOrder": 0,
+            },
+            {
+                "id": "5808B803-3F3F-4E76-A5D5-1FB6F04C6E1D",
+                "name": "Moderate",
+                "value": "2",
+                "groupOrder": 1,
+            },
+            {
+                "id": "0E85C3B9-10A0-486A-A56D-404AF10FC2D7",
+                "name": "Severe",
+                "value": "3",
+                "groupOrder": 2,
+            },
+            {
+                "id": "7E2443AA-7920-4748-B4DD-8499D45282D7",
+                "name": "Life-threatening",
+                "value": "4",
+                "groupOrder": 3,
+            },
+        ],
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field-optiongroup/1A90F1BC-1329-43B5-B494-DFBB87C21E99"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_field_opts(self, client):
@@ -31,7 +61,9 @@ class TestFieldOptionGroup:
 
     def test_all_field_opts(self, all_field_opts, item_totals):
         """Tests if the API returns all fields in the study."""
-        assert len(all_field_opts) > 0, "No field optiongroups found in the study, is this right?"
+        assert (
+            len(all_field_opts) > 0
+        ), "No field optiongroups found in the study, is this right?"
         assert len(all_field_opts) == item_totals("/field-optiongroup")
 
     def test_all_field_opts_model(self, all_field_opts):
@@ -54,7 +86,9 @@ class TestFieldOptionGroup:
 
     def test_single_field_opts_success(self, client):
         """Tests if single field returns the proper data."""
-        field_opt = client.single_field_optiongroup("1A90F1BC-1329-43B5-B494-DFBB87C21E99")
+        field_opt = client.single_field_optiongroup(
+            "1A90F1BC-1329-43B5-B494-DFBB87C21E99"
+        )
         assert field_opt == self.test_field_opt
 
     def test_single_field_opts_failure(self, client):

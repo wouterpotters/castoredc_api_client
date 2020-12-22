@@ -15,14 +15,23 @@ from castoredc_api_client.exceptions import CastorException
 class TestFieldValidation:
     model_keys = field_val_model.keys()
 
-    test_field_val = {'id': 7, 'type': 'inclusion_stop', 'value': '1', 'operator': '==',
-                      'text': 'Previous trial participation is an exclusion criterion. You cannot proceed with data entry.',
-                      'field_id': '7E7868E1-946B-41EF-A96D-E3248251C6F1', '_links': {
-            'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field-validation/7'}}}
+    test_field_val = {
+        "id": 7,
+        "type": "inclusion_stop",
+        "value": "1",
+        "operator": "==",
+        "text": "Previous trial participation is an exclusion criterion. You cannot proceed with data entry.",
+        "field_id": "7E7868E1-946B-41EF-A96D-E3248251C6F1",
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field-validation/7"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_field_vals(self, client):
-        "Gets all field validations from the API"
+        """Gets all field validations from the API"""
         all_field_vals = client.all_field_validations()
         return all_field_vals
 
@@ -41,7 +50,7 @@ class TestFieldValidation:
             for key in self.model_keys:
                 assert key in api_keys
                 assert type(validation[key]) in field_val_model[key]
-                
+
     def test_all_field_vals_data(self, all_field_vals):
         """Tests the data of the field_vals returned by all_field_vals"""
         # Select a field

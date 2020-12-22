@@ -15,10 +15,19 @@ from castoredc_api_client.exceptions import CastorException
 class TestPhase:
     model_keys = phase_model.keys()
 
-    test_phase = {'id': 'AA99795D-4F8D-4B4A-96A1-14D026D0328E', 'phase_id': 'AA99795D-4F8D-4B4A-96A1-14D026D0328E',
-                  'phase_description': None, 'phase_name': 'Unscheduled visits and Medication', 'phase_duration': None,
-                  'phase_order': 4, '_links': {'self':
-                                                   {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/phase/AA99795D-4F8D-4B4A-96A1-14D026D0328E'}}}
+    test_phase = {
+        "id": "AA99795D-4F8D-4B4A-96A1-14D026D0328E",
+        "phase_id": "AA99795D-4F8D-4B4A-96A1-14D026D0328E",
+        "phase_description": None,
+        "phase_name": "Unscheduled visits and Medication",
+        "phase_duration": None,
+        "phase_order": 4,
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/phase/AA99795D-4F8D-4B4A-96A1-14D026D0328E"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_phases(self, client):

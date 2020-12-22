@@ -7,22 +7,22 @@ https://orcid.org/0000-0003-3052-596X
 """
 
 country_model = {
-    "id": [str, ],
-    "country_id": [str, ],
-    "country_name": [str, ],
-    "country_tld": [str, ],
-    "country_cca2": [str, ],
-    "country_cca3": [str, ],
+    "id": [str,],
+    "country_id": [str,],
+    "country_name": [str,],
+    "country_tld": [str,],
+    "country_cca2": [str,],
+    "country_cca3": [str,],
 }
 
 single_country_model = {
-    "id": [int, ],
-    "country_id": [int, ],
-    "country_name": [str, ],
-    "country_tld": [str, ],
-    "country_cca2": [str, ],
-    "country_cca3": [str, ],
-    "_links": [dict, ],
+    "id": [int,],
+    "country_id": [int,],
+    "country_name": [str,],
+    "country_tld": [str,],
+    "country_cca2": [str,],
+    "country_cca3": [str,],
+    "_links": [dict,],
 }
 
 export_data_model = {
@@ -59,7 +59,7 @@ export_structure_model = {
     ],  # Actually int in database, but csv interprets everything as string
     "Field Required": [
         str,
-    ],  # Acutally bool in database, but csv interprets everything as string
+    ],  # Actually bool in database, but csv interprets everything as string
     "Calculation Template": [str,],
     "Field Option Group": [str,],
 }

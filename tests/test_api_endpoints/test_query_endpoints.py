@@ -15,18 +15,50 @@ from castoredc_api_client.exceptions import CastorException
 class TestQuery:
     model_keys = query_model.keys()
 
-    test_query = {'id': 'CAEC9130-EBDA-446A-9E21-35FE590C4DE3', 'record_id': '110001',
-                  'field_id': 'B90870EE-EE37-4AC0-B845-DE428C0E000A', 'status': 'New',
-                  'first_query_remark': 'Quite low, is this right?', 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25',
-                  'created_on':
-                      {'date': '2019-09-23 12:16:37.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'},
-                  'updated_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25',
-                  'updated_on': {'date': '2019-09-23 12:16:37.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'},
-                  '_embedded': {'query_remarks': [{'id': 'BAF66EE9-DB44-48B5-9247-DBED30EFC553', 'title': None, 'description':
-                      'Quite low, is this right?', 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'created_on':
-                      {'date': '2019-09-23 12:16:37.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'},
-                                                   '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/query/BAF66EE9-DB44-48B5-9247-DBED30EFC553'}}}]},
-                  '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/query/CAEC9130-EBDA-446A-9E21-35FE590C4DE3'}}}
+    test_query = {
+        "id": "CAEC9130-EBDA-446A-9E21-35FE590C4DE3",
+        "record_id": "110001",
+        "field_id": "B90870EE-EE37-4AC0-B845-DE428C0E000A",
+        "status": "New",
+        "first_query_remark": "Quite low, is this right?",
+        "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "created_on": {
+            "date": "2019-09-23 12:16:37.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Amsterdam",
+        },
+        "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "updated_on": {
+            "date": "2019-09-23 12:16:37.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Amsterdam",
+        },
+        "_embedded": {
+            "query_remarks": [
+                {
+                    "id": "BAF66EE9-DB44-48B5-9247-DBED30EFC553",
+                    "title": None,
+                    "description": "Quite low, is this right?",
+                    "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+                    "created_on": {
+                        "date": "2019-09-23 12:16:37.000000",
+                        "timezone_type": 3,
+                        "timezone": "Europe/Amsterdam",
+                    },
+                    "_links": {
+                        "self": {
+                            "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/query/BAF66EE9-DB44-48B5-9247-DBED30EFC553"
+                        }
+                    },
+                }
+            ]
+        },
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/query/CAEC9130-EBDA-446A-9E21-35FE590C4DE3"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_queries(self, client):

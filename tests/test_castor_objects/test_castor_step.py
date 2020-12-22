@@ -26,7 +26,7 @@ class TestCastorStep:
             field_name="Report Field 2a4",
             field_label="This is the fourth report field",
             field_type="checkbox",
-            field_required=True,
+            field_required="1",
             field_option_group="FAKE-OPTION-GROUP-ID5",
         )
         step.add_field(field)

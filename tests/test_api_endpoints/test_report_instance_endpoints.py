@@ -19,7 +19,7 @@ def create_report_instance(record_id, fake):
     if fake:
         report_id = "FAKEB401-6100-4CF5-A95F-3402B55EAC48'"
     else:
-        report_id = '770DB401-6100-4CF5-A95F-3402B55EAC48'
+        report_id = "770DB401-6100-4CF5-A95F-3402B55EAC48"
 
     return {
         "record_id": record_id,
@@ -31,16 +31,37 @@ def create_report_instance(record_id, fake):
 class TestReportInstance:
     model_keys = report_instance_model.keys()
 
-    test_report_instance = {'id': '382AE5BD-E728-4575-B467-142EA83813DE', 'name': '20412282', 'status': 'open',
-                            'parent_id': '', 'parent_type': '', 'record_id': '110002', 'report_name': 'Unscheduled visit',
-                            'created_on': '2019-10-14 16:58:12', 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25',
-                            '_embedded': {'report': {'id': 'C4ADC387-9BFD-4171-A861-6B973699A6ED',
-                                                     'report_id': 'C4ADC387-9BFD-4171-A861-6B973699A6ED',
-                                                     'name': 'Unscheduled visit', 'description': 'Follow-up visit',
-                                                     'type': 'unscheduled_phase',
-                                                     '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/report/C4ADC387-9BFD-4171-A861-6B973699A6ED'}}}},
-                            '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17'
-                                                        '-71F2BB12A2FD/report-instance/382AE5BD-E728-4575-B467-142EA83813DE'}}}
+    test_report_instance = {
+        "id": "382AE5BD-E728-4575-B467-142EA83813DE",
+        "name": "20412282",
+        "status": "open",
+        "parent_id": "",
+        "parent_type": "",
+        "record_id": "110002",
+        "report_name": "Unscheduled visit",
+        "created_on": "2019-10-14 16:58:12",
+        "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "_embedded": {
+            "report": {
+                "id": "C4ADC387-9BFD-4171-A861-6B973699A6ED",
+                "report_id": "C4ADC387-9BFD-4171-A861-6B973699A6ED",
+                "name": "Unscheduled visit",
+                "description": "Follow-up visit",
+                "type": "unscheduled_phase",
+                "_links": {
+                    "self": {
+                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/report/C4ADC387-9BFD-4171-A861-6B973699A6ED"
+                    }
+                },
+            }
+        },
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17"
+                "-71F2BB12A2FD/report-instance/382AE5BD-E728-4575-B467-142EA83813DE"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_report_instances(self, client):
@@ -50,7 +71,9 @@ class TestReportInstance:
 
     def test_all_report_instances(self, all_report_instances, item_totals):
         """Tests if all report instances are returned."""
-        assert len(all_report_instances) > 0, "No report instances found in the study, is this right?"
+        assert (
+            len(all_report_instances) > 0
+        ), "No report instances found in the study, is this right?"
         assert len(all_report_instances) == item_totals("/report-instance")
 
     def test_all_report_instances_model(self, all_report_instances):
@@ -66,7 +89,9 @@ class TestReportInstance:
 
     def test_single_report_instance_success(self, client):
         """Tests if single report_instance returns the proper data."""
-        report_instance = client.single_report_instance("382AE5BD-E728-4575-B467-142EA83813DE")
+        report_instance = client.single_report_instance(
+            "382AE5BD-E728-4575-B467-142EA83813DE"
+        )
         assert report_instance == self.test_report_instance
 
     def test_single_report_instance_failure(self, client):
@@ -95,7 +120,9 @@ class TestReportInstance:
 
     def test_single_report_instance_record_success(self, client):
         """Tests if the model of a single report after filtering on record is right"""
-        report = client.single_report_instance_record("000001", '31EB7B5F-7159-430B-A7E5-90A714D346B9')
+        report = client.single_report_instance_record(
+            "000001", "31EB7B5F-7159-430B-A7E5-90A714D346B9"
+        )
         report_keys = report.keys()
         # Tests if the length of the model is right
         assert len(self.model_keys) == len(report_keys)
@@ -108,7 +135,9 @@ class TestReportInstance:
         """Tests if filtering on a non-existent report throws an error for a filtered record."""
         with pytest.raises(CastorException) as e:
             # Query a report belonging to a different record.
-            client.single_report_instance_record("000001", '61870790-F83E-4B1B-AF09-6F2CBA4632EA')
+            client.single_report_instance_record(
+                "000001", "61870790-F83E-4B1B-AF09-6F2CBA4632EA"
+            )
         assert str(e.value) == "404 Report instance not found"
 
     def test_create_report_instance_record_success(self, client):

@@ -15,11 +15,20 @@ from castoredc_api_client.exceptions import CastorException
 class TestMetadata:
     model_keys = metadata_model.keys()
 
-    test_metadata = {'id': '7CFA5E29-02BB-4C90-AA02-5F27A300D99E',
-                     'metadata_type': {'id': 3, 'name': 'SNOMED', 'description': 'SNOMED Metadata'},
-                     'parent_id': None, 'value': '271649006', 'description': 'Systolic Blood Pressure',
-                     'element_type': 'Field', 'element_id': '942A5086-88AD-44B4-A63C-85F945EAFCC7',
-                     '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/metadata/7CFA5E29-02BB-4C90-AA02-5F27A300D99E'}}}
+    test_metadata = {
+        "id": "7CFA5E29-02BB-4C90-AA02-5F27A300D99E",
+        "metadata_type": {"id": 3, "name": "SNOMED", "description": "SNOMED Metadata"},
+        "parent_id": None,
+        "value": "271649006",
+        "description": "Systolic Blood Pressure",
+        "element_type": "Field",
+        "element_id": "942A5086-88AD-44B4-A63C-85F945EAFCC7",
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/metadata/7CFA5E29-02BB-4C90-AA02-5F27A300D99E"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_metadata(self, client):
@@ -29,7 +38,9 @@ class TestMetadata:
 
     def test_all_metadata(self, all_metadata, item_totals):
         """Tests if all metadata from the database is returned."""
-        assert len(all_metadata) > 0, "No metadata was found in the study, is this right?"
+        assert (
+            len(all_metadata) > 0
+        ), "No metadata was found in the study, is this right?"
         assert len(all_metadata) == item_totals("/metadata")
 
     def test_all_metadata_model(self, all_metadata):

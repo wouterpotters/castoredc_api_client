@@ -15,12 +15,19 @@ from castoredc_api_client.exceptions import CastorException
 class TestFieldDependency:
     model_keys = field_dep_model.keys()
 
-    test_field_dep = {'id': '9', 'operator': '==', 'value': '1',
-                      'parent_id': 'BA93857C-1EBB-4DFF-92F3-EEE92D944686',
-                      'child_id': 'CF86C999-256F-49D6-8D59-90D2A8B9A3D8',
-                      '_links': {'self':
-                                     {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D'
-                                              '-BF17-71F2BB12A2FD/field-dependency/9'}}}
+    test_field_dep = {
+        "id": "9",
+        "operator": "==",
+        "value": "1",
+        "parent_id": "BA93857C-1EBB-4DFF-92F3-EEE92D944686",
+        "child_id": "CF86C999-256F-49D6-8D59-90D2A8B9A3D8",
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D"
+                "-BF17-71F2BB12A2FD/field-dependency/9"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_field_dependencies(self, client):
@@ -31,7 +38,9 @@ class TestFieldDependency:
     def test_all_field_dependencies(self, all_field_dependencies, item_totals):
         """Test whether all field dependencies are returned."""
         # Test whether there are any field dependencies.
-        assert len(all_field_dependencies) > 0, "No field dependencies found, is this right?"
+        assert (
+            len(all_field_dependencies) > 0
+        ), "No field dependencies found, is this right?"
         assert len(all_field_dependencies) == item_totals("/field-dependency")
 
     def test_all_field_dependencies_model(self, all_field_dependencies):

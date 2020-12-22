@@ -15,16 +15,40 @@ from castoredc_api_client.exceptions import CastorException
 class TestField:
     model_keys = field_model.keys()
 
-    test_field = {'id': '0C895B4D-D362-4A54-9063-7D3CBAAC0F21',
-                  'parent_id': '52109C76-EB23-4BCD-95EC-10AC5CD912BF',
-                  'field_id': '0C895B4D-D362-4A54-9063-7D3CBAAC0F21', 'field_number': 4, 'field_label': 'Height',
-                  'field_is_alias': False, 'field_variable_name': 'pat_height', 'field_type': 'numeric',
-                  'field_required': 1, 'field_hidden': 0, 'field_info': '', 'field_units': 'm', 'field_min': 1.4,
-                  'field_min_label': '', 'field_max': 2.5, 'field_max_label': '', 'field_summary_template': '',
-                  'field_slider_step': None, 'report_id': '', 'field_length': 5, 'additional_config': '',
-                  'exclude_on_data_export': False, 'option_group': None, 'metadata_points': [],
-                  'validations': [], 'dependency_parents': [], 'dependency_children': [], '_links': {'self': {
-                    'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/0C895B4D-D362-4A54-9063-7D3CBAAC0F21'}}}
+    test_field = {
+        "id": "0C895B4D-D362-4A54-9063-7D3CBAAC0F21",
+        "parent_id": "52109C76-EB23-4BCD-95EC-10AC5CD912BF",
+        "field_id": "0C895B4D-D362-4A54-9063-7D3CBAAC0F21",
+        "field_number": 4,
+        "field_label": "Height",
+        "field_is_alias": False,
+        "field_variable_name": "pat_height",
+        "field_type": "numeric",
+        "field_required": 1,
+        "field_hidden": 0,
+        "field_info": "",
+        "field_units": "m",
+        "field_min": 1.4,
+        "field_min_label": "",
+        "field_max": 2.5,
+        "field_max_label": "",
+        "field_summary_template": "",
+        "field_slider_step": None,
+        "report_id": "",
+        "field_length": 5,
+        "additional_config": "",
+        "exclude_on_data_export": False,
+        "option_group": None,
+        "metadata_points": [],
+        "validations": [],
+        "dependency_parents": [],
+        "dependency_children": [],
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/0C895B4D-D362-4A54-9063-7D3CBAAC0F21"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_fields(self, client):
