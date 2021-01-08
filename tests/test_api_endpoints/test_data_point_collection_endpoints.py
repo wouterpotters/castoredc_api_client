@@ -19,150 +19,152 @@ from tests.test_api_endpoints.helpers_api_endpoints import allowed_value
 
 
 class TestDataPoint:
-    # TODO!
     study_data_point_model_keys = study_data_point_model.keys()
     report_data_point_model_keys = report_data_point_model.keys()
     survey_data_point_model_keys = survey_data_point_model.keys()
 
+    test_report_instance_data_points = {'field_id': '9F64DFE1-4C5E-4BCC-93B6-3624FA9FC2A4', 'field_value': '1',
+                                        'record_id': '000005', 'updated_on': '2019-10-28 13:05:28',
+                                        'report_instance_id': '124EBE17-8AEF-4A74-BBA7-68DF75693FBD',
+                                        'report_instance_name': '46286061'}
+    test_survey_instance_data_points = {'field_id': 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116', 'field_value': '1',
+                                        'record_id': '000005', 'updated_on': '2020-08-14 11:59:20',
+                                        'survey_instance_id': '1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E',
+                                        'survey_name': 'QOL Survey'}
+    test_survey_package_data_points = [
+        {'field_id': '5D3843C7-8341-45DD-A769-8A5D24E6CDA5', 'field_value': '1', 'record_id': '000002',
+         'updated_on': '2020-05-13 14:17:58', 'survey_instance_id': 'F61EF287-9BD1-4047-AB46-88E0F69DD120',
+         'survey_name': 'QOL Survey', 'survey_package_instance_id': '23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C'},
+        {'field_id': '6C87B052-1289-4AB2-8D4F-D15AF4DDF950', 'field_value': '1', 'record_id': '000002',
+         'updated_on': '2020-05-13 14:17:58', 'survey_instance_id': 'F61EF287-9BD1-4047-AB46-88E0F69DD120',
+         'survey_name': 'QOL Survey', 'survey_package_instance_id': '23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C'},
+        {'field_id': 'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2', 'field_value': '5', 'record_id': '000002',
+         'updated_on': '2020-08-12 14:53:00', 'survey_instance_id': 'F61EF287-9BD1-4047-AB46-88E0F69DD120',
+         'survey_name': 'QOL Survey', 'survey_package_instance_id': '23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C'},
+        {'field_id': 'ED12B07E-EDA8-4D64-8268-BE751BD5DB36', 'field_value': '1', 'record_id': '000002',
+         'updated_on': '2020-05-13 14:17:58', 'survey_instance_id': 'F61EF287-9BD1-4047-AB46-88E0F69DD120',
+         'survey_name': 'QOL Survey', 'survey_package_instance_id': '23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C'},
+        {'field_id': 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116', 'field_value': '1', 'record_id': '000002',
+         'updated_on': '2020-05-13 14:17:58', 'survey_instance_id': 'F61EF287-9BD1-4047-AB46-88E0F69DD120',
+         'survey_name': 'QOL Survey', 'survey_package_instance_id': '23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C'}]
+
+    @pytest.fixture(scope="function")
+    def all_study_data_points(self, client):
+        """Return all study data points"""
+        all_study_data_points = client.all_study_data_points()
+        return all_study_data_points
+
+    @pytest.fixture(scope="function")
+    def all_report_data_points(self, client):
+        """Return all study data points"""
+        all_report_data_points = client.all_report_data_points()
+        return all_report_data_points
+
+    @pytest.fixture(scope="function")
+    def all_survey_data_points(self, client):
+        """Return all study data points"""
+        all_survey_data_points = client.all_survey_data_points()
+        return all_survey_data_points
+
     def test_all_study_data_points_amount(self, all_study_data_points, item_totals):
         """Tests that the all_study_data_points retrieves the same number as data points as Castor says that are in
         the database."""
-        assert len(all_study_data_points) == item_totals["total_study_data_points"]
+        assert len(all_study_data_points) == item_totals("/data-point-collection/study")
 
     def test_all_study_data_points_model(self, all_study_data_points):
         """Tests if the study data point model is the same as the specified model."""
-        for i in range(0, 3):
-            random_study_data_point = random.choice(all_study_data_points)
-            api_keys = random_study_data_point.keys()
+        for i in [5, 100, 233]:  # Only select a subset of the data points
+            data_point = all_study_data_points[i]
+            api_keys = data_point.keys()
             assert len(self.study_data_point_model_keys) == len(api_keys)
             for key in api_keys:
                 assert key in self.study_data_point_model_keys
-                assert type(random_study_data_point[key]) in study_data_point_model[key]
+                assert type(data_point[key]) in study_data_point_model[key]
 
     def test_all_report_data_points_amount(self, all_report_data_points, item_totals):
         """Tests that the all_report_data_points retrieves the same number as data points as Castor says that are in
         the database."""
-        assert len(all_report_data_points) == item_totals["total_report_data_points"]
+        assert len(all_report_data_points) == item_totals("/data-point-collection/report-instance")
 
     def test_all_report_data_points_model(self, all_report_data_points):
         """Tests if the report data point model is the same as the specified model."""
-        for i in range(0, 3):
-            random_report_data_point = random.choice(all_report_data_points)
-            api_keys = random_report_data_point.keys()
+        for i in [5, 100, 156]:  # Only select a subset of the data points
+            data_point = all_report_data_points[i]
+            api_keys = data_point.keys()
             assert len(self.report_data_point_model_keys) == len(api_keys)
             for key in api_keys:
                 assert key in self.report_data_point_model_keys
                 assert (
-                    type(random_report_data_point[key]) in report_data_point_model[key]
+                        type(data_point[key]) in report_data_point_model[key]
                 )
 
     def test_all_survey_data_points_amount(self, all_survey_data_points, item_totals):
         """Tests that the all_survey_data_points retrieves the same number as data points as Castor says that are in
         the database."""
-        assert len(all_survey_data_points) == item_totals["total_survey_data_points"]
+        assert len(all_survey_data_points) == item_totals("/data-point-collection/survey-instance")
 
     def test_all_survey_data_points_model(self, all_survey_data_points):
         """Tests if the survey data point model is the same as the specified model."""
-        for i in range(0, 3):
-            random_survey_data_point = random.choice(all_survey_data_points)
-            api_keys = random_survey_data_point.keys()
+        for i in [5, 32, 103]:  # Only select a subset of the data points
+            data_point = all_survey_data_points[i]
+            api_keys = data_point.keys()
             assert len(self.survey_data_point_model_keys) == len(api_keys)
             for key in api_keys:
                 assert key in self.survey_data_point_model_keys
                 assert (
-                    type(random_survey_data_point[key]) in survey_data_point_model[key]
+                        type(data_point[key]) in survey_data_point_model[key]
                 )
 
     def test_single_report_instance_data_points_success(
-        self, client, all_report_data_points
+            self, client
     ):
-        """Tests if single_report_instance_data_points returns the data points in the proper model."""
-        random_report_id = random.choice(all_report_data_points)["report_instance_id"]
-        random_report = client.single_report_instance_data_points(random_report_id)
-        for random_report_data_point in random_report:
-            api_keys = random_report_data_point.keys()
-            for key in api_keys:
-                assert key in self.report_data_point_model_keys
-                assert (
-                    type(random_report_data_point[key]) in report_data_point_model[key]
-                )
+        """Tests if single_report_instance_data_points returns the proper data."""
+        report_data_points = client.single_report_instance_data_points('124EBE17-8AEF-4A74-BBA7-68DF75693FBD')
+        assert report_data_points == self.test_report_instance_data_points
 
     def test_single_report_instance_data_points_fail(
-        self, client, all_report_data_points
+            self, client
     ):
         """Tests if single_report_instance_data_points throws proper error when non-existing report is called."""
-        random_report_id = (
-            random.choice(all_report_data_points)["report_instance_id"] + "FAKE"
-        )
         with pytest.raises(CastorException) as e:
-            client.single_report_instance_data_points(random_report_id)
+            client.single_report_instance_data_points('124EBE17-8AEF-4A74-BBA7-68DF7569FAKE')
         assert str(e.value) == "404 Report Instance not found"
 
     def test_single_survey_instance_data_points_success(
-        self, client, all_survey_data_points
+            self, client
     ):
         """Tests if single_survey_instance_data_points returns the data points in the proper model."""
-        random_survey_id = random.choice(all_survey_data_points)["survey_instance_id"]
-        random_survey = client.single_survey_instance_data_points(random_survey_id)
-        for random_survey_data_point in random_survey:
-            api_keys = random_survey_data_point.keys()
-            for key in api_keys:
-                assert key in self.survey_data_point_model_keys
-                assert (
-                    type(random_survey_data_point[key]) in survey_data_point_model[key]
-                )
+        survey_data_points = client.single_survey_instance_data_points('1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E')
+        assert survey_data_points == self.test_survey_instance_data_points
 
     def test_single_survey_instance_data_points_fail(
-        self, client, all_survey_data_points
+            self, client
     ):
         """Tests if single_survey_instance_data_points throws proper error when non-existing survey is called."""
-        random_survey_id = (
-            random.choice(all_survey_data_points)["survey_instance_id"] + "FAKE"
-        )
         with pytest.raises(CastorException) as e:
-            client.single_survey_instance_data_points(random_survey_id)
+            client.single_survey_instance_data_points('1FFBCDD8-2FC2-4838-B6DD-0EAE3FF88FAKE')
         assert str(e.value) == "404 Survey Package Instance not found"
 
-    @pytest.fixture(scope="session")
-    def all_survey_package_instance_ids(self, client):
-        all_survey_package_instance = client.all_survey_package_instances()
-        all_survey_package_instance_ids = [
-            package["survey_package_instance_id"]
-            for package in all_survey_package_instance
-        ]
-        return all_survey_package_instance_ids
-
     def test_single_survey_package_instance_data_points_success(
-        self, client, all_survey_package_instance_ids
+            self, client
     ):
-        api_package = []
-        # Find a survey package with filled in fields
-        while len(api_package) == 0:
-            rand_id = random.choice(all_survey_package_instance_ids)
-            api_package = client.single_survey_package_instance_data_points(rand_id)
-
-        for data_point in api_package:
-            api_keys = data_point.keys()
-            for key in self.survey_data_point_model_keys:
-                assert key in api_keys
-                assert type(data_point[key]) in survey_data_point_model[key]
+        """Tests if single_survey_package_instance_data_points returns the proper data"""
+        survey_package_data_points = client.single_survey_package_instance_data_points(
+            "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C")
+        assert survey_package_data_points == self.test_survey_package_data_points
 
     def test_single_survey_package_instance_data_points_fail(
-        self, client, all_survey_package_instance_ids
+            self, client
     ):
-        rand_id = random.choice(all_survey_package_instance_ids) + "FAKE"
+        """Tests if querying a non-existent package instance throws an error"""
         with pytest.raises(CastorException) as e:
-            client.single_survey_package_instance_data_points(rand_id)
+            client.single_survey_package_instance_data_points("23B4FD48-BA41-4C9B-BAEF-D5C3DD5FFAKE")
         assert str(e.value) == "404 Survey Package Instance not found"
 
     # ALL DATA - RECORD SPECIFIC
-    def test_all_study_data_points_record_success(self, client, all_record_ids):
-        all_data = []
-
-        # Find a record with fields
-        while len(all_data) == 0:
-            random_id = random.choice(all_record_ids)
-            all_data = client.all_study_data_points_record(random_id)
+    def test_all_study_data_points_record_success(self, client):
+        """Tests returning data from a specific record is the right model"""
+        all_data = client.all_study_data_points_record("000008")
 
         for data_point in all_data:
             api_keys = data_point.keys()
@@ -171,17 +173,15 @@ class TestDataPoint:
                 assert key in api_keys
                 assert type(data_point[key]) in study_data_point_model[key]
 
-    def test_all_study_data_points_record_fail(self, client, all_record_ids):
-        random_id = random.choice(all_record_ids) + "FAKE"
+    def test_all_study_data_points_record_fail(self, client):
+        """Tests if returning data from a non-existent records throws an error"""
         with pytest.raises(CastorException) as e:
-            client.all_study_data_points_record(random_id)
+            client.all_study_data_points_record("00FAKE")
         assert str(e.value) == "404 Record not found"
 
-    def test_all_report_data_points_record_success(self, client, all_record_ids):
-        all_data = []
-        while len(all_data) == 0:
-            random_id = random.choice(all_record_ids)
-            all_data = client.all_report_data_points_record(random_id)
+    def test_all_report_data_points_record_success(self, client):
+        """Tests returning data from a specific record is the right model"""
+        all_data = client.all_report_data_points_record("000001")
 
         for data_point in all_data:
             api_keys = data_point.keys()
@@ -190,17 +190,15 @@ class TestDataPoint:
                 assert key in api_keys
                 assert type(data_point[key]) in report_data_point_model[key]
 
-    def test_all_report_data_points_record_fail(self, client, all_record_ids):
-        random_id = random.choice(all_record_ids) + "FAKE"
+    def test_all_report_data_points_record_fail(self, client):
+        """Tests if returning data from a non-existent records throws an error"""
         with pytest.raises(CastorException) as e:
-            client.all_report_data_points_record(random_id)
+            client.all_report_data_points_record("00FAKE")
         assert str(e.value) == "404 Record not found"
 
-    def test_all_survey_data_points_record_success(self, client, all_record_ids):
-        all_data = []
-        while len(all_data) == 0:
-            random_id = random.choice(all_record_ids)
-            all_data = client.all_survey_data_points_record(random_id)
+    def test_all_survey_data_points_record_success(self, client):
+        """Tests returning data from a specific record is the right model"""
+        all_data = client.all_survey_data_points_record("000001")
 
         for data_point in all_data:
             api_keys = data_point.keys()
@@ -209,24 +207,20 @@ class TestDataPoint:
                 assert key in api_keys
                 assert type(data_point[key]) in survey_data_point_model[key]
 
-    def test_all_survey_data_points_record_fail(self, client, all_record_ids):
-        random_id = random.choice(all_record_ids) + "FAKE"
+    def test_all_survey_data_points_record_fail(self, client):
+        """Tests if returning data from a non-existent records throws an error"""
         with pytest.raises(CastorException) as e:
-            client.all_survey_data_points_record(random_id)
+            client.all_survey_data_points_record("00FAKE")
         assert str(e.value) == "404 Record not found"
 
     # SINGLE SURVEY/REPORT - RECORD SPECIFIC
     def test_single_report_data_points_record_success(
-        self, client, records_with_reports
+            self, client
     ):
-        report_data = []
-        while len(report_data) == 0:
-            records = list(records_with_reports.keys())
-            random_id = random.choice(records)
-            random_report = random.choice(records_with_reports[random_id])
-            report_data = client.single_report_data_points_record(
-                random_id, random_report
-            )
+        """Tests returning data from a specific report for a specific record is the right model"""
+        report_data = client.single_report_data_points_record(
+            "000001", "0D73C569-AF56-4388-88F4-BC785D9463D5"
+        )
 
         for data_point in report_data:
             api_keys = data_point.keys()
@@ -235,61 +229,47 @@ class TestDataPoint:
                 assert key in api_keys
                 assert type(data_point[key]) in report_data_point_model[key]
 
-    def test_single_report_data_points_record_fail(self, client, records_with_reports):
-        records = list(records_with_reports.keys())
-        random_id = random.choice(records)
-        random_report = random.choice(records_with_reports[random_id]) + "FAKE"
+    def test_single_report_data_points_record_fail(self, client):
+        """Tests returning data from a non-existent report for a specific record throws an error"""
         with pytest.raises(CastorException) as e:
-            client.single_report_data_points_record(random_id, random_report)
+            report_data = client.single_report_data_points_record(
+                "000001", "0D73C569-AF56-4388-88F4-BC785D94FAKE"
+            )
         assert str(e.value) == "404 Report Instance not found"
 
     def test_single_survey_package_data_points_record_success(
-        self, client, records_with_survey_package_instances
+            self, client
     ):
-        survey_data = []
-        while len(survey_data) == 0:
-            records = list(records_with_survey_package_instances.keys())
-            random_id = random.choice(records)
-            random_package = random.choice(
-                records_with_survey_package_instances[random_id]
-            )
-            survey_data = client.single_survey_package_data_points_record(
-                random_id, random_package
-            )
+        """Tests returning data from a specific survey package for a specific record is the right model"""
+        survey_data = client.single_survey_package_data_points_record(
+            "000001", '115DF660-A00A-4927-9E5F-A07D030D4A09'
+        )
 
         for data_point in survey_data:
             api_keys = data_point.keys()
             assert (
-                len(self.survey_data_point_model_keys) == len(api_keys)
-                or len(api_keys) == 7
-            ), "length is 6 or 7 in api. Does not always contain 'survey_package_id'"
+                    len(self.survey_data_point_model_keys) == len(api_keys))
             for key in self.survey_data_point_model_keys:
                 assert key in api_keys
                 assert type(data_point[key]) in survey_data_point_model[key]
 
     def test_single_survey_package_data_points_record_fail(
-        self, client, records_with_survey_package_instances
+            self, client
     ):
-        records = list(records_with_survey_package_instances.keys())
-        random_id = random.choice(records)
-        random_package = (
-            random.choice(records_with_survey_package_instances[random_id]) + "FAKE"
-        )
+        """Tests returning data from a non existent survey package for a specific record throws an error"""
         with pytest.raises(CastorException) as e:
-            client.single_survey_package_data_points_record(random_id, random_package)
+            client.single_survey_package_data_points_record(
+                "000001", '115DF660-A00A-4927-9E5F-A07D030D4FAKE'
+            )
         assert str(e.value) == "404 Survey Package Instance not found"
 
     def test_single_survey_data_points_record_success(
-        self, client, records_with_survey_instances
+            self, client,
     ):
-        survey_data = []
-        while len(survey_data) == 0:
-            records = list(records_with_survey_instances.keys())
-            random_id = random.choice(records)
-            random_survey = random.choice(records_with_survey_instances[random_id])[0]
-            survey_data = client.single_survey_data_points_record(
-                random_id, random_survey
-            )
+        """Tests returning data from a specific survey for a specific record is the right model"""
+        survey_data = client.single_survey_data_points_record(
+            "000001", "6530D4AB-4705-4864-92AE-B0EC6200E8E5"
+        )
 
         for data_point in survey_data:
             api_keys = data_point.keys()
@@ -299,95 +279,104 @@ class TestDataPoint:
                 assert type(data_point[key]) in survey_data_point_model[key]
 
     def test_single_survey_data_points_record_fail(
-        self, client, records_with_survey_instances
+            self, client
     ):
-        records = list(records_with_survey_instances.keys())
-        random_id = random.choice(records)
-        random_survey = (
-            random.choice(records_with_survey_instances[random_id])[0] + "FAKE"
-        )
+        """Tests returning data from a non existent survey for a specific record throws an error"""
         with pytest.raises(CastorException) as e:
-            client.single_survey_data_points_record(random_id, random_survey)
+            client.single_survey_data_points_record(
+                "000001", "6530D4AB-4705-4864-92AE-B0EC6200FAKE"
+            )
+
         assert str(e.value) == "404 Survey Package Instance not found"
 
     # POST
-    def test_create_study_data_points_success(self, client, all_record_ids):
-        random_record = random.choice(all_record_ids)
-        random_fields = random.choices(client.field_references["study"], k=5)
+    def test_create_study_data_points_success(self, client):
+        """Tests changing data in the study"""
+        fields = ["942A5086-88AD-44B4-A63C-85F945EAFCC7",
+                  "084A0536-C3E3-4088-94B0-14F1D61D61FF",
+                  "F0DB55D5-63F9-459D-9822-16A4BE09DB24",
+                  "B0312D85-D7E6-480B-8144-0B3E08726FDB",
+                  "D8EA7764-AF24-4A68-B14C-DB8EFDBC43FA"]
+
         common = {"change_reason": "Testing API", "confirmed_changes": True}
+
         data = [
             {
-                "field_id": field.field_id,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "field_value": allowed_value(client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
-            for field in random_fields
+            for field in fields
         ]
-        feedback = client.update_study_data_record(random_record, common, data)
+
+        feedback = client.update_study_data_record("000018", common, data)
         assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 0
 
-    def test_create_study_data_points_fail_ids(self, client, all_record_ids):
-        random_record = random.choice(all_record_ids)
-        random_fields = random.choices(client.field_references["study"], k=5)
+    def test_create_study_data_points_fail_ids(self, client):
+        """Tests failing to change data in the study based on field id"""
+        fields = ["942A5086-88AD-44B4-A63C-85F945EAFCC7",
+                  "084A0536-C3E3-4088-94B0-14F1D61D61FF",
+                  "F0DB55D5-63F9-459D-9822-16A4BE09DB24",
+                  "B0312D85-D7E6-480B-8144-0B3E08726FDB",
+                  "D8EA7764-AF24-4A68-B14C-DB8EFDBC43FA"]
+
         common = {"change_reason": "Testing API", "confirmed_changes": True}
+
         data = [
             {
-                "field_id": field.field_id + "FAKE",
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field + "FAKE",
+                "field_value": allowed_value(client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
-            for field in random_fields
+            for field in fields
         ]
-        feedback = client.update_study_data_record(random_record, common, data)
+        feedback = client.update_study_data_record("000018", common, data)
         assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 5
 
-    def test_create_study_data_points_fail_record(self, client, all_record_ids):
-        random_record = random.choice(all_record_ids) + "FAKE"
-        random_fields = random.choices(client.field_references["study"], k=5)
+    def test_create_study_data_points_fail_record(self, client):
+        """Tests failing to change data in the study"""
+        fields = ["942A5086-88AD-44B4-A63C-85F945EAFCC7",
+                  "084A0536-C3E3-4088-94B0-14F1D61D61FF",
+                  "F0DB55D5-63F9-459D-9822-16A4BE09DB24",
+                  "B0312D85-D7E6-480B-8144-0B3E08726FDB",
+                  "D8EA7764-AF24-4A68-B14C-DB8EFDBC43FA"]
+
         common = {"change_reason": "Testing API", "confirmed_changes": True}
         data = [
             {
-                "field_id": field.field_id,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "field_value": allowed_value(client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
-            for field in random_fields
+            for field in fields
         ]
+
         with pytest.raises(CastorException) as e:
-            client.update_study_data_record(random_record, common, data)
+            client.update_study_data_record("00FAKE", common, data)
         assert str(e.value) == "404 Record not found"
 
-    def test_create_report_data_points_success(self, client, records_with_reports):
-        # Find a random record with a random report instance
-        fields = []
-
-        # Some reports do not have filled in fields, so keep searching until report with fields is found.
-        while len(fields) == 0:
-            random_record = random.choice(list(records_with_reports.keys()))
-            rand_report_instance = random.choice(records_with_reports[random_record])
-            # Find the parent report of the instance
-            report = client.single_report_instance(rand_report_instance)
-            report_id = report["_embedded"]["report"]["id"]
-            # Find the fields belonging to the report
-            fields = [
-                field
-                for field in client.field_references["reports"]
-                if field.parent_id == report_id
-            ]
+    def test_create_report_data_points_success(self, client):
+        """Tests changing report data"""
+        fields = ['572590BA-A1E8-4BE0-9256-F1B6842C05EB',
+                  'F33AD264-6483-4E7F-9E1F-CF1E2655661C',
+                  '4DA988EE-8D82-43D4-B6CF-02FF63EC9569',
+                  'FE481CDF-1F62-4542-8735-DE9DB843F0AE',
+                  'C6D2C69D-C126-429A-812A-21765519D23E',
+                  ]
 
         # Instantiate fake data
         common = {"change_reason": "Testing API", "confirmed_changes": True}
 
         data = [
             {
-                "field_id": field.field_id,
-                "instance_id": rand_report_instance,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "instance_id": 'D9E60041-E674-4197-819B-2C4F16E05B04',
+                "field_value": allowed_value(client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -396,37 +385,28 @@ class TestDataPoint:
 
         # Update the report
         feedback = client.update_report_data_record(
-            random_record, rand_report_instance, common, data
+            "000020", 'D9E60041-E674-4197-819B-2C4F16E05B04', common, data
         )
-        assert feedback["total_processed"] == len(fields)
+        assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 0
 
-    def test_create_report_data_points_fail_ids(self, client, records_with_reports):
-        fields = []
-
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random report instance
-            random_record = random.choice(list(records_with_reports.keys()))
-            rand_report_instance = random.choice(records_with_reports[random_record])
-            # Find the parent report of the instance
-            report = client.single_report_instance(rand_report_instance)
-            report_id = report["_embedded"]["report"]["id"]
-            # Find the fields belonging to the report
-            fields = [
-                field
-                for field in client.field_references["reports"]
-                if field.parent_id == report_id
-            ]
+    def test_create_report_data_points_fail_ids(self, client):
+        """Tests failing to change report data based on field id"""
+        fields = ['572590BA-A1E8-4BE0-9256-F1B6842C05EB',
+                  'F33AD264-6483-4E7F-9E1F-CF1E2655661C',
+                  '4DA988EE-8D82-43D4-B6CF-02FF63EC9569',
+                  'FE481CDF-1F62-4542-8735-DE9DB843F0AE',
+                  'C6D2C69D-C126-429A-812A-21765519D23E',
+                  ]
 
         # Instantiate fake data
         common = {"change_reason": "Testing API", "confirmed_changes": True}
 
         data = [
             {
-                "field_id": field.field_id + "FAKE",
-                "instance_id": rand_report_instance,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field + "FAKE",
+                "instance_id": 'D9E60041-E674-4197-819B-2C4F16E05B04',
+                "field_value": allowed_value(client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -435,38 +415,28 @@ class TestDataPoint:
 
         # Update the report
         feedback = client.update_report_data_record(
-            random_record, rand_report_instance, common, data
+            "000020", 'D9E60041-E674-4197-819B-2C4F16E05B04', common, data
         )
-        assert feedback["total_processed"] == len(fields)
-        # Assert that everything failed, indication that it worked
-        assert feedback["total_failed"] == len(fields)
+        assert feedback["total_processed"] == 5
+        assert feedback["total_failed"] == 5
 
-    def test_create_report_data_points_fail_record(self, client, records_with_reports):
-        fields = []
-
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random report instance
-            random_record = random.choice(list(records_with_reports.keys()))
-            rand_report_instance = random.choice(records_with_reports[random_record])
-            # Find the parent report of the instance
-            report = client.single_report_instance(rand_report_instance)
-            report_id = report["_embedded"]["report"]["id"]
-            # Find the fields belonging to the report
-            fields = [
-                field
-                for field in client.field_references["reports"]
-                if field.parent_id == report_id
-            ]
+    def test_create_report_data_points_fail_record(self, client):
+        """Tests failing to change report data based on record id"""
+        fields = ['572590BA-A1E8-4BE0-9256-F1B6842C05EB',
+                  'F33AD264-6483-4E7F-9E1F-CF1E2655661C',
+                  '4DA988EE-8D82-43D4-B6CF-02FF63EC9569',
+                  'FE481CDF-1F62-4542-8735-DE9DB843F0AE',
+                  'C6D2C69D-C126-429A-812A-21765519D23E',
+                  ]
 
         # Instantiate fake data
         common = {"change_reason": "Testing API", "confirmed_changes": True}
 
         data = [
             {
-                "field_id": field.field_id,
-                "instance_id": rand_report_instance,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "instance_id": 'D9E60041-E674-4197-819B-2C4F16E05B04',
+                "field_value": allowed_value(client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -476,198 +446,136 @@ class TestDataPoint:
         # Update the report
         with pytest.raises(CastorException) as e:
             client.update_report_data_record(
-                random_record + "FAKE", rand_report_instance, common, data
+                "00FAKE", 'D9E60041-E674-4197-819B-2C4F16E05B04', common, data
             )
         assert str(e.value) == "404 Record not found"
 
     def test_create_survey_instance_data_points_success(
-        self, client, records_with_survey_instances, unlock_survey_package_instances,
+            self, client,
     ):
-        fields = []
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random survey instance
-            random_record = random.choice(list(records_with_survey_instances.keys()))
-            random_survey_instance, random_name = random.choice(
-                records_with_survey_instances[random_record]
-            )
-
-            # Find the fields belonging to the survey
-            fields = [
-                field
-                for field in client.field_references["surveys"]
-                if field.survey_name == random_name
-            ]
+        """Tests changing survey data"""
+        fields = ['FC4FAA2D-08FD-41F7-B482-444B2B6D3116',
+                  'ED12B07E-EDA8-4D64-8268-BE751BD5DB36',
+                  '5D3843C7-8341-45DD-A769-8A5D24E6CDA5',
+                  '6C87B052-1289-4AB2-8D4F-D15AF4DDF950',
+                  'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2']
 
         # Instantiate fake data
         data = [
             {
-                "field_id": field.field_id,
-                "instance_id": random_survey_instance,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "instance_id": "2182E629-E0E7-4BB4-B671-CDD2C968BEFD",
+                "field_value": allowed_value(client, field),
             }
             for field in fields
         ]
 
         # Update the survey
         feedback = client.update_survey_instance_data_record(
-            random_record, random_survey_instance, data
+            "000020", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data
         )
 
-        assert feedback["total_processed"] == len(fields)
+        assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 0
 
     def test_create_survey_instance_data_points_fail_ids(
-        self, client, records_with_survey_instances
+            self, client
     ):
-        fields = []
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random survey instance
-            random_record = random.choice(list(records_with_survey_instances.keys()))
-            random_survey_instance, random_name = random.choice(
-                records_with_survey_instances[random_record]
-            )
-
-            # Find the fields belonging to the survey
-            fields = [
-                field
-                for field in client.field_references["surveys"]
-                if field.survey_name == random_name
-            ]
+        """Tests failing to change survey data based on field id"""
+        fields = ['FC4FAA2D-08FD-41F7-B482-444B2B6D3116',
+                  'ED12B07E-EDA8-4D64-8268-BE751BD5DB36',
+                  '5D3843C7-8341-45DD-A769-8A5D24E6CDA5',
+                  '6C87B052-1289-4AB2-8D4F-D15AF4DDF950',
+                  'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2']
 
         # Instantiate fake data
         data = [
             {
-                "field_id": field.field_id + "FAKE",
-                "instance_id": random_survey_instance,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field + "FAKE",
+                "instance_id": "2182E629-E0E7-4BB4-B671-CDD2C968BEFD",
+                "field_value": allowed_value(client, field),
             }
             for field in fields
         ]
 
         # Update the survey
         feedback = client.update_survey_instance_data_record(
-            random_record, random_survey_instance, data
+            "000020", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data
         )
-        assert feedback["total_processed"] == len(fields)
-        assert feedback["total_failed"] == len(fields)
+        assert feedback["total_processed"] == 5
+        assert feedback["total_failed"] == 5
 
     def test_create_survey_instance_data_points_fail_record(
-        self, client, records_with_survey_instances
+            self, client
     ):
-        fields = []
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random survey instance
-            random_record = random.choice(list(records_with_survey_instances.keys()))
-            random_survey_instance, random_name = random.choice(
-                records_with_survey_instances[random_record]
-            )
-
-            # Find the fields belonging to the survey
-            fields = [
-                field
-                for field in client.field_references["surveys"]
-                if field.survey_name == random_name
-            ]
+        """Tests failing to change survey data based on record id"""
+        fields = ['FC4FAA2D-08FD-41F7-B482-444B2B6D3116',
+                  'ED12B07E-EDA8-4D64-8268-BE751BD5DB36',
+                  '5D3843C7-8341-45DD-A769-8A5D24E6CDA5',
+                  '6C87B052-1289-4AB2-8D4F-D15AF4DDF950',
+                  'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2']
 
         # Instantiate fake data
         data = [
             {
-                "field_id": field.field_id,
-                "instance_id": random_survey_instance,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "instance_id": "2182E629-E0E7-4BB4-B671-CDD2C968BEFD",
+                "field_value": allowed_value(client, field),
             }
             for field in fields
         ]
-
         # Update the survey
         with pytest.raises(CastorException) as e:
             client.update_survey_instance_data_record(
-                random_record + "FAKE", random_survey_instance, data
+                "00FAKE", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data
             )
         assert str(e.value) == "404 Record not found"
 
     def test_create_survey_package_instance_data_points_success(
-        self,
-        client,
-        records_with_survey_package_instances,
-        unlock_survey_package_instances,
+            self,
+            client,
     ):
-        fields = []
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random survey instance
-            random_record = random.choice(
-                list(records_with_survey_package_instances.keys())
-            )
-            random_package_id = random.choice(
-                records_with_survey_package_instances[random_record]
-            )
-            random_package = client.single_survey_package_instance(random_package_id)
-            contained_surveys = random_package["_embedded"]["survey_package"][
-                "_embedded"
-            ]["surveys"]
-            random_survey_name = random.choice(contained_surveys)["name"]
-
-            # Find the fields belonging to the survey
-            fields = [
-                field
-                for field in client.field_references["surveys"]
-                if field.survey_name == random_survey_name
-            ]
+        """Tests changing survey package data"""
+        fields = ['FC4FAA2D-08FD-41F7-B482-444B2B6D3116',
+                  'ED12B07E-EDA8-4D64-8268-BE751BD5DB36',
+                  '5D3843C7-8341-45DD-A769-8A5D24E6CDA5',
+                  '6C87B052-1289-4AB2-8D4F-D15AF4DDF950',
+                  'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2']
 
         # Instantiate fake data
         data = [
             {
-                "field_id": field.field_id,
-                "instance_id": random_package_id,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "instance_id": "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
+                "field_value": allowed_value(client, field),
             }
             for field in fields
         ]
 
         # Update the survey
         feedback = client.update_survey_package_instance_data_record(
-            random_record, random_package_id, data
+            "000020", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
         )
 
-        assert feedback["total_processed"] == len(fields)
+        assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 0
 
     def test_create_survey_package_instance_data_points_fail_ids(
-        self, client, records_with_survey_package_instances
+            self, client
     ):
-        fields = []
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random survey instance
-            random_record = random.choice(
-                list(records_with_survey_package_instances.keys())
-            )
-            random_package_id = random.choice(
-                records_with_survey_package_instances[random_record]
-            )
-            random_package = client.single_survey_package_instance(random_package_id)
-            contained_surveys = random_package["_embedded"]["survey_package"][
-                "_embedded"
-            ]["surveys"]
-            random_survey_name = random.choice(contained_surveys)["name"]
-
-            # Find the fields belonging to the survey
-            fields = [
-                field
-                for field in client.field_references["surveys"]
-                if field.survey_name == random_survey_name
-            ]
+        """Tests failing to change survey package data based on field id"""
+        fields = ['FC4FAA2D-08FD-41F7-B482-444B2B6D3116',
+                  'ED12B07E-EDA8-4D64-8268-BE751BD5DB36',
+                  '5D3843C7-8341-45DD-A769-8A5D24E6CDA5',
+                  '6C87B052-1289-4AB2-8D4F-D15AF4DDF950',
+                  'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2']
 
         # Instantiate fake data
         data = [
             {
-                "field_id": field.field_id + "FAKE",
-                "instance_id": random_package_id,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field + "FAKE",
+                "instance_id": "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
+                "field_value": allowed_value(client, field),
             }
             for field in fields
         ]
@@ -675,42 +583,26 @@ class TestDataPoint:
         # Update the survey
         with pytest.raises(CastorException) as e:
             client.update_survey_package_instance_data_record(
-                random_record, random_package_id, data
+                "000020", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
             )
         assert str(e.value) == "500 The application has encountered an error"
 
     def test_create_survey_package_instance_data_points_fail_records(
-        self, client, records_with_survey_package_instances
+            self, client
     ):
-        fields = []
-        # Keep looking for a report until one with fields is found
-        while len(fields) == 0:
-            # Find a random record with a random survey instance
-            random_record = random.choice(
-                list(records_with_survey_package_instances.keys())
-            )
-            random_package_id = random.choice(
-                records_with_survey_package_instances[random_record]
-            )
-            random_package = client.single_survey_package_instance(random_package_id)
-            contained_surveys = random_package["_embedded"]["survey_package"][
-                "_embedded"
-            ]["surveys"]
-            random_survey_name = random.choice(contained_surveys)["name"]
-
-            # Find the fields belonging to the survey
-            fields = [
-                field
-                for field in client.field_references["surveys"]
-                if field.survey_name == random_survey_name
-            ]
+        """Tests failing to to change survey package data based on record id"""
+        fields = ['FC4FAA2D-08FD-41F7-B482-444B2B6D3116',
+                  'ED12B07E-EDA8-4D64-8268-BE751BD5DB36',
+                  '5D3843C7-8341-45DD-A769-8A5D24E6CDA5',
+                  '6C87B052-1289-4AB2-8D4F-D15AF4DDF950',
+                  'A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2']
 
         # Instantiate fake data
         data = [
             {
-                "field_id": field.field_id,
-                "instance_id": random_package_id,
-                "field_value": allowed_value(client, field.field_id),
+                "field_id": field,
+                "instance_id": "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
+                "field_value": allowed_value(client, field),
             }
             for field in fields
         ]
@@ -718,6 +610,6 @@ class TestDataPoint:
         # Update the survey
         with pytest.raises(CastorException) as e:
             client.update_survey_package_instance_data_record(
-                random_record + "FAKE", random_package_id, data
+                "00FAKE", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
             )
         assert str(e.value) == "404 Record not found"
