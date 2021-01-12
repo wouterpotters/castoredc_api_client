@@ -41,25 +41,6 @@ class TestStudy:
         },
     }
 
-    test_user = {
-        "id": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-        "user_id": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-        "entity_id": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-        "full_name": "Reinier van Linschoten",
-        "name_first": "Reinier",
-        "name_middle": "",
-        "name_last": "van Linschoten",
-        "email_address": "R.linschoten@franciscus.nl",
-        "institute": "Franciscus Gasthuis",
-        "department": "Gastroenterology",
-        "last_login": "2020-12-22 14:20:00",
-        "_links": {
-            "self": {
-                "href": "https://data.castoredc.com/api/user/B23ABCC4-3A53-FB32-7B78-3960CC907F25"
-            }
-        },
-    }
-
     @pytest.fixture(scope="class")
     def all_studies(self, client):
         """Get all studies."""
@@ -117,12 +98,6 @@ class TestStudy:
                 assert key in self.u_model_keys
                 assert type(user[key]) in user_model[key]
 
-    def test_all_users_data(self, client):
-        """Tests if all_users returns the correct user data."""
-        all_users = client.all_users_study("D234215B-D956-482D-BF17-71F2BB12A2FD")
-        user = all_users[0]
-        assert user == self.test_user
-
     def test_all_users_fail(self, all_studies, client):
         """Tests failing to return all users for a study"""
         with pytest.raises(CastorException) as e:
@@ -135,7 +110,12 @@ class TestStudy:
             "D234215B-D956-482D-BF17-71F2BB12A2FD",
             "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         )
-        assert user == self.test_user
+        user_keys = user.keys()
+        # Tests if the right keys and value types are returned
+        assert len(user_keys) == len(self.u_model_keys)
+        for key in user_keys:
+            assert key in self.u_model_keys
+            assert type(user[key]) in user_model[key]
 
     def test_single_user_fail(self, all_studies, client):
         """Tests failing to return a single user"""

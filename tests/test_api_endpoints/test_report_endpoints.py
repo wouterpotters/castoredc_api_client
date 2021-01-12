@@ -53,7 +53,14 @@ class TestReport:
     def test_all_reports_data(self, all_reports):
         """Tests the data of the reports returned by all_reports"""
         # Select a report
-        report = all_reports[1]
+        report = next(
+            (
+                report
+                for report in all_reports
+                if report["report_id"] == "770DB401-6100-4CF5-A95F-3402B55EAC48"
+            ),
+            None,
+        )
         # Check if the right data is returned.
         assert report == self.test_report
 
