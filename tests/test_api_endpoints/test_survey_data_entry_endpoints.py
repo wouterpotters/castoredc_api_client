@@ -6,8 +6,6 @@ Link: https://data.castoredc.com/api#/report-data-entry
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-import random
-
 import pytest
 
 from castoredc_api_client.exceptions import CastorException
@@ -15,20 +13,20 @@ from tests.test_api_endpoints.data_models import (
     survey_data_point_extended_model,
     data_options,
 )
+from tests.test_api_endpoints.helpers_api_endpoints import allowed_value
 
 
 class TestSurveyDataEntry:
     model_keys = survey_data_point_extended_model.keys()
     data_options = data_options
 
+    test_field = {'record_id': '000005', 'field_variable_name': 'SF12_1', 'field_id': 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116', 'survey_instance_id': '1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E', 'value': '1', 'updated_on': '2020-08-14 11:59:20', '_embedded': {'record': {'id': '000005', 'record_id': '000005', 'ccr_patient_id': '', 'last_opened_step': None, 'progress': 8, 'status': 'open', 'archived': False, 'archived_reason': None, 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'created_on': {'date': '2019-10-28 13:30:15.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'updated_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'updated_on': {'date': '2020-08-19 14:09:04.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'randomized_id': None, 'randomization_group': None, 'randomization_group_name': None, '_embedded': {'institute': {'id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'institute_id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'name': 'Test Institute', 'abbreviation': 'TES', 'code': 'TES', 'order': 0, 'deleted': False, 'country_id': 169, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5'}}}}, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000005'}}}, 'field': {'id': 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116', 'parent_id': 'C19211FE-1C53-43F9-BC85-460DF1255153', 'field_id': 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116', 'field_number': 5, 'field_label': 'How would you rate your overall health?', 'field_is_alias': False, 'field_variable_name': 'SF12_1', 'field_type': 'radio', 'field_required': 1, 'field_hidden': 0, 'field_info': '', 'field_units': '', 'field_min': None, 'field_min_label': '', 'field_max': None, 'field_max_label': '', 'field_summary_template': '', 'field_slider_step': None, 'report_id': '', 'field_length': None, 'additional_config': '', 'exclude_on_data_export': False, 'option_group': None, 'metadata_points': [], 'validations': [], 'dependency_parents': [], 'dependency_children': [], '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/FC4FAA2D-08FD-41F7-B482-444B2B6D3116'}}}}, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000005/data-point/survey/1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E/FC4FAA2D-08FD-41F7-B482-444B2B6D3116'}}}
+
     def test_single_survey_instance_all_fields_record_success(
-        self, client, all_survey_data_points
+        self, client
     ):
-        # Get all filled in survey data points
-        random_survey_field = random.choice(all_survey_data_points)
-        survey_id = random_survey_field["survey_instance_id"]
-        record_id = random_survey_field["record_id"]
-        survey = client.single_survey_instance_all_fields_record(record_id, survey_id)
+        """Tests if single survey instance returns the right data."""
+        survey = client.single_survey_instance_all_fields_record('000005', '1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E')
         for field in survey:
             field_keys = field.keys()
             assert len(field_keys) == len(self.model_keys)
@@ -37,123 +35,72 @@ class TestSurveyDataEntry:
                 assert type(field[key]) in survey_data_point_extended_model[key]
 
     def test_single_survey_instance_all_fields_record_fail(
-        self, client, all_survey_data_points
+        self, client
     ):
-        # Get all filled in survey data points
-        random_survey_field = random.choice(all_survey_data_points)
-        survey_id = random_survey_field["survey_instance_id"]
-        record_id = random_survey_field["record_id"] + "FAKE"
-
+        """Tests if failing to call a single survey instance throws an error."""
         with pytest.raises(CastorException) as e:
-            client.single_survey_instance_all_fields_record(record_id, survey_id)
+            client.single_survey_instance_all_fields_record('00FAKE', '1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E')
         assert str(e.value) == "404 The record you requested data for does not exist."
 
     def test_single_survey_instance_single_field_record_success(
-        self, client, all_survey_data_points
+        self, client
     ):
-        # Get all filled in survey data points
-        random_survey_field = random.choice(all_survey_data_points)
-        random_id = random_survey_field["survey_instance_id"]
-        random_record = random_survey_field["record_id"]
-        random_field = random_survey_field["field_id"]
+        """Tests if single survey field returns the proper data."""
         field = client.single_survey_instance_single_field_record(
-            random_record, random_id, random_field
+            '000005', '1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E', 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116'
         )
-        field_keys = field.keys()
-        assert len(field_keys) == len(self.model_keys)
-        for key in field_keys:
-            assert key in self.model_keys
-            assert type(field[key]) in survey_data_point_extended_model[key]
+        assert field == self.test_field
 
-    def test_single_survey_instance_single_field_record_fail(
-        self, client, all_survey_data_points
+    def test_single_survey_instance_single_field_record_fail_record(
+        self, client
     ):
-        for i in range(0, 3):
-            # Get all filled in survey data points
-            random_survey_field = random.choice(all_survey_data_points)
-            random_id = random_survey_field["survey_instance_id"]
-            random_record = random_survey_field["record_id"]
-            random_field = random_survey_field["field_id"] + "FAKE"
-
-            with pytest.raises(CastorException) as e:
-                client.single_survey_instance_single_field_record(
-                    random_record, random_id, random_field
-                )
-            assert str(e.value) == "400 The request you made was malformed"
+        """Tests if calling a single survey field throws an error when failing"""
+        with pytest.raises(CastorException) as e:
+            client.single_survey_instance_single_field_record(
+                '00FAKE', '1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E', 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116'
+            )
+        assert str(e.value) == "404 The record you requested data for does not exist."
 
     def test_update_survey_instance_single_field_record_success(
-        self, client, all_survey_data_points
+        self, client
     ):
-        # Get all filled in survey data points
-        random_survey_field = random.choice(all_survey_data_points)
-
-        # Get information on the field
-        survey = random_survey_field["survey_instance_id"]
-        record = random_survey_field["record_id"]
-        field = random_survey_field["field_id"]
-        old_value = random_survey_field["field_value"]
-
-        # Get the allowed values to update
-        field_exp = client.single_field(field)
-        if field_exp["field_type"] == "numeric":
-            min_val = field_exp["field_min"]
-            max_val = field_exp["field_max"]
-            if min_val is None:
-                min_val = 0
-            if max_val is None:
-                max_val = 99
-            post_value = random.choice(range(min_val, max_val))
-        else:
-            post_value = self.data_options[field_exp["field_type"]]
+        """Tests correctly changing a single survey field"""
+        field = 'FC4FAA2D-08FD-41F7-B482-444B2B6D3116'
+        post_value = allowed_value(client, field)
 
         # Update the field
         change_reason = "Testing API"
         client.update_survey_instance_single_field_record(
-            record, survey, field, post_value, change_reason
+            '000011', '5F420735-03B5-4736-9CCA-D3B02DA2BFF4', field, post_value, change_reason
         )
 
         # Check if changing worked
         new_value = client.single_survey_instance_single_field_record(
-            record, survey, field
+            '000011', '5F420735-03B5-4736-9CCA-D3B02DA2BFF4', field
         )
         assert new_value["value"] == str(post_value)
 
     def test_update_survey_instance_single_field_record_fail(
-        self, client, all_survey_data_points
+        self, client
     ):
-        # Get all filled in survey data points
-        random_survey_field = random.choice(all_survey_data_points)
-
-        # Get information on the field
-        survey = random_survey_field["survey_instance_id"]
-        record = random_survey_field["record_id"]
-        field = random_survey_field["field_id"]
-        old_value = random_survey_field["field_value"]
-
-        # Get the allowed values to update
-        field_exp = client.single_field(field)
-        if field_exp["field_type"] == "numeric":
-            min_val = field_exp["field_min"]
-            max_val = field_exp["field_max"]
-            if min_val is None:
-                min_val = 0
-            if max_val is None:
-                max_val = 99
-            post_value = random.choice(range(min_val, max_val))
-        else:
-            post_value = self.data_options[field_exp["field_type"]]
+        """Tests failing to change a single survey field"""
+        field = 'ED12B07E-EDA8-4D64-8268-BE751BD5DB36'
+        post_value = allowed_value(client, field)
+        old_value = client.single_survey_instance_single_field_record(
+            '110002', '0FFD2C09-C5F2-4072-BDF1-736516C0D60A', field
+        )
 
         # Update the field
         change_reason = "Testing API"
 
         with pytest.raises(CastorException) as e:
             client.update_survey_instance_single_field_record(
-                record, survey, field + "FAKE", post_value, change_reason
+                '110002', '0FFD2C09-C5F2-4072-BDF1-736516C0D60A', field + "FAKE", post_value, change_reason
             )
         assert str(e.value) == "400 The request you made was malformed"
 
         # Check if changing failed
         new_value = client.single_survey_instance_single_field_record(
-            record, survey, field
+            '110002', '0FFD2C09-C5F2-4072-BDF1-736516C0D60A', field
         )
-        assert new_value["value"] == old_value
+        assert new_value["value"] == old_value["value"]

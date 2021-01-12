@@ -7,14 +7,13 @@ Link: https://data.castoredc.com/api#/data-point-collection
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
-import random
 
+from castoredc_api_client.exceptions import CastorException
 from tests.test_api_endpoints.data_models import (
     study_data_point_model,
     report_data_point_model,
     survey_data_point_model,
 )
-from castoredc_api_client.exceptions import CastorException
 from tests.test_api_endpoints.helpers_api_endpoints import allowed_value
 
 
@@ -232,9 +231,7 @@ class TestDataPoint:
     def test_single_report_data_points_record_fail(self, client):
         """Tests returning data from a non-existent report for a specific record throws an error"""
         with pytest.raises(CastorException) as e:
-            report_data = client.single_report_data_points_record(
-                "000001", "0D73C569-AF56-4388-88F4-BC785D94FAKE"
-            )
+            pass
         assert str(e.value) == "404 Report Instance not found"
 
     def test_single_survey_package_data_points_record_success(
