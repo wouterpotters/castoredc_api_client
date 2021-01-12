@@ -6,9 +6,18 @@ Contains the definition of all data models according to the Castor EDC API.
 https://orcid.org/0000-0003-3052-596X
 """
 
-country_model_1 = {
+country_model = {
     "id": [str,],
     "country_id": [str,],
+    "country_name": [str,],
+    "country_tld": [str,],
+    "country_cca2": [str,],
+    "country_cca3": [str,],
+}
+
+single_country_model = {
+    "id": [int,],
+    "country_id": [int,],
     "country_name": [str,],
     "country_tld": [str,],
     "country_cca2": [str,],
@@ -50,7 +59,7 @@ export_structure_model = {
     ],  # Actually int in database, but csv interprets everything as string
     "Field Required": [
         str,
-    ],  # Acutally bool in database, but csv interprets everything as string
+    ],  # Actually bool in database, but csv interprets everything as string
     "Calculation Template": [str,],
     "Field Option Group": [str,],
 }
@@ -62,15 +71,6 @@ export_option_group_model = {
     "Option Id": [str,],
     "Option Name": [str,],
     "Option Value": [str,],
-}
-
-country_model_2 = {
-    "id": [str,],
-    "country_id": [str,],
-    "country_name": [str,],
-    "country_tld": [str,],
-    "country_cca2": [str,],
-    "country_cca3": [str,],
 }
 
 study_data_point_model = {
@@ -252,6 +252,16 @@ survey_data_point_model = {
     "field_value": [str,],
     "record_id": [str,],
     "updated_on": [str,],
+}
+
+survey_package_data_point_model = {
+    "field_id": [str,],
+    "survey_instance_id": [str,],
+    "survey_name": [str,],
+    "field_value": [str,],
+    "record_id": [str,],
+    "updated_on": [str,],
+    "survey_package_id": [str,],
 }
 
 survey_data_point_extended_model = {

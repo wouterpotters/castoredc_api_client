@@ -29,7 +29,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Survey Field 1a1",
         field_label="This is the first survey field",
         field_type="checkbox",
-        field_required=False,
+        field_required="0",
         field_option_group="FAKE-OPTION-GROUP-ID1",
     )
     field2 = castor_field.CastorField(
@@ -37,7 +37,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Survey Field 1a2",
         field_label="This is the second survey field",
         field_type="string",
-        field_required=False,
+        field_required="0",
         field_option_group=None,
     )
     field3 = castor_field.CastorField(
@@ -45,7 +45,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Survey Field 1a3",
         field_label="This is the third survey field",
         field_type="calculation",
-        field_required=False,
+        field_required="0",
         field_option_group=None,
     )
     field4 = castor_field.CastorField(
@@ -53,7 +53,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Survey Field 1b1",
         field_label="This is the first survey field",
         field_type="string",
-        field_required=False,
+        field_required="0",
         field_option_group=None,
     )
     field5 = castor_field.CastorField(
@@ -61,7 +61,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Survey Field 1c1",
         field_label="This is the first survey field",
         field_type="number",
-        field_required=False,
+        field_required="0",
         field_option_group=None,
     )
     field6 = castor_field.CastorField(
@@ -69,7 +69,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Survey Field 1c2",
         field_label="This is the second survey field",
         field_type="number",
-        field_required=False,
+        field_required="0",
         field_option_group=None,
     )
     field7 = castor_field.CastorField(
@@ -77,7 +77,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 1a1",
         field_label="This is the first report field",
         field_type="radio",
-        field_required=True,
+        field_required="1",
         field_option_group="FAKE-OPTION-GROUP-ID2",
     )
     field8 = castor_field.CastorField(
@@ -85,7 +85,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 1a2",
         field_label="This is the second report field",
         field_type="checkbox",
-        field_required=True,
+        field_required="1",
         field_option_group="FAKE-OPTION-GROUP-ID3",
     )
     field9 = castor_field.CastorField(
@@ -93,7 +93,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 1b1",
         field_label="This is the first report field",
         field_type="checkbox",
-        field_required=True,
+        field_required="1",
         field_option_group="FAKE-OPTION-GROUP-ID4",
     )
     field10 = castor_field.CastorField(
@@ -101,7 +101,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 2a1",
         field_label="This is the first report field",
         field_type="number",
-        field_required=True,
+        field_required="1",
         field_option_group=None,
     )
     field11 = castor_field.CastorField(
@@ -109,7 +109,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 2a2",
         field_label="This is the second report field",
         field_type="calculation",
-        field_required=True,
+        field_required="1",
         field_option_group=None,
     )
     field12 = castor_field.CastorField(
@@ -117,7 +117,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 2a3",
         field_label="This is the third report field",
         field_type="date",
-        field_required=True,
+        field_required="1",
         field_option_group=None,
     )
     field13 = castor_field.CastorField(
@@ -125,7 +125,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Report Field 2a4",
         field_label="This is the fourth report field",
         field_type="checkbox",
-        field_required=True,
+        field_required="1",
         field_option_group="FAKE-OPTION-GROUP-ID5",
     )
     field14 = castor_field.CastorField(
@@ -133,7 +133,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Study Field 1a1",
         field_label="This is the first study field",
         field_type="calculation",
-        field_required=True,
+        field_required="1",
         field_option_group=None,
     )
     field15 = castor_field.CastorField(
@@ -141,7 +141,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Study Field 1b1",
         field_label="This is the first study field",
         field_type="datetime",
-        field_required=True,
+        field_required="1",
         field_option_group=None,
     )
     field16 = castor_field.CastorField(
@@ -149,7 +149,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Study Field 1b2",
         field_label="This is the second study field",
         field_type="number",
-        field_required=True,
+        field_required="1",
         field_option_group=None,
     )
     field17 = castor_field.CastorField(
@@ -157,7 +157,7 @@ def fields() -> List[castor_field.CastorField]:
         field_name="Study Field 1c1",
         field_label="This is the first study field",
         field_type="checkbox",
-        field_required=False,
+        field_required="0",
         field_option_group="FAKE-OPTION-GROUP-ID1",
     )
     return [

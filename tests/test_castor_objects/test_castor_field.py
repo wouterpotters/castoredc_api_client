@@ -18,7 +18,7 @@ class TestCastorField:
             field_name="Survey Field 1a2",
             field_label="This is the second survey field",
             field_type="string",
-            field_required=False,
+            field_required="0",
             field_option_group=None,
         )
         assert type(field) is CastorField
