@@ -21,7 +21,7 @@ c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET')
 c.link_study('MYSTUDYID')
 
 # OPTIONAL: Map the structure and data points of your study locally
-c.map_data()
+c.__link_data()
 
 # Then you can interact with the API
 c.all_records()

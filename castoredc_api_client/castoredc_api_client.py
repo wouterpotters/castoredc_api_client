@@ -12,8 +12,7 @@ import logging
 import math
 import requests
 
-from castoredc_api_client.castor_objects.castor_study import CastorStudy
-from castoredc_api_client.exceptions import castor_exception_handler, CastorException
+from exceptions.exceptions import castor_exception_handler, CastorException
 
 
 class CastorClient:
@@ -42,24 +41,10 @@ class CastorClient:
 
         # Instantiate global study variables
         self.study_url = None
-        self.study = None
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id and creates the field map."""
         self.study_url = self.base_url + "/study/" + study_id
-        self.study = CastorStudy(study_id)
-
-    def map_structure(self):
-        if type(self.study) is None:
-            raise CastorException("Study is not yet instantiated")
-        else:
-            self.study.map_structure(self)
-
-    def map_data(self):
-        if type(self.study) is None:
-            raise CastorException("Study is not yet instantiated")
-        else:
-            self.study.link_data(self)
 
     # API ENDPOINTS
     # COUNTRY

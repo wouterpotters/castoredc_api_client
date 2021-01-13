@@ -1,10 +1,10 @@
 from typing import Union, Any, TYPE_CHECKING
 
-from castoredc_api_client.exceptions import CastorException
+from exceptions.exceptions import CastorException
 
 if TYPE_CHECKING:
-    from castoredc_api_client.castor_objects.castor_field import CastorField
-    from castoredc_api_client.castor_objects.castor_study import CastorStudy
+    from castoredc_study.castor_objects.castor_field import CastorField
+    from castoredc_study.castor_study import CastorStudy
 
 
 class CastorDataPoint:

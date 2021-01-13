@@ -2,10 +2,10 @@ import itertools
 from typing import Union, Any, TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from castoredc_api_client.castor_objects.castor_form_instance import (
+    from castoredc_study.castor_objects.castor_form_instance import (
         CastorFormInstance,
     )
-    from castoredc_api_client.castor_objects.castor_data_point import (
+    from castoredc_study.castor_objects.castor_data_point import (
         CastorDataPoint,
     )
 

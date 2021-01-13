@@ -1,26 +1,29 @@
 import itertools
 from typing import List, Optional, Any, Union, TYPE_CHECKING
 
-from castoredc_api_client.castor_objects.castor_data_point import CastorDataPoint
-from castoredc_api_client.castor_objects.castor_field import CastorField
-from castoredc_api_client.castor_objects.castor_form_instance import CastorFormInstance
-from castoredc_api_client.castor_objects.castor_record import CastorRecord
-from castoredc_api_client.castor_objects.castor_step import CastorStep
-from castoredc_api_client.castor_objects.castor_form import CastorForm
-from castoredc_api_client.exceptions import CastorException
+from castoredc_study.castor_objects.castor_data_point import CastorDataPoint
+from castoredc_study.castor_objects.castor_field import CastorField
+from castoredc_study.castor_objects.castor_form_instance import CastorFormInstance
+from castoredc_study.castor_objects.castor_record import CastorRecord
+from castoredc_study.castor_objects.castor_step import CastorStep
+from castoredc_study.castor_objects.castor_form import CastorForm
+from exceptions.exceptions import CastorException
 
 if TYPE_CHECKING:
     from castoredc_api_client.castoredc_api_client import CastorClient
 
 
 class CastorStudy:
-    """Object representing a study in Castor. Functions as the head of a tree for all interrelations."""
+    """Object representing a study in Castor. Functions as the head of a tree for all interrelations.
+    Needs an authenticated api_client that is linked to the same study_id to call data."""
 
     # TODO: Add study name and other characteristics
     def __init__(self, study_id: str) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
+        # List of all forms in the study - structure
         self.forms = []
+        # List of all records in the study - data
         self.records = []
 
         # Dictionary of dicts to store the relationship between a form ID and a list of form instances
@@ -29,6 +32,14 @@ class CastorStudy:
     # STRUCTURE MAPPING
     def map_structure(self, api_client) -> None:
         """Returns a CastorStudy object with the corresponding variable tree depicting interrelations"""
+        # Reset structure & data
+        self.forms = []
+        self.records = []
+        self.form_links = {}
+
+        # Link the study id in the api client
+        api_client.link_study(self.study_id)
+
         # Get the structure from the API
         data = api_client.export_study_structure()
 
@@ -67,14 +78,20 @@ class CastorStudy:
                 step.add_field(new_field)
 
     # DATA MAPPING
-    def link_data(self, api_client: "CastorClient") -> None:
+    def map_data(self, api_client: "CastorClient") -> None:
         """Imports the data from the CastorClient database, maps the interrelations and links it to the study."""
         self.map_structure(api_client)
         self.update_links(api_client)
-        self.map_data(api_client)
+        self.__link_data(api_client)
 
     def update_links(self, api_client: "CastorClient") -> None:
         """Creates the links between form and form instances."""
+        # Reset form links
+        self.form_links = {}
+
+        # Link the study id in the api client
+        api_client.link_study(self.study_id)
+
         form_links = {"Survey": {}, "Report": {}}
 
         # Get all survey forms that need to be linked
@@ -103,8 +120,8 @@ class CastorStudy:
 
         self.form_links = form_links
 
-    def map_data(self, api_client: "CastorClient") -> None:
-        """Maps the study data"""
+    def __link_data(self, api_client: "CastorClient") -> None:
+        """Links the study data"""
         # Get the data from the API
         data = api_client.export_study_data()
 
