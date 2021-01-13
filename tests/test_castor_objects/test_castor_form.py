@@ -44,6 +44,14 @@ class TestCastorForm:
         assert step.step_id == "FAKE-SURVEY-STEP-ID2"
         assert step.step_name == "Survey Step 1b"
 
+    def test_form_get_single_step_name(self, forms_with_steps):
+        """Tests getting a single step by name."""
+        form = forms_with_steps[0]
+        step = form.get_single_step("Survey Step 1b")
+        assert type(step) is CastorStep
+        assert step.step_id == "FAKE-SURVEY-STEP-ID2"
+        assert step.step_name == "Survey Step 1b"
+
     def test_form_get_single_step_fail(self, forms_with_steps):
         """Tests failing to get a single step by id."""
         form = forms_with_steps[0]
@@ -62,6 +70,14 @@ class TestCastorForm:
         """Tests getting a single field by id."""
         form = complete_study.forms[0]
         field = form.get_single_field("FAKE-SURVEY-FIELD-ID3")
+        assert type(field) is CastorField
+        assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
+        assert field.field_name == "Survey Field 1a3"
+
+    def test_form_get_single_field_name(self, complete_study):
+        """Tests getting a single field by name."""
+        form = complete_study.forms[0]
+        field = form.get_single_field("Survey Field 1a3")
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
         assert field.field_name == "Survey Field 1a3"

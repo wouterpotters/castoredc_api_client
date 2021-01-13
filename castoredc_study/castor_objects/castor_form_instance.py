@@ -12,11 +12,11 @@ class CastorFormInstance:
     """Object representing a Castor form instance. Examples are survey instance or report instance."""
 
     def __init__(
-        self,
-        instance_id: str,
-        instance_type: str,
-        name_of_form: str,
-        study: "CastorStudy",
+            self,
+            instance_id: str,
+            instance_type: str,
+            name_of_form: str,
+            study: "CastorStudy",
     ) -> None:
         """Creates a CastorFormInstance."""
         self.instance_id = instance_id
@@ -41,13 +41,14 @@ class CastorFormInstance:
         """Returns all data_points of the form instance"""
         return self.data_points
 
-    def get_single_data_point(self, field_id: str) -> Optional["CastorDataPoint"]:
-        """Returns a single data_point based on id."""
+    def get_single_data_point(self, field_id_or_name: str) -> Optional["CastorDataPoint"]:
+        """Returns a single data_point based on id or name."""
         return next(
             (
                 data_point
                 for data_point in self.data_points
-                if data_point.field_id == field_id
+                if (data_point.field_id == field_id_or_name or
+                    data_point.instance_of.field_name == field_id_or_name)
             ),
             None,
         )
@@ -72,4 +73,5 @@ class CastorFormInstance:
                     self.record == other.record)
 
     def __repr__(self) -> str:
-        return self.instance_id
+        return self.record.record_id + " - " \
+               + self.instance_of.form_name

@@ -75,18 +75,18 @@ class TestCastorStudy:
         assert form.form_type == "Report"
         assert form.form_name == "Fake Report 2"
 
-    def test_study_get_single_form_fail(self, study_with_forms):
-        """Tests failing to get a form from the study."""
-        form = study_with_forms.get_single_form("FAKE-REPORT-ID3")
-        assert form is None
-
     def test_study_get_single_form_name(self, study_with_forms):
         """Tests getting a single form from the study."""
-        form = study_with_forms.get_single_form_name("Fake Report 2")
+        form = study_with_forms.get_single_form("Fake Report 2")
         assert type(form) is CastorForm
         assert form.form_id == "FAKE-REPORT-ID2"
         assert form.form_type == "Report"
         assert form.form_name == "Fake Report 2"
+
+    def test_study_get_single_form_fail(self, study_with_forms):
+        """Tests failing to get a form from the study."""
+        form = study_with_forms.get_single_form("FAKE-REPORT-ID3")
+        assert form is None
 
     def test_study_get_single_form_name_fail(self, study_with_forms):
         """Tests failing to get a form from the study."""
@@ -107,9 +107,21 @@ class TestCastorStudy:
         assert step.step_id == "FAKE-REPORT-STEP-ID2"
         assert step.step_name == "Report Step 1b"
 
+    def test_study_get_single_step_name(self, complete_study):
+        """Tests getting a single step from the study."""
+        step = complete_study.get_single_step("Report Step 1b")
+        assert type(step) is CastorStep
+        assert step.step_id == "FAKE-REPORT-STEP-ID2"
+        assert step.step_name == "Report Step 1b"
+
     def test_study_get_single_step_fail(self, complete_study):
         """Tests failing to get a step from the study."""
         step = complete_study.get_single_step("FAKE-REPORT-STEP-ID5")
+        assert step is None
+
+    def test_study_get_single_step_name_fail(self, complete_study):
+        """Tests failing to get a step from the study."""
+        step = complete_study.get_single_step("Report Step 2q")
         assert step is None
 
     def test_study_get_all_fields(self, complete_study):
@@ -126,9 +138,21 @@ class TestCastorStudy:
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
         assert field.field_name == "Survey Field 1a3"
 
+    def test_study_get_single_field_name(self, complete_study):
+        """Tests getting a single field from the study."""
+        field = complete_study.get_single_field("Survey Field 1a3")
+        assert type(field) is CastorField
+        assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
+        assert field.field_name == "Survey Field 1a3"
+
     def test_study_get_single_field_fail(self, complete_study):
         """Tests failing to get a field from the study."""
         field = complete_study.get_single_field("FAKE-SURVEY-FIELD-ID7")
+        assert field is None
+
+    def test_study_get_single_field_name_fail(self, complete_study):
+        """Tests failing to get a field from the study."""
+        field = complete_study.get_single_field("Survey Field 22q11")
         assert field is None
 
     def test_study_get_study_fields(self, complete_study):

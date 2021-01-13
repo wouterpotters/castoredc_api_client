@@ -37,4 +37,6 @@ class CastorDataPoint:
             )
 
     def __repr__(self) -> str:
-        return self.field_id
+        return self.form_instance.record.record_id + " - " \
+               + self.form_instance.instance_of.form_name + " - " \
+               + self.instance_of.field_name

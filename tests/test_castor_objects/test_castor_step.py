@@ -50,6 +50,14 @@ class TestCastorStep:
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
         assert field.field_name == "Survey Field 1a3"
 
+    def test_step_get_single_field_on_name(self, steps_with_fields):
+        """Tests getting a single field by name."""
+        step = steps_with_fields[0]
+        field = step.get_single_field("Survey Field 1a3")
+        assert type(field) is CastorField
+        assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
+        assert field.field_name == "Survey Field 1a3"
+
     def test_step_get_single_field_fail(self, steps_with_fields):
         """Tests failing to get a single field by id."""
         step = steps_with_fields[0]

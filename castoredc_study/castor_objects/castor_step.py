@@ -21,10 +21,11 @@ class CastorStep:
         """Returns all linked CastorFields."""
         return self.fields
 
-    def get_single_field(self, field_id: str) -> CastorField:
-        """Returns a linked CastorField based on id."""
+    def get_single_field(self, field_id_or_name: str) -> CastorField:
+        """Returns a linked CastorField based on id or name."""
         return next(
-            (field for field in self.fields if field.field_id == field_id), None
+            (field for field in self.fields if (field.field_id == field_id_or_name or
+                                                field.field_name == field_id_or_name)), None
         )
 
     # Standard Operators
@@ -35,4 +36,4 @@ class CastorStep:
             return self.step_id == other.step_id
 
     def __repr__(self) -> str:
-        return self.step_id
+        return self.step_name

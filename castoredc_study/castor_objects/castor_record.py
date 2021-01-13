@@ -9,6 +9,7 @@ if TYPE_CHECKING:
         CastorDataPoint,
     )
 
+
 class CastorRecord:
     """Object representing a Castor Record."""
 
@@ -28,7 +29,7 @@ class CastorRecord:
         return self.form_instances
 
     def get_single_form_instance(
-        self, instance_id: str
+            self, instance_id: str
     ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
         return next(
@@ -53,19 +54,11 @@ class CastorRecord:
         return data_points
 
     def get_single_data_point(
-        self, field_id: str, form_instance_id: str
+            self, field_id_or_name: str, form_instance_id: str
     ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
         form_instance = self.get_single_form_instance(form_instance_id)
-        data_points = form_instance.get_all_data_points()
-        return next(
-            (
-                _data_point
-                for _data_point in data_points
-                if _data_point.field_id == field_id
-            ),
-            None,
-        )
+        return form_instance.get_single_data_point(field_id_or_name)
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:

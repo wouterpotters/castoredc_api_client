@@ -30,4 +30,4 @@ class CastorField:
             return self.field_id == other.field_id
 
     def __repr__(self) -> str:
-        return self.field_id
+        return self.field_name

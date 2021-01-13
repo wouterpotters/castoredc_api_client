@@ -110,6 +110,14 @@ class TestCastorFormInstance:
         assert data_point.field_id == "FAKE-SURVEY-FIELD-ID2"
         assert data_point.value == "test"
 
+    def test_form_get_single_data_point_on_name(self, instances_with_data_points):
+        """Tests getting a single data point linked to a form_instance"""
+        form_instance = instances_with_data_points[0]
+        data_point = form_instance.get_single_data_point("Survey Field 1a2")
+        assert type(data_point) is CastorDataPoint
+        assert data_point.field_id == "FAKE-SURVEY-FIELD-ID2"
+        assert data_point.value == "test"
+
     def test_form_get_single_form_instance_fail(self, instances_with_data_points):
         """Tests failing to get a single data point by id."""
         form_instance = instances_with_data_points[0]

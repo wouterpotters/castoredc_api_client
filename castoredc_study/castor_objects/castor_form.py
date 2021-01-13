@@ -30,9 +30,10 @@ class CastorForm:
         """Returns a list of linked CastorSteps."""
         return self.steps
 
-    def get_single_step(self, step_id: str) -> Optional[CastorStep]:
-        """Returns a linked CastorStep based on id."""
-        return next((step for step in self.steps if step.step_id == step_id), None)
+    def get_single_step(self, step_id_or_name: str) -> Optional[CastorStep]:
+        """Returns a linked CastorStep based on id or name."""
+        return next((step for step in self.steps if (step.step_id == step_id_or_name or
+                                                     step.step_name == step_id_or_name)), None)
 
     def get_all_fields(self) -> List[CastorField]:
         """Returns a list of linked CastorFields."""
@@ -40,10 +41,11 @@ class CastorForm:
             itertools.chain.from_iterable([_step.fields for _step in self.steps])
         )
 
-    def get_single_field(self, field_id: str) -> Optional[CastorStep]:
+    def get_single_field(self, field_id_or_name: str) -> Optional[CastorStep]:
         """Returns a linked CastorField based on id."""
         fields = self.get_all_fields()
-        return next((field for field in fields if field.field_id == field_id), None)
+        return next((field for field in fields if (field.field_id == field_id_or_name or
+                                                   field.field_name == field_id_or_name)), None)
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
@@ -53,4 +55,4 @@ class CastorForm:
             return self.form_id == other.form_id
 
     def __repr__(self) -> str:
-        return self.form_id
+        return self.form_name

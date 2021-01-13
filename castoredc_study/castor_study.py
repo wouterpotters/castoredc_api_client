@@ -196,13 +196,10 @@ class CastorStudy:
         forms = self.get_all_forms()
         return [form for form in forms if form.form_type == form_type]
 
-    def get_single_form(self, form_id: str) -> Optional[CastorForm]:
-        """Get a single CastorForm based on id."""
-        return next((form for form in self.forms if form.form_id == form_id), None)
-
-    def get_single_form_name(self, form_name: str) -> Optional[CastorForm]:
-        """Get a single CastorForm based on id."""
-        return next((form for form in self.forms if form.form_name == form_name), None)
+    def get_single_form(self, form_id_or_name: str) -> Optional[CastorForm]:
+        """Get a single CastorForm based on id or name."""
+        return next((form for form in self.forms if (form.form_id == form_id_or_name or
+                                                     form.form_name == form_id_or_name)), None)
 
     def add_record(self, record: CastorRecord) -> None:
         """Add a CastorRecord to the study."""
@@ -226,10 +223,11 @@ class CastorStudy:
         )
         return steps
 
-    def get_single_step(self, step_id: str) -> Optional[CastorStep]:
-        """Get a single CastorStep based on id."""
+    def get_single_step(self, step_id_or_name: str) -> Optional[CastorStep]:
+        """Get a single CastorStep based on id or name."""
         steps = self.get_all_steps()
-        return next((step for step in steps if step.step_id == step_id), None)
+        return next((step for step in steps if (step.step_id == step_id_or_name or
+                                                step.step_name == step_id_or_name)), None)
 
     def get_all_fields(self) -> List[CastorField]:
         """Get all linked CastorFields."""
@@ -240,10 +238,11 @@ class CastorStudy:
         )
         return fields
 
-    def get_single_field(self, field_id: str) -> Optional[CastorField]:
+    def get_single_field(self, field_id_or_name: str) -> Optional[CastorField]:
         """Get a single CastorField based on id."""
         fields = self.get_all_fields()
-        return next((field for field in fields if field.field_id == field_id), None)
+        return next((field for field in fields if (field.field_id == field_id_or_name or
+                                                   field.field_name == field_id_or_name)), None)
 
     def get_all_study_fields(self) -> List[CastorField]:
         """Gets all linked study CastorFields."""
@@ -296,19 +295,11 @@ class CastorStudy:
         return data_points
 
     def get_single_data_point(
-            self, record_id: str, form_instance_id: str, field_id: str
+            self, record_id: str, form_instance_id: str, field_id_or_name: str
     ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
         form_instance = self.get_single_form_instance(record_id, form_instance_id)
-        data_points = form_instance.get_all_data_points()
-        return next(
-            (
-                _data_point
-                for _data_point in data_points
-                if _data_point.field_id == field_id
-            ),
-            None,
-        )
+        return form_instance.get_single_data_point(field_id_or_name)
 
     def instance_of_form(
             self, instance_id: str, instance_type: str
