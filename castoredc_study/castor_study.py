@@ -17,7 +17,6 @@ class CastorStudy:
     """Object representing a study in Castor. Functions as the head of a tree for all interrelations.
     Needs an authenticated api_client that is linked to the same study_id to call data."""
 
-    # TODO: Add study name and other characteristics
     def __init__(self, study_id: str) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
@@ -28,6 +27,8 @@ class CastorStudy:
 
         # Dictionary of dicts to store the relationship between a form ID and a list of form instances
         self.form_links = {}
+        # List of dictionaries of optiongroups
+        self.optiongroups = []
 
     # STRUCTURE MAPPING
     def map_structure(self, api_client) -> None:
@@ -76,6 +77,20 @@ class CastorStudy:
                     field_option_group=field["Field Option Group"],
                 )
                 step.add_field(new_field)
+
+    # OPTIONGROUPS
+    def load_optiongroups(self, api_client: "CastorClient") -> None:
+        """Loads all optiongroups through the client"""
+        # Link the study id in the api client
+        api_client.link_study(self.study_id)
+        # Get the optiongroups
+        self.optiongroups = api_client.all_field_optiongroups()
+
+    # DATA INTERPRETATION
+    def interpret_values(self) -> None:
+        """Interprets all datapoints in the study in preparation of data export."""
+        for field in self.get_all_data_points():
+            field.interpret()
 
     # DATA MAPPING
     def map_data(self, api_client: "CastorClient") -> None:
@@ -169,7 +184,7 @@ class CastorStudy:
                 data_point = form_instance.get_single_data_point(field["Field ID"])
                 if data_point is None:
                     data_point = CastorDataPoint(
-                        field_id=field["Field ID"], value=field["Value"], study=self
+                        field_id=field["Field ID"], raw_value=field["Value"], study=self, filled_in=field["Date"]
                     )
                     form_instance.add_data_point(data_point)
 

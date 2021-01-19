@@ -213,63 +213,63 @@ def data_points(
     """Creates CastorDataPoints for use in tests."""
     data_point1 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID1", 2, complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point2 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID2", "test", complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point3 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID3", 1, complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point4 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID4", "test", complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point5 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID5", 2, complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point6 = castor_data_point.CastorDataPoint(
         "FAKE-REPORT-FIELD-ID1", 13, complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point7 = castor_data_point.CastorDataPoint(
         "FAKE-REPORT-FIELD-ID2", -12, complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point8 = castor_data_point.CastorDataPoint(
         "FAKE-REPORT-FIELD-ID3", 0, complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point9 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID6", 2, complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point10 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID2", "test", complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point11 = castor_data_point.CastorDataPoint(
         "FAKE-STUDY-FIELD-ID1", 12, complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point12 = castor_data_point.CastorDataPoint(
         "FAKE-STUDY-FIELD-ID2", 34, complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point13 = castor_data_point.CastorDataPoint(
         "FAKE-STUDY-FIELD-ID3", 2, complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point14 = castor_data_point.CastorDataPoint(
         "FAKE-STUDY-FIELD-ID4", "test", complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     data_point15 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID3", 10, complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point16 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID2", 13, complete_study
-    )
+    , "2021-01-15 13:39:47")
     data_point17 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID1", "test", complete_study
-    )
+    , "2021-01-15 13:39:47")
 
     return [
         data_point1,

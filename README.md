@@ -1,5 +1,5 @@
 # Castor-Client
-
+# TODO: REWRITE
 This is a Python package for interacting with the API of Castor Electronic Data Capture (EDC).
 The package contains functions for all the endpoints defined on https://data.castoredc.com/api#/.
 Logging functionalities are included for keeping an audit trail.
