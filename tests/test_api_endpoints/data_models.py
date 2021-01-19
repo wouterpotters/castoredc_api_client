@@ -404,7 +404,7 @@ record_model = {
     "_embedded": [dict,],
     "ccr_patient_id": [str,],
     "randomized_id": [str, type(None)],
-    "randomization_group": [int, type(None)],
+    "randomization_group": [str, type(None)],
     "randomization_group_name": [str, type(None)],
     "last_opened_step": [str, type(None)],
     "progress": [int,],

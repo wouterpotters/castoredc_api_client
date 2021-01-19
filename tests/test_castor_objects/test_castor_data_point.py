@@ -16,16 +16,16 @@ class TestCastorDataPoint:
 
     def test_data_point_create(self, complete_study):
         """Tests creation of a data point."""
-        data_point = CastorDataPoint("FAKE-STUDY-FIELD-ID4", "test", complete_study)
+        data_point = CastorDataPoint("FAKE-STUDY-FIELD-ID4", "test", complete_study, "2021-01-15 13:39:47")
         assert type(data_point) is CastorDataPoint
         assert data_point.field_id == "FAKE-STUDY-FIELD-ID4"
-        assert data_point.value == "test"
+        assert data_point.raw_value == "test"
         assert data_point.instance_of.field_id == "FAKE-STUDY-FIELD-ID4"
 
     def test_data_point_create_fail(self, complete_study):
         """Tests failure of creation of a data point."""
         with pytest.raises(CastorException) as e:
-            CastorDataPoint("FAKE-STUDY-FIELD-ID8", "test", complete_study)
+            CastorDataPoint("FAKE-STUDY-FIELD-ID8", "test", complete_study, "2021-01-15 13:39:47")
         assert (
             str(e.value)
             == "The field that this is an instance of does not exist in the study!"

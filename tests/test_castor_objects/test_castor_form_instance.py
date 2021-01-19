@@ -76,18 +76,12 @@ class TestCastorFormInstance:
             == "The form that this is an instance of does not exist in the study!"
         )
 
-    def test_study_form_instance_create_fail(self, complete_study):
-        """Tests creation of a Study form instance."""
-        # This cannot fail, because all Study form instances are linked to the same fictitious STUDY-DATA-FORM
-        # as the study data export does not link the study fields to the study forms.
-        pass
-
     def test_form_instance_add_data_point(self, complete_study):
         """Tests adding a data point to a form instance.."""
         form_instance = CastorFormInstance(
             "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
         )
-        data_point = CastorDataPoint("FAKE-STUDY-FIELD-ID3", "test", complete_study)
+        data_point = CastorDataPoint("FAKE-STUDY-FIELD-ID3", "test", complete_study, "2021-01-15 13:39:47")
         assert len(form_instance.data_points) == 0
         form_instance.add_data_point(data_point)
         assert len(form_instance.data_points) == 1
@@ -108,7 +102,7 @@ class TestCastorFormInstance:
         data_point = form_instance.get_single_data_point("FAKE-SURVEY-FIELD-ID2")
         assert type(data_point) is CastorDataPoint
         assert data_point.field_id == "FAKE-SURVEY-FIELD-ID2"
-        assert data_point.value == "test"
+        assert data_point.raw_value == "test"
 
     def test_form_get_single_data_point_on_name(self, instances_with_data_points):
         """Tests getting a single data point linked to a form_instance"""
@@ -116,7 +110,7 @@ class TestCastorFormInstance:
         data_point = form_instance.get_single_data_point("Survey Field 1a2")
         assert type(data_point) is CastorDataPoint
         assert data_point.field_id == "FAKE-SURVEY-FIELD-ID2"
-        assert data_point.value == "test"
+        assert data_point.raw_value == "test"
 
     def test_form_get_single_form_instance_fail(self, instances_with_data_points):
         """Tests failing to get a single data point by id."""

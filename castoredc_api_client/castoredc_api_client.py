@@ -10,6 +10,7 @@ import csv
 import json
 import logging
 import math
+
 import requests
 
 from exceptions.exceptions import castor_exception_handler, CastorException
@@ -538,7 +539,7 @@ class CastorClient:
             body = {
                 "change_reason": change_reason,
                 "instance_id": report_ins_id,
-                "upload_file": file,
+                "upload_file": file
             }
 
         return self.castor_post(url, body)
