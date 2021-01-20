@@ -1,8 +1,6 @@
-# Castor-Client
-# TODO: REWRITE
+# CastorEDC API Client
 This is a Python package for interacting with the API of Castor Electronic Data Capture (EDC).
 The package contains functions for all the endpoints defined on https://data.castoredc.com/api#/.
-Logging functionalities are included for keeping an audit trail.
 
 ## Getting Started
 
@@ -10,7 +8,9 @@ Logging functionalities are included for keeping an audit trail.
 2. Open a Python project and import the client
 3. Instantiate the client with your client-ID and client-secret (don't share these!)
 4. Link your study with the study-ID
-5. Use the wrapper functions to start working with your database
+5. Use the wrapper functions to start working with your study.
+
+For all implemented functions, see: https://data.castoredc.com/api#/
 
 ```python
 from castoredc_api_client.castoredc_api_client import CastorClient
@@ -20,25 +20,22 @@ c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET')
 # Link the client to your study in the Castor EDC database
 c.link_study('MYSTUDYID')
 
-# OPTIONAL: Map the structure and data points of your study locally
-c.__link_data()
 
 # Then you can interact with the API
+# Get all records
 c.all_records()
+
+# Create a new survey package
+c.create_survey_package_instance(survey_package_id="FAKESURVEY-PACKAGE-ID",
+                                 record_id="TEST-RECORD",
+                                 email_address="obviously@fakeemail.com",
+                                 auto_send=True)
 ```
 
 ### Prerequisites
 
 1. Python version > 3.0
 2. Requests
-
-### Installing Dev Environment
-
-TODO
-
-## Running the tests
-
-TODO
 
 ## Contributing
 
