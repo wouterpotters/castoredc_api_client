@@ -16,7 +16,30 @@ class TestStudy:
     s_model_keys = study_model.keys()
     u_model_keys = user_model.keys()
 
-    test_study = {'crf_id': 'D234215B-D956-482D-BF17-71F2BB12A2FD', 'study_id': 'D234215B-D956-482D-BF17-71F2BB12A2FD', 'name': 'PythonWrapperTest', 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'created_on': '2019-09-23 10:12:48', 'live': True, 'randomization_enabled': True, 'gcp_enabled': True, 'surveys_enabled': True, 'premium_support_enabled': False, 'main_contact': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'expected_centers': 2, 'expected_records': 50, 'slug': 'python-wrapper', 'version': '0.61', 'duration': 15, 'domain': 'https://data.castoredc.com', '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD'}}}
+    test_study = {
+        "crf_id": "D234215B-D956-482D-BF17-71F2BB12A2FD",
+        "study_id": "D234215B-D956-482D-BF17-71F2BB12A2FD",
+        "name": "PythonWrapperTest",
+        "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "created_on": "2019-09-23 10:12:48",
+        "live": True,
+        "randomization_enabled": True,
+        "gcp_enabled": True,
+        "surveys_enabled": True,
+        "premium_support_enabled": False,
+        "main_contact": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "expected_centers": 2,
+        "expected_records": 50,
+        "slug": "python-wrapper",
+        "version": "0.61",
+        "duration": 15,
+        "domain": "https://data.castoredc.com",
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_studies(self, client):

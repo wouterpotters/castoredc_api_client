@@ -10,7 +10,9 @@ setup(
     packages=find_packages(
         exclude=("tests", "tests.*", "scripts", "scripts.*", "auth", "auth.*")
     ),
-    install_requires=["requests",],
+    install_requires=[
+        "requests",
+    ],
     license="MIT",
     long_description=open("README.md").read(),
 )

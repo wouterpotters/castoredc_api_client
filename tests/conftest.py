@@ -15,9 +15,7 @@ import pytest
 import auth.auth_data as auth_data
 
 pytest_plugins = [
-    "tests.test_castor_objects.fixtures_castor_objects",
     "tests.test_api_endpoints.fixtures_api",
-    "tests.test_integration.fixtures_integration",
 ]
 
 
