@@ -498,6 +498,8 @@ package_model = {
     "default_invitation_subject": [
         str,
     ],
+    "is_mobile": [bool],
+    "expire_after_hours": [int, type(None)],
     "_embedded": [
         dict,
     ],
@@ -543,6 +545,8 @@ survey_package_instance_model = {
     "sent_on": [dict, type(None)],
     "first_opened_on": [dict, type(None)],
     "finished_on": [dict, type(None)],
+    "available_from" : [dict],
+    "expire_on": [str, type(None)],
     "locked": [
         bool,
     ],

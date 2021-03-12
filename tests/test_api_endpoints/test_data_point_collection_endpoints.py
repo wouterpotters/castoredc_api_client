@@ -710,11 +710,11 @@ class TestDataPoint:
         ]
 
         # Update the survey
-        with pytest.raises(CastorException) as e:
-            client.update_survey_package_instance_data_record(
+        feedback = client.update_survey_package_instance_data_record(
                 "000020", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
             )
-        assert str(e.value) == "500 The application has encountered an error"
+        assert len(feedback["success"]) == 0
+        assert len(feedback["failed"]) == 5
 
     def test_create_survey_package_instance_data_points_fail_records(self, client):
         """Tests failing to to change survey package data based on record id"""

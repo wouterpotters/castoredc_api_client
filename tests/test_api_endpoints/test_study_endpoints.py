@@ -19,7 +19,7 @@ class TestStudy:
     test_study = {
         "crf_id": "D234215B-D956-482D-BF17-71F2BB12A2FD",
         "study_id": "D234215B-D956-482D-BF17-71F2BB12A2FD",
-        "name": "PythonWrapperTest",
+        "name": "PythonWrapperTest - Client",
         "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "created_on": "2019-09-23 10:12:48",
         "live": True,
@@ -67,7 +67,7 @@ class TestStudy:
     def test_all_studies_data(self, all_studies):
         """Tests the data of the studies returned by all_studies"""
         # Select a study
-        study = all_studies[5]
+        study = all_studies[6]
         # Check if the right data is returned.
         assert study == self.test_study
 
