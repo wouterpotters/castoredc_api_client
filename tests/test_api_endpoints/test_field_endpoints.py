@@ -21,7 +21,6 @@ class TestField:
         "field_id": "0C895B4D-D362-4A54-9063-7D3CBAAC0F21",
         "field_number": 4,
         "field_label": "Height",
-        "field_is_alias": False,
         "field_variable_name": "pat_height",
         "field_type": "numeric",
         "field_required": 1,

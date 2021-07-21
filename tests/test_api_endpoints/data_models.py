@@ -164,7 +164,7 @@ study_data_point_model = {
         str,
     ],
     "updated_on": [
-        str,
+        str, type(None)
     ],
 }
 
@@ -182,7 +182,7 @@ study_data_point_extended_model = {
         str,
     ],
     "updated_on": [
-        str,
+        str, type(None)
     ],
     "_embedded": [
         dict,
@@ -338,6 +338,9 @@ report_instance_model = {
     ],
     "report_name": [
         str,
+    ],
+    "archived": [
+        bool,
     ],
     "created_on": [
         str,
@@ -706,9 +709,6 @@ field_model = {
     "field_label": [
         str,
     ],
-    "field_is_alias": [
-        bool,
-    ],
     "field_variable_name": [str, type(None)],
     "field_type": [
         str,
@@ -967,6 +967,7 @@ record_model = {
     "randomized_id": [str, type(None)],
     "randomization_group": [str, type(None)],
     "randomization_group_name": [str, type(None)],
+    "randomized_on": [dict, type(None)],
     "last_opened_step": [str, type(None)],
     "progress": [
         int,

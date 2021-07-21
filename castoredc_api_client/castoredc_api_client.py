@@ -422,11 +422,13 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint="/report", data_id=report_id)
 
     # REPORT INSTANCES
-    def all_report_instances(self):
-        """Returns a list of dicts of all report_instances."""
+    def all_report_instances(self, archived=0):
+        """Returns a list of dicts of all non-archived report_instances.
+        Supply argument archived=1 to also add archived report instances"""
         try:
+            params = {"archived": archived}
             return self.retrieve_all_data_by_endpoint(
-                endpoint="/report-instance", data_name="reportInstances"
+                endpoint="/report-instance", data_name="reportInstances", params=params
             )
         except CastorException as e:
             if str(e) == "404 There are no report instances.":
@@ -441,12 +443,13 @@ class CastorClient:
             endpoint="/report-instance", data_id=report_instance_id
         )
 
-    def all_report_instances_record(self, record_id):
+    def all_report_instances_record(self, record_id, archived=0):
         """Returns a list of dicts of all report_instances for record_id.
-        Returns None if record not found."""
+        Set archived to 1 to also retrieve archived report instances. Returns None if record not found."""
         formatted_endpoint = "/record/{0}/report-instance".format(record_id)
+        params = {"archived": archived}
         return self.retrieve_all_data_by_endpoint(
-            endpoint=formatted_endpoint, data_name="reportInstances"
+            endpoint=formatted_endpoint, data_name="reportInstances", params=params
         )
 
     def single_report_instance_record(self, record_id, report_instance_id):

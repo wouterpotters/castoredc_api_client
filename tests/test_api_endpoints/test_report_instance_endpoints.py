@@ -41,6 +41,7 @@ class TestReportInstance:
         "report_name": "Unscheduled visit",
         "created_on": "2019-10-14 16:58:12",
         "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
+        "archived": False,
         "_embedded": {
             "report": {
                 "id": "C4ADC387-9BFD-4171-A861-6B973699A6ED",

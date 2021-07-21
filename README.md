@@ -4,7 +4,7 @@ The package contains functions for all the endpoints defined on https://data.cas
 
 ## Getting Started
 
-1. Install the package through pip: `pip install castor-client`
+1. Install the package through pip: `pip install castoredc-api-client`
 2. Open a Python project and import the client
 3. Instantiate the client with your client-ID and client-secret (don't share these!)
 4. Link your study with the study-ID

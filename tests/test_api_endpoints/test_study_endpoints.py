@@ -67,7 +67,7 @@ class TestStudy:
     def test_all_studies_data(self, all_studies):
         """Tests the data of the studies returned by all_studies"""
         # Select a study
-        study = all_studies[6]
+        study = all_studies[7]
         # Check if the right data is returned.
         assert study == self.test_study
 

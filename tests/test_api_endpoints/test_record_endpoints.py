@@ -51,6 +51,7 @@ class TestRecord:
             "timezone": "Europe/Amsterdam",
         },
         "randomized_id": None,
+        "randomized_on": None,
         "randomization_group": None,
         "randomization_group_name": None,
         "_embedded": {
