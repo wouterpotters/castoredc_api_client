@@ -163,9 +163,7 @@ study_data_point_model = {
     "record_id": [
         str,
     ],
-    "updated_on": [
-        str, type(None)
-    ],
+    "updated_on": [str, type(None)],
 }
 
 study_data_point_extended_model = {
@@ -181,9 +179,7 @@ study_data_point_extended_model = {
     "value": [
         str,
     ],
-    "updated_on": [
-        str, type(None)
-    ],
+    "updated_on": [str, type(None)],
     "_embedded": [
         dict,
     ],
@@ -548,7 +544,7 @@ survey_package_instance_model = {
     "sent_on": [dict, type(None)],
     "first_opened_on": [dict, type(None)],
     "finished_on": [dict, type(None)],
-    "available_from" : [dict],
+    "available_from": [dict],
     "expire_on": [str, type(None)],
     "locked": [
         bool,

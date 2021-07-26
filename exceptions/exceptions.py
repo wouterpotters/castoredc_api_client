@@ -17,7 +17,6 @@ def castor_exception_handler(func):
         try:
             return func(*args, **kwargs)
         except CastorException as e:
-            client.logger.exception("error: " + str(e))
             raise
 
     return wrapper

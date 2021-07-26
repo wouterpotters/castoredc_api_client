@@ -8,7 +8,6 @@ https://orcid.org/0000-0003-3052-596X
 """
 import csv
 import json
-import logging
 import math
 
 import requests
@@ -27,13 +26,10 @@ class CastorClient:
 
     def __init__(self, client_id, client_secret):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
-        client_id and client_secret. If test is set to True, suppresses logging to the command line."""
+        client_id and client_secret."""
         # Instantiate Requests sessions
         self.session = requests.Session()
         self.session.headers.update(self.headers)
-
-        # Instantiate logging
-        self.logger = logging.getLogger(__name__)
 
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)

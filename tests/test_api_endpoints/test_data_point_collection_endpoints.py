@@ -711,8 +711,8 @@ class TestDataPoint:
 
         # Update the survey
         feedback = client.update_survey_package_instance_data_record(
-                "000020", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
-            )
+            "000020", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
+        )
         assert len(feedback["success"]) == 0
         assert len(feedback["failed"]) == 5
 
