@@ -19,6 +19,6 @@ pytest_plugins = [
 
 @pytest.fixture(scope="class")
 def client():
-    client = CastorClient(auth_data.client_id, auth_data.client_secret)
+    client = CastorClient(auth_data.client_id, auth_data.client_secret, "data.castoredc.com")
     client.link_study(auth_data.study_id)
     return client

@@ -17,16 +17,18 @@ from exceptions.exceptions import castor_exception_handler, CastorException
 
 class CastorClient:
     # INITIALIZATION
-    base_url = "https://data.castoredc.com/api"
-    auth_url = "https://data.castoredc.com/oauth/token"
     headers = {
         "accept": "*/*",  # "application/hal+json; text/csv",
         "Content-Type": "application/json; charset=utf-8",
     }
 
-    def __init__(self, client_id, client_secret):
+    def __init__(self, client_id, client_secret, url):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
-        client_id and client_secret."""
+        client_id and client_secret. URL determines which server is connected to."""
+        # Instantiate URLs
+        self.base_url = f"https://{url}/api"
+        self.auth_url = f"https://{url}/oauth/token"
+
         # Instantiate Requests sessions
         self.session = requests.Session()
         self.session.headers.update(self.headers)
